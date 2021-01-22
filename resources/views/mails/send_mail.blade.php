@@ -26,7 +26,7 @@ Test Section
         <div class="col-md-12">
             <div class="">
                 <input type="text" hidden="" id="idMateria" name="idMateria">
-                <input type="text" class="form-control"  placeholder="Buscar...(ej: Matemática)" id="autocomplete">
+                <input type="text" class="form-control"  placeholder="Buscar destinatario(s)..." id="autocomplete">
                 <script>
                     var lista_to = [];
                     var countries = [ 
