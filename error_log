@@ -1,0 +1,18 @@
+[21-Jan-2021 20:31:16 UTC] PHP Warning:  Unsupported declare 'strict_types' in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 1
+[21-Jan-2021 20:31:16 UTC] PHP Fatal error:  Default value for parameters with a class type hint can only be NULL in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 89
+[21-Jan-2021 20:31:44 UTC] PHP Warning:  Unsupported declare 'strict_types' in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 1
+[21-Jan-2021 20:31:44 UTC] PHP Fatal error:  Default value for parameters with a class type hint can only be NULL in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 89
+[21-Jan-2021 20:31:50 UTC] PHP Warning:  Unsupported declare 'strict_types' in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 1
+[21-Jan-2021 20:31:50 UTC] PHP Fatal error:  Default value for parameters with a class type hint can only be NULL in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 89
+[21-Jan-2021 20:36:21 UTC] PHP Warning:  Unsupported declare 'strict_types' in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 1
+[21-Jan-2021 20:36:21 UTC] PHP Fatal error:  Default value for parameters with a class type hint can only be NULL in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 89
+[21-Jan-2021 20:36:44 UTC] PHP Warning:  Unsupported declare 'strict_types' in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 1
+[21-Jan-2021 20:36:44 UTC] PHP Fatal error:  Default value for parameters with a class type hint can only be NULL in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 89
+[21-Jan-2021 20:36:46 UTC] PHP Warning:  Unsupported declare 'strict_types' in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 1
+[21-Jan-2021 20:36:46 UTC] PHP Fatal error:  Default value for parameters with a class type hint can only be NULL in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 89
+[21-Jan-2021 20:36:48 UTC] PHP Warning:  Unsupported declare 'strict_types' in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 1
+[21-Jan-2021 20:36:48 UTC] PHP Fatal error:  Default value for parameters with a class type hint can only be NULL in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 89
+[21-Jan-2021 20:37:03 UTC] PHP Warning:  Unsupported declare 'strict_types' in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 1
+[21-Jan-2021 20:37:03 UTC] PHP Fatal error:  Default value for parameters with a class type hint can only be NULL in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 89
+[21-Jan-2021 20:37:49 UTC] PHP Warning:  Unsupported declare 'strict_types' in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 1
+[21-Jan-2021 20:37:49 UTC] PHP Fatal error:  Default value for parameters with a class type hint can only be NULL in /home/csa52906/public_html/ins/vendor/phpunit/phpunit/src/Framework/Assert/Functions.php on line 89
