@@ -14,9 +14,16 @@ use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
 {
-    public function send_mail(){
-
-        Mail::to("fernando.dc.dex@gmail.com")->queue(new MailStructure());
-        return "Done";
+    public function send_mail(Request $request){
+        $gets = $request->input();
+        if(isset($gets["sub"]) && isset($gets["msg"])){
+            $mail["sub"] = $gets["sub"];
+            $mail["msg"] = $gets["msg"];
+            Mail::to("fernando.dc.dex@gmail.com")->queue(new MailStructure($mail));
+            return "Done";
+        }else{
+            return "Missing params";
+        }
+        
     }
 }

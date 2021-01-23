@@ -20,9 +20,10 @@ class MailStructure extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($mail)
     {
-        //
+        $this->subject = $mail["sub"];
+        $this->msg = $mail["msg"];
     }
 
     /**
