@@ -16,11 +16,7 @@ class MailController extends Controller
 {
     public function send_mail(){
 
-        Mail::to("fernando.dc.dex@gmail.com,luciano.grandi.m@gmail.com")->queue(new MailStructure());
+        Mail::to("fernando.dc.dex@gmail.com")->queue(new MailStructure());
         return "Done";
     }
-
-    
-
-    
 }
