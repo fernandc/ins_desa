@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Google_api;
 use App\Http\Controllers\App_Controller;
 use App\Http\Controllers\View_System;
-use App\Http\Controllers\MailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,5 +42,4 @@ Route::get('/logout', [App_Controller::class, 'logout']);
 Route::get('/g-response',[Google_api::class, 'user_data']);
 Route::get('/modal_asignatura', [View_System::class, 'modal_asignatura']);
 Route::get('/modal_edit_group', [View_System::class, 'modal_edit_group']);
-Route::get('/testmail', [MailController::class, 'send_mail']);
 Route::get('/{param}',[View_System::class, 'main']);
