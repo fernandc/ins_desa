@@ -483,4 +483,20 @@ class App_Controller extends Controller {
             return false;
         }
     }
+    public function send_mail_info(Request $request){
+        $gets = $request->input();
+        //dd($gets);
+        $dni = Session::get('account')['dni'];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => '',
+            'data' => ['lista_destinatarios' => $gets["lista_destinatarios"], 'send_when' => $gets["send_when"], 'meet' => $gets["meet"], 'type' => $gets["type"] , 'title'=>$gets["title"], 'body' => $gets["body"]]
+        );
+        dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true); 
+        //dd($data);
+        return $response->body();
+    }
 }

@@ -37,6 +37,7 @@ Route::get('/change_name_group', [App_Controller::class, 'change_name_group']);
 Route::get('/add_student_to_group', [App_Controller::class, 'add_student_to_group']);
 Route::get('/del_student_from_group', [App_Controller::class, 'del_student_from_group']);
 Route::get('/change_student_section', [App_Controller::class, 'change_student_section']);
+Route::get('/send_mail_info', [App_Controller::class, 'send_mail_info']);
 Route::get('/change_student_CP', [App_Controller::class, 'change_student_CP']);
 Route::get('/del_group', [App_Controller::class, 'del_group']);
 Route::get('/logout', [App_Controller::class, 'logout']);

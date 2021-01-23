@@ -26,7 +26,7 @@ const Toast = Swal.mixin({
     <h2 style="text-align: center;">Administrar Profesores 
             @if(Session::has('period'))
                 {{Session::get('period')}}
-            @endif            
+            @endif
     </h2>
     @if(isset($message))
         <script>
