@@ -15,6 +15,10 @@ class MailStructure extends Mailable
 
     public $msg = "";
 
+    public $replyTo = array();
+
+    public $attachments = array();
+
     /**
      * Create a new message instance.
      *

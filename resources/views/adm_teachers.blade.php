@@ -45,7 +45,9 @@ const Toast = Swal.mixin({
                     <th scope="col">Rut</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Jefatura</th>
-                    <th scope="col">Administrar</th>
+                    <th scope="col">Cursos</th>
+                    <th scope="col">Asignaturas</th>
+                    <th scope="col">Clases</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,6 +110,8 @@ const Toast = Swal.mixin({
                                 })
                             </script>
                         </td> 
+                        <td>0</td>
+                        <td>0</td>
                         <td>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" id="modalAsignatura{{$id_staff}}">Administrar</button>                           
                             <script>
@@ -119,7 +123,7 @@ const Toast = Swal.mixin({
                                     })
                                     $.ajax({
                                         type: "GET",
-                                        url: "/modal_asignatura",
+                                        url: "modal_asignatura",
                                         data:{
                                             full_name:'{{$row["full_name"]}}',
                                             dni:'{{$row["dni"]}}'

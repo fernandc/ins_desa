@@ -81,6 +81,14 @@ class View_System extends Controller {
                     return view('mails/sent_and_tracing_mails');                    
                 case "mail_send_mail":
                     $list_to = $this->list_to();
+                    $excCourses = array();
+                    if(!$this->isAdmin()){
+                        $class = $this->list_checked(Session::get('account')['dni']);
+                        foreach($class as $row){
+                            array_push($excCourses,$row["id_curso"]);
+                        }
+                    }
+                    dd($excCourses);
                     return view('mails/send_mail')->with("lista_para",$list_to);                    
                 default:
                 return view('not_found')->with("path",$path);
@@ -253,7 +261,10 @@ class View_System extends Controller {
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => 'list_mail_to'
+            'method' => 'list_mail_to',
+            'data' => [
+                'dni' => Session::get('account')['dni']
+            ]
         );
         //dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");

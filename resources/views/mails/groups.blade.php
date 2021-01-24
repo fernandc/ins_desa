@@ -56,89 +56,91 @@ const Toast = Swal.mixin({
                             </thead>
                             <tbody>
                                 @foreach($list_groups as $row)
-                                    <tr>                                                                                                                      
-                                        <td>
-                                            @if($row["id_creador"] != "INS")
-                                                <span id="spanRow{{$row["id_grupo"]}}">{{$row["nombre"]}}</span>
+                                    @if($row["dni_creador"] == Session::get('account')['dni'] || Session::get('account')['is_admin']=='YES' && $row["id_creador"] != "INS")
+                                        <tr>                                                                                                                      
+                                            <td>
+                                                @if($row["id_creador"] != "INS")
+                                                    <span id="spanRow{{$row["id_grupo"]}}">{{$row["nombre"]}}</span>
+                                                @else
+                                                    {{$row["nombre"]}}
+                                                @endif
+                                            </td>
+                                            <td>{{$row["encargado"]}}</td>
+                                            @if($row["dni_creador"] == Session::get('account')['dni'] || Session::get('account')['is_admin']=='YES')
+                                                @if(Session::get('account')['is_admin']=='YES' && $row["id_creador"] == "INS")
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary" disabled="" data-toggle="modal" data-target=".bd-example-modal-xl" >Editar</button>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger btn-sm" disabled="">Eliminar</button>
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" id="modalEditGroup{{$row["id_grupo"]}}">Editar</button>
+                                                        <script>
+                                                            $("#modalEditGroup{{$row["id_grupo"]}}").click(function(){
+                                                                Swal.fire({
+                                                                    icon: 'info',
+                                                                    title: 'Cargando',
+                                                                    showConfirmButton: false,
+                                                                })
+                                                                $.ajax({
+                                                                    type: "GET",
+                                                                    url: "/modal_edit_group",
+                                                                    data:{
+                                                                        nombre:'{{$row["nombre"]}}',
+                                                                        encargado:'{{$row["encargado"]}}',
+                                                                        id_grupo:'{{$row["id_grupo"]}}'
+                                                                    },
+                                                                    success: function (data)
+                                                                    {
+                                                                        $("#modalContent").html(data);
+                                                                        Toast.fire({
+                                                                            icon: 'success',
+                                                                            title: 'Completado'
+                                                                        })
+                                                                    }
+                                                                });
+                                                            });
+                                                        </script>
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelBtn({{$row["id_grupo"]}})" >Eliminar</a>
+                                                        <script>
+                                                            
+                                                            function confirmDelBtn(id_grupo_del){                                                            
+                                                                Swal.fire({
+                                                                    title: 'Estas seguro?',
+                                                                    icon: 'warning',
+                                                                    showCancelButton: true,
+                                                                    confirmButtonColor: '#3085d6',
+                                                                    cancelButtonColor: '#d33',
+                                                                    confirmButtonText: 'Si, eliminar!'
+                                                                    }).then((result) => {
+                                                                    if (result.isConfirmed) {
+                                                                        Swal.fire(
+                                                                        'Borrado!',
+                                                                        'El grupo se ha eliminado correctamente.',
+                                                                        'success',
+                                                                        window.location.href = "del_group?id="+id_grupo_del
+                                                                        )
+                                                                    }
+                                                                })
+                                                            }
+                                                        </script>
+                                                    </td>
+                                                @endif
                                             @else
-                                                {{$row["nombre"]}}
-                                            @endif
-                                        </td>
-                                        <td>{{$row["encargado"]}}</td>
-                                        @if($row["dni_creador"] == Session::get('account')['dni'] || Session::get('account')['is_admin']=='YES')
-                                            @if(Session::get('account')['is_admin']=='YES' && $row["id_creador"] == "INS")
                                                 <td>
-                                                    <button type="button" class="btn btn-primary" disabled="" data-toggle="modal" data-target=".bd-example-modal-xl" >Editar</button>
+                                                    <button type="button" class="btn btn-primary" disabled="" data-toggle="modal" data-target=".bd-example-modal-xl">Editar</button>
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-danger btn-sm" disabled="">Eliminar</button>
                                                 </td>
-                                            @else
-                                                <td>
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" id="modalEditGroup{{$row["id_grupo"]}}">Editar</button>
-                                                    <script>
-                                                        $("#modalEditGroup{{$row["id_grupo"]}}").click(function(){
-                                                            Swal.fire({
-                                                                icon: 'info',
-                                                                title: 'Cargando',
-                                                                showConfirmButton: false,
-                                                            })
-                                                            $.ajax({
-                                                                type: "GET",
-                                                                url: "/modal_edit_group",
-                                                                data:{
-                                                                    nombre:'{{$row["nombre"]}}',
-                                                                    encargado:'{{$row["encargado"]}}',
-                                                                    id_grupo:'{{$row["id_grupo"]}}'
-                                                                },
-                                                                success: function (data)
-                                                                {
-                                                                    $("#modalContent").html(data);
-                                                                    Toast.fire({
-                                                                        icon: 'success',
-                                                                        title: 'Completado'
-                                                                    })
-                                                                }
-                                                            });
-                                                        });
-                                                    </script>
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelBtn({{$row["id_grupo"]}})" >Eliminar</a>
-                                                    <script>
-                                                        
-                                                        function confirmDelBtn(id_grupo_del){                                                            
-                                                            Swal.fire({
-                                                                title: 'Estas seguro?',
-                                                                icon: 'warning',
-                                                                showCancelButton: true,
-                                                                confirmButtonColor: '#3085d6',
-                                                                cancelButtonColor: '#d33',
-                                                                confirmButtonText: 'Si, eliminar!'
-                                                                }).then((result) => {
-                                                                if (result.isConfirmed) {
-                                                                    Swal.fire(
-                                                                    'Borrado!',
-                                                                    'El grupo se ha eliminado correctamente.',
-                                                                    'success',
-                                                                    window.location.href = "del_group?id="+id_grupo_del
-                                                                    )
-                                                                }
-                                                            })
-                                                        }
-                                                    </script>
-                                                </td>
                                             @endif
-                                        @else
-                                            <td>
-                                                <button type="button" class="btn btn-primary" disabled="" data-toggle="modal" data-target=".bd-example-modal-xl">Editar</button>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm" disabled="">Eliminar</button>
-                                            </td>
-                                        @endif
-                                        
-                                    </tr>
+                                            
+                                        </tr>
+                                    @endif
                                 @endforeach
                                 <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-xl" >
