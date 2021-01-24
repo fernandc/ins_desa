@@ -12,14 +12,14 @@ class schedulerSendMail extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'schedulerSendMail';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Proceso de envío de correo';
 
     /**
      * Create a new command instance.
