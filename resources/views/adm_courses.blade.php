@@ -117,7 +117,7 @@ Administrar Estudiantes
                             <!-- {{$row["profesor"]}} -->
                             <td>
                                 @if($row["profesor"] == null)
-                                    <a href="adm_teachers">Asignar Profesor</a>
+                                    <a href="adm_teachers">Asignar Profesor Jefe</a>
                                 @else
                                     <strong>{{$row["profesor"]}}</strong> 
                                 @endif 

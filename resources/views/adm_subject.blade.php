@@ -36,7 +36,7 @@ Admin Asignaturas
     <br>
     <div class="collapse mt-2" id="collapseStudents">
         <!--  -->
-        <form  action="/add_subject" method="GET">
+        <form  action="add_subject" method="GET">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <input type="text" hidden="" id="idMateria" name="idMateria">
