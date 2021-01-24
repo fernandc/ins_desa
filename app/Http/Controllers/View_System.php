@@ -88,8 +88,9 @@ class View_System extends Controller {
                             array_push($excCourses,$row["id_curso"]);
                         }
                     }
-                    dd($excCourses);
-                    return view('mails/send_mail')->with("lista_para",$list_to);                    
+                    $excCourses= array_unique($excCourses);
+                    //dd($excCourses);
+                    return view('mails/send_mail')->with("lista_para",$list_to)->with("cursos",$excCourses);                    
                 default:
                 return view('not_found')->with("path",$path);
             }

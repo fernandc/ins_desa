@@ -47,8 +47,17 @@ Test Section
                 <script>            
                     var lista_to = [];
                     var countries = [ 
+                        //Filtro de cursos de usuario
                         @foreach($lista_para as $row)
-                            { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },                    
+                            @if($row["creador"] == "INS" && in_array($row["id_curso"],$cursos))
+                                { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
+                            @elseif($row["creador"] == "INS" && $row["id_curso"] == null)
+                                { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
+                            @elseif($row["creador"] != "INS")
+                                { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
+                            @elseif($row["tipo"] == "ALUMNO" && in_array($row["id_curso"],$cursos))
+                                { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
+                            @endif
                         @endforeach
                     ];
                     $("#autocomplete").keyup(function(){
