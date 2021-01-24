@@ -99,18 +99,24 @@ Test Section
             </select>
         </div>
         <div class="col-md-4">
-            <input type="text" id="meeting-time" name="meeting-time" value="" min="2021-01-01T00:00" max="" class="form-control" placeholder="Seleccione fecha y hora">
+            <input type="text" readonly="" id="meeting-time" name="meeting-time" value="" min="2021-01-01T00:00" max="" class="form-control" placeholder="Seleccione fecha y hora">
             <script>
-                jQuery('#meeting-time').datetimepicker({
-                    minDate:0,
-                    //disabledWeekDays:[0,6],
-                    dayOfWeekStart:1,
-                    step:10,
-                    validateOnBlur:true,
-                    weeks:true,
-                    todayButton:true
-                    });
-                $.datetimepicker.setLocale('es');
+                $('#selectWhenSend').change(function (){
+                    var sele = $(this).val();
+                    if(sele == 2){
+                        $("#meeting-time").attr('readonly',false);
+                        jQuery('#meeting-time').datetimepicker({
+                            minDate:0,
+                            //disabledWeekDays:[0,6],
+                            dayOfWeekStart:1,
+                            step:10,
+                            validateOnBlur:true,
+                            weeks:true,
+                            todayButton:true
+                            });
+                        $.datetimepicker.setLocale('es');
+                    }
+                })
             </script>
         </div>
         <div class="col-md-12 my-2">
@@ -156,10 +162,53 @@ Test Section
                 <p class="card-text">
                     <textarea class="form-control" id="context" rows="10" placeholder="Mensaje"></textarea>
                 </p>
+                {{-- revisar --}}
                 <div class="input-group form-control-sm ">
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
-                      <label class="custom-file-label" for="inputGroupFile04">Adjuntar archivo</label>
+                      <input type="file" class="custom-file-input" id="inputGroupFile04" multiple="" aria-describedby="inputGroupFileAddon04">
+                      <label class="custom-file-label" for="inputGroupFile04">Adjuntar archivo </label>
+                      <script>
+                        $("#inputGroupFile04").change(function(ev){
+                            var input = ev.target;
+                            if (input.files) {
+                                var names = [];
+                                $.each(input.files, function(i, e){
+                                    var addext = "";
+                                    names[i] = e.name;
+                                    var ext = names[i].split('.').pop();
+                                    if(ext == "pdf"){
+                                        addext = ' <i class="far fa-file-pdf text-danger"></i>'
+                                        //names[i] = names[i] + addext;
+                                    }
+                                    else if(ext == "xlsx"){
+                                        addext = '<i class="far fa-file-excel text-success"></i>'
+                                    }
+                                    else if(ext == "csv"){
+                                        addext = '<i class="fas fa-file-csv text-success"></i>'
+                                    }
+                                    else if(ext == "docx" || ext == "txt"){
+                                        addext = '<i class="far fa-file-word text-primary"></i>'
+                                    }
+                                    else if(ext == "pptx" || ext == "ppt"){
+                                        addext = '<i class="far fa-file-powerpoint" style="color: #d14424;"></i>'
+                                    }
+                                    else if(ext == "mpg" || ext == "avi" || ext == "mp4"){
+                                        addext = '<i class="far fa-file-video"></i>'
+                                    }
+                                    else if(ext == "mp3" || ext == "wav" || ext == "flac" || ext == "wma"){
+                                        addext = '<i class="far fa-file-audio"></i>'
+                                    }
+                                    else if(ext == "zip" || ext == "rar" || ext == "tar" || ext == "rar5" || ext == "7z"){
+                                        addext = '<i class="far fa-file-archive"></i>'
+                                    }
+                                    else{
+                                        addext = '<i class="far fa-file"></i>'
+                                    }
+                                    $(".file-names").append("-" + e.name + " " + addext + '<br>');
+                                });
+                            }
+                        });
+                      </script>
                     </div>
                 </div>
                 <a href="#" class="btn btn-success mt-3 " style="width: 100%" id="SendMailBtn">Enviar</a>
@@ -173,6 +222,20 @@ Test Section
               <div id="bgmail" class="card-header text-white bg-primary">Asunto del Correo</div>
               <div class="card-body">
                 <p class="card-text" id="viewContent" style="white-space: pre-line;">Cuerpo</p>
+              </div>
+              <div class="card-footer">
+                <div class="file-names">
+
+                    {{-- <i class="far fa-file-pdf"></i> pdf
+                    <i class="far fa-file-excel"></i> xlsx
+                    <i class="fas fa-file-csv"></i> csv
+                    <i class="far fa-file-word"></i> docx txt
+                    <i class="far fa-file-powerpoint"></i>pptx ppt
+                    <i class="far fa-file-video"></i> mpg avi mp3
+                    <i class="far fa-file-audio"></i> mp3 wav flac wma
+                    <i class="far fa-file-archive"></i> zip rar tar 7zip
+                    <i class="far fa-file"></i> --}}
+                </div>
               </div>
             </div>
         </div>
@@ -190,9 +253,6 @@ Test Section
                     </div>
                     <div class="col" style="white-space: nowrap;">
                         <span class="badge badge-primary" style="width: 84px;text-align: left;">@Curso</span>: Curso del Alumno
-                    </div>
-                    <div class="col" style="white-space: nowrap;">
-                        <span class="badge badge-primary" style="width: 84px;text-align: left;">@Grupo</span>: Grupo Seleccionado
                     </div>
                     <div class="col" style="white-space: nowrap;">
                         <span class="badge badge-primary" style="width: 84px;text-align: left;">@Hoy </span>: Fecha Actual
@@ -241,8 +301,6 @@ Test Section
             mensaje = mensaje.replace('@alumno', '<span class="badge badge-info">Alumno</span>')
             mensaje = mensaje.replace('@Curso', '<span class="badge badge-info">Curso</span>')
             mensaje = mensaje.replace('@curso', '<span class="badge badge-info">Curso</span>')
-            mensaje = mensaje.replace('@Grupo', '<span class="badge badge-info">Grupo</span>')
-            mensaje = mensaje.replace('@grupo', '<span class="badge badge-info">Grupo</span>')
             mensaje = mensaje.replace('@Hoy', '<span class="badge badge-info">Hoy</span>')
             mensaje = mensaje.replace('@hoy', '<span class="badge badge-info">Hoy</span>')
            $("#viewContent").html(mensaje);
