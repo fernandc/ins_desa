@@ -64,7 +64,7 @@ $(".input-trigger").click(function(){
     //alert(metodo);
     $.ajax({
         type: "GET",
-        url: "/set_asignatura",
+        url: "set_asignatura",
         data:{
             dni: '{{$dni}}',
             idCurso: id_curso,
