@@ -38,7 +38,7 @@ class schedulerSendMail extends Command
      */
     public function handle()
     {
-        Log::debug('Executado :'.date("Y/m/d H:i:s"));
+        //Log::debug('Executado :'.date("Y/m/d H:i:s"));
         //return 0;
     }
 }
