@@ -61,7 +61,9 @@ class View_System extends Controller {
                     if($this->isAdmin()){
                         $staff = $this->staff();
                         $grades = $this->grades();
-                        return view('adm_teachers')->with("staff",$staff)->with("grades",$grades)->with("message",$message);
+                        $cclass = $this->contarCursosYAsignaturas($staff);
+                        //dd($cclass);
+                        return view('adm_teachers')->with("staff",$staff)->with("grades",$grades)->with("message",$message)->with("cclass",$cclass);
                     }else{
                         return redirect('');
                     }
@@ -241,6 +243,24 @@ class View_System extends Controller {
         else{
             return ('/');
         }
+    }
+    private function contarCursosYAsignaturas($staffs){
+        $cclass = array();
+        foreach($staffs as $staff){
+            $data = null;
+            $data["dni_staff"] = $staff["dni"];
+            $list = $this->list_checked($staff["dni"]);
+            $curs = array();
+            $asig = array();
+            foreach($list as $row){
+                array_push($curs,$row["id_curso_periodo"]);
+                array_push($asig,$row["id_materia"]);
+            }
+            $data["cursos"] = count(array_unique($curs));
+            $data["asignaturas"] = count(array_unique($asig));
+            array_push($cclass,$data);
+        }
+        return $cclass;
     }
     private function list_checked($dni){
         $period = $this->periods()["active_period"];

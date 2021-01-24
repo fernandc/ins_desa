@@ -52,6 +52,18 @@ const Toast = Swal.mixin({
             </thead>
             <tbody>
                 @foreach($staff as $row)
+                    @php
+                        $cursos = 0;
+                        $asignaturas = 0;
+                    @endphp
+                    @foreach ($cclass as $item)
+                        @if ($row["dni"] == $item["dni_staff"])
+                            @php
+                                $cursos = $item["cursos"];
+                                $asignaturas = $item["asignaturas"];
+                            @endphp
+                        @endif
+                    @endforeach
                     <?php $id_staff = str_replace([".","-"], "", $row["dni"]);?>
                     <tr>
                         <td>{{$row["dni"]}}</td>
@@ -110,8 +122,8 @@ const Toast = Swal.mixin({
                                 })
                             </script>
                         </td> 
-                        <td>0</td>
-                        <td>0</td>
+                        <td>{{$cursos}}</td>
+                        <td>{{$asignaturas}}</td>
                         <td>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" id="modalAsignatura{{$id_staff}}">Administrar</button>                           
                             <script>
