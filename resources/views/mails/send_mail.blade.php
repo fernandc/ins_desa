@@ -57,6 +57,8 @@ Test Section
                                 { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
                             @elseif($row["tipo"] == "ALUMNO" && in_array($row["id_curso"],$cursos))
                                 { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
+                            @elseif($row["tipo"] == "PERSONAL")
+                                { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
                             @endif
                         @endforeach
                     ];
@@ -77,13 +79,13 @@ Test Section
                             var badge = "";
                             if(tipo_item=="PERSONAL"){
                                 badge = "primary";
-                            }else if(tipo_item=="ESTUDIANTE"){
+                            }else if(tipo_item=="ALUMNO"){
                                 badge = "info";
                             }else if(tipo_item=="GRUPO"){
                                 badge = "warning";
                             }
                             $('#autocomplete').val('');
-                            $("#destinatarios").append('<span class="badge badge-'+badge+' px-2 mr-2" datatype="'+tipo_item+'" dataid="'+id_item+'" px-2" style="border-radius: 0px 40px 35px 35px;">'+nombre_item+'</span>')
+                            $("#destinatarios").append('<span id="'+tipo_item+id_item+'" class="badge badge-'+badge+' px-2 mr-2 destinatario" datatype="'+tipo_item+'" dataid="'+id_item+'" onclick="eliminarDes('+id_item+',\''+tipo_item+'\',\''+nombre_item+'\')" style="border-radius: 0px 40px 35px 35px;">'+nombre_item+' - '+tipo_item+'</span>')
                         }
                     });
                 </script>
@@ -91,7 +93,7 @@ Test Section
         </div>
         <div class="col-md-4">
             <select class="custom-select " id="selectWhenSend" required="" >
-                <option selected>Seleccionar...</option>
+                <option selected value="0">Seleccionar...</option>
                 <option value="1">Enviar ahora</option>
                 <option value="2">Programar</option>
             </select>
@@ -117,6 +119,20 @@ Test Section
             <div id="destinatarios">
                 
             </div>
+            <script>
+                function eliminarDes(id,tipo,nombre){
+                    var new_list = [];
+                    $("#"+tipo+id).remove();
+                    for (var item of lista_to){
+                        if(item[0] == id && item[1] == tipo && item[2] == nombre){
+
+                        }else{
+                            new_list.push(item);
+                        }
+                    }
+                    lista_to = new_list;
+                }
+            </script>
         </div>
         <div class="col-md-6">
             <div class="mb-1">
@@ -240,10 +256,10 @@ Test Section
                     //showConfirmButton: false,
                 })
             }
-            if(selected < 0){
+            if(selected == 0){
                 Swal.fire({
                     icon: 'error',
-                    title: 'Seleccione cuando enviar el correo.',
+                    title: 'Seleccione cuándo enviar el correo.',
                     //showConfirmButton: false,
                 })
             }
