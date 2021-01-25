@@ -99,12 +99,13 @@ Test Section
             </select>
         </div>
         <div class="col-md-4">
-            <input type="text" readonly="" id="meeting-time" name="meeting-time" value="" min="2021-01-01T00:00" max="" class="form-control" placeholder="Seleccione fecha y hora">
+            <input type="text" readonly="" style="display:none;" id="meeting-time" name="meeting-time" value="" min="2021-01-01T00:00" max="" class="form-control" placeholder="Seleccione fecha y hora">
             <script>
                 $('#selectWhenSend').change(function (){
                     var sele = $(this).val();
                     if(sele == 2){
                         $("#meeting-time").attr('readonly',false);
+                        $("#meeting-time").show();
                         jQuery('#meeting-time').datetimepicker({
                             minDate:0,
                             //disabledWeekDays:[0,6],
@@ -115,6 +116,11 @@ Test Section
                             todayButton:true
                             });
                         $.datetimepicker.setLocale('es');
+                    }
+                    else{
+                        $("#meeting-time").attr('readonly',true);
+                        $("#meeting-time").hide();
+                        
                     }
                 })
             </script>
@@ -168,6 +174,7 @@ Test Section
                       <input type="file" class="custom-file-input" id="inputGroupFile04" multiple="" aria-describedby="inputGroupFileAddon04">
                       <label class="custom-file-label" for="inputGroupFile04">Adjuntar archivo </label>
                       <script>
+                        var filesADD = [];
                         $("#inputGroupFile04").change(function(ev){
                             var input = ev.target;
                             if (input.files) {
@@ -205,8 +212,10 @@ Test Section
                                         addext = '<i class="far fa-file"></i>'
                                     }
                                     $(".file-names").append("-" + e.name + " " + addext + '<br>');
+                                    filesADD.push(e)
                                 });
                             }
+                            
                         });
                       </script>
                     </div>
@@ -225,16 +234,6 @@ Test Section
               </div>
               <div class="card-footer">
                 <div class="file-names">
-
-                    {{-- <i class="far fa-file-pdf"></i> pdf
-                    <i class="far fa-file-excel"></i> xlsx
-                    <i class="fas fa-file-csv"></i> csv
-                    <i class="far fa-file-word"></i> docx txt
-                    <i class="far fa-file-powerpoint"></i>pptx ppt
-                    <i class="far fa-file-video"></i> mpg avi mp3
-                    <i class="far fa-file-audio"></i> mp3 wav flac wma
-                    <i class="far fa-file-archive"></i> zip rar tar 7zip
-                    <i class="far fa-file"></i> --}}
                 </div>
               </div>
             </div>
@@ -346,6 +345,7 @@ Test Section
             }
             else{
                 if(lista_to.length > 0 && selected == 2 && meet != "" && mensajeT != "" && temp != ""){
+                    
                     $.ajax({
                         type: "GET",
                         url: "send_mail_info",
