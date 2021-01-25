@@ -72,7 +72,7 @@ Test Section
                         onSelect: function (suggestion) {
                             var dataget = suggestion.data;
                             var array = dataget.split("-");
-                            lista_to.push(array);
+                            lista_to.push([array]);
                             var id_item = array[0];
                             var tipo_item = array[1];
                             var nombre_item = array[2];
@@ -92,8 +92,7 @@ Test Section
             </div>
         </div>
         <div class="col-md-4">
-            <select class="custom-select " id="selectWhenSend" required="" >
-                <option selected value="0">Seleccionar...</option>
+            <select class="custom-select " id="selectWhenSend" required="" autocomplete="off">
                 <option value="1">Enviar ahora</option>
                 <option value="2">Programar</option>
             </select>
@@ -171,7 +170,7 @@ Test Section
                 {{-- revisar --}}
                 <div class="input-group form-control-sm ">
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="inputGroupFile04" multiple="" aria-describedby="inputGroupFileAddon04">
+                      <input type="file" class="custom-file-input" name="files[]" id="inputGroupFile04" multiple="" aria-describedby="inputGroupFileAddon04">
                       <label class="custom-file-label" for="inputGroupFile04">Adjuntar archivo </label>
                       <script>
                         var filesADD = [];
@@ -261,8 +260,8 @@ Test Section
         </div>
     </div>
     <script>
-        var selected = '';
-        var type = '';
+        var selected = 1;
+        var type = 1;
         var meet = '';
         var mensajeT = '';
         var mensaje;
@@ -290,7 +289,7 @@ Test Section
         $("#title").keyup(function(){
             mensajeT = $("#title").val();
             //mensaje = mensaje.replace('@apoderado', 'Kevin Delva')
-            $("#bgmail").html(mensaje);
+            $("#bgmail").html(mensajeT);
         });
         $("#context").keyup(function(){
             mensaje = $("#context").val();
@@ -306,57 +305,62 @@ Test Section
         });
         $("#SendMailBtn").click(function(){
             var temp = $("#context").val();
-            if(lista_to.length < 1){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ingrese destinatario.',
-                    //showConfirmButton: false,
-                })
-            }
-            if(selected == 0){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Seleccione cuándo enviar el correo.',
-                    //showConfirmButton: false,
-                })
-            }
-            if(selected == 2){
-                if(meet == ''){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Fecha y hora',
-                        //showConfirmButton: false,
-                    })
-                }
-            }
-            if(mensajeT == ""){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ingrese asunto del correo',
-                    //showConfirmButton: false,
-                })
-            }
-            if(temp == ""){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ingrese mensaje',
-                    //showConfirmButton: false,
-                })
-            }
-            else{
-                if(lista_to.length > 0 && selected == 2 && meet != "" && mensajeT != "" && temp != ""){
-                    
+            // if(lista_to.length < 1){
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'Ingrese destinatario.',
+            //         //showConfirmButton: false,
+            //     })
+            // }
+            // if(selected == 0){
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'Seleccione cuándo enviar el correo.',
+            //         //showConfirmButton: false,
+            //     })
+            // }
+            // if(selected == 2){
+            //     if(meet == ''){
+            //         Swal.fire({
+            //             icon: 'error',
+            //             title: 'Fecha y hora',
+            //             //showConfirmButton: false,
+            //         })
+            //     }
+            // }
+            // if(mensajeT == ""){
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'Ingrese asunto del correo',
+            //         //showConfirmButton: false,
+            //     })
+            // }
+            // if(temp == ""){
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'Ingrese mensaje',
+            //         //showConfirmButton: false,
+            //     })
+            // }
+            // else{
+                // if(lista_to.length > 0 && selected == 2 && meet != "" && mensajeT != "" && temp != ""){
+                    var files = $("#inputGroupFile04")[0].files;
+                    var formData = new FormData();
+                    for(var i = 0; i < files.length; i++) {
+                        formData.append('files[]', files[i]);
+                    }
+                    formData.append('lista_destinatarios',lista_to);
+                    formData.append('send_when',selected);
+                    formData.append('meet',meet);
+                    formData.append('title',mensajeT);
+                    formData.append('body',temp);
+                    formData.append('type',type);
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
                         url: "send_mail_info",
-                        data:{
-                            lista_destinatarios:lista_to,
-                            send_when:selected,
-                            meet:meet,
-                            type:type,
-                            title:mensajeT,
-                            body:temp
-                        },
+                        processData: false,
+                        contentType: false,
+                        data: formData,
                         success: function (data){
                             $("#result").html(data);
                             Toast.fire({
@@ -365,8 +369,8 @@ Test Section
                             })
                         }
                     })
-                }
-            }
+                // }
+            // }
         })
     </script>
 </div>

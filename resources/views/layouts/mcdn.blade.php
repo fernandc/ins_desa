@@ -103,7 +103,7 @@ if(Session::has('period')){
                     <img class="rounded-circle" src="{{ Session::get('account')["url_img"]}}" rel="Profile" height="22px" style="margin-top: -6px;margin-left: -4px;margin-right: 2px;">
                     {{ Session::get('account')["full_name"]}}
                 </a> 
-                <form action="/logout" class="form-inline my-2 my-lg-0">
+                <form action="logout" class="form-inline my-2 my-lg-0">
                     <button class="btn btn-outline-light">Salir <i class="fas fa-power-off"></i></button>
                 </form>
             </div>

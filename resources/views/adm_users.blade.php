@@ -65,16 +65,16 @@ Administrar Usuarios
                             <td>{{$row["birth_date"]}}</td>
                             <td>
                                 @if($row["is_admin"]=="YES")
-                                    <a href="/change_staff_admin?dni={{$row["dni"]}}" class="btn btn-primary btn-sm text-white" style="width: 45px">Si</a>
+                                    <a href="change_staff_admin?dni={{$row["dni"]}}" class="btn btn-primary btn-sm text-white" style="width: 45px">Si</a>
                                 @else   
-                                    <a href="/change_staff_admin?dni={{$row["dni"]}}" class="btn btn-secondary btn-sm text-white" style="width: 45px">No</a>
+                                    <a href="change_staff_admin?dni={{$row["dni"]}}" class="btn btn-secondary btn-sm text-white" style="width: 45px">No</a>
                                 @endif
                             </td>
                             <td>
                                 @if($row["status"] == 1)
-                                    <a href="/change_staff_status?dni={{$row["dni"]}}" class="btn btn-primary btn-sm">Activado</a>    
+                                    <a href="change_staff_status?dni={{$row["dni"]}}" class="btn btn-primary btn-sm">Activado</a>    
                                 @else
-                                    <a href="/change_staff_status?dni={{$row["dni"]}}" class="btn btn-secondary btn-sm">Desactivado</a>
+                                    <a href="change_staff_status?dni={{$row["dni"]}}" class="btn btn-secondary btn-sm">Desactivado</a>
                                 @endif
                             </td>
                         </tr>                

@@ -485,6 +485,29 @@ class App_Controller extends Controller {
     }
     public function send_mail_info(Request $request){
         $gets = $request->input();
+        $file = $request->file('files');
+        //dd($gets);
+        //
+        $new = explode(",", $gets["lista_destinatarios"]);
+        $destinatarios = array();
+        $cont = 0;
+        $valores = null;
+        foreach($new as $row){
+            $cont++;
+            if($cont==1){
+                $valores["id"] = $row;
+            }
+            if($cont==2){
+                $valores["tipo"] = $row;
+            }
+            if($cont==3){
+                $valores["nombre"] = $row;
+                array_push($destinatarios,$valores);
+                $cont=0;
+            }
+        }
+        //
+        //return "Ok";
         //dd($gets);
         $dni = Session::get('account')['dni'];
         $arr = array(
