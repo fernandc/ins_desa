@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
@@ -485,9 +486,8 @@ class App_Controller extends Controller {
     }
     public function send_mail_info(Request $request){
         $gets = $request->input();
-        $file = $request->file('files');
-        //dd($gets);
-        //
+        $files = $request->file('files');
+        $mail = Session::get('account')['email'];
         $new = explode(",", $gets["lista_destinatarios"]);
         $destinatarios = array();
         $cont = 0;
@@ -506,15 +506,24 @@ class App_Controller extends Controller {
                 $cont=0;
             }
         }
-        //
-        //return "Ok";
-        //dd($gets);
+        $filearray= array();
+        $cont=0;
+        if(isset($files)){
+            foreach ($files as $file) {
+                $cont++;
+                $extension = $file->extension();
+                $name = "documento_$cont.$extension";
+                $date = date('Ymd_His');
+                $path = $file->storeAs("correos_enviados/$mail/$date", $name);
+                array_push($filearray,$path);
+            }
+        }
         $dni = Session::get('account')['dni'];
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => '',
-            'data' => ['lista_destinatarios' => $gets["lista_destinatarios"], 'send_when' => $gets["send_when"], 'meet' => $gets["meet"], 'type' => $gets["type"] , 'title'=>$gets["title"], 'body' => $gets["body"]]
+            'data' => ['lista_destinatarios' => $destinatarios, 'send_when' => $gets["send_when"], 'meet' => $gets["meet"], 'type' => $gets["type"] , 'title'=>$gets["title"], 'body' => $gets["body"], 'files' => $filearray]
         );
         dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");

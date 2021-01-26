@@ -87,7 +87,7 @@ class View_System extends Controller {
                     if(!$this->isAdmin()){
                         $class = $this->list_checked(Session::get('account')['dni']);
                         foreach($class as $row){
-                            array_push($excCourses,$row["id_curso"]);
+                            array_push($excCourses,$row["id_curso_periodo"]);
                         }
                     }
                     $excCourses= array_unique($excCourses);

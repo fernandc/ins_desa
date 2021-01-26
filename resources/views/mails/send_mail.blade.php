@@ -39,7 +39,8 @@ Test Section
         </h2>
     </div>
     <hr>
-    <div class="row">
+
+    <form class="row" id="formSendMails" >
         <div class="col-md-4">
             <div class="">
                 <input type="text" hidden="" id="idMateria" name="idMateria">
@@ -48,12 +49,9 @@ Test Section
                     var lista_to = [];
                     var countries = [ 
                         //Filtro de cursos de usuario
+                        { data: '0-PERSONAL-TODO PERSONAL', value: 'TODO PERSONAL' },
                         @foreach($lista_para as $row)
-                            @if($row["creador"] == "INS" && in_array($row["id_curso"],$cursos))
-                                { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
-                            @elseif($row["creador"] == "INS" && $row["id_curso"] == null)
-                                { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
-                            @elseif($row["creador"] != "INS")
+                            @if(($row["tipo"] == "CURSO" && in_array($row["id"],$cursos)) || Session::get('account')['is_admin']=='YES')
                                 { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
                             @elseif($row["tipo"] == "ALUMNO" && in_array($row["id_curso"],$cursos))
                                 { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
@@ -62,10 +60,7 @@ Test Section
                             @endif
                         @endforeach
                     ];
-                    $("#autocomplete").keyup(function(){
-                        $("#autocomplete").addClass('is-invalid');
-                        $("#autocomplete").removeClass('is-valid');
-                    });
+                    
                     $('#autocomplete').autocomplete({
                         minChars: 3,
                         lookup: countries,
@@ -82,6 +77,9 @@ Test Section
                             }else if(tipo_item=="ALUMNO"){
                                 badge = "info";
                             }else if(tipo_item=="GRUPO"){
+                                badge = "warning";
+                            }
+                            else if(tipo_item=="CURSO"){
                                 badge = "warning";
                             }
                             $('#autocomplete').val('');
@@ -218,9 +216,10 @@ Test Section
                         });
                       </script>
                     </div>
+                    
                 </div>
-                <a href="#" class="btn btn-success mt-3 " style="width: 100%" id="SendMailBtn">Enviar</a>
-                
+                <button class="btn btn-success mt-3" id="reset" type="reset" hidden style="width:100%"></button>
+                <button class="btn btn-success mt-3" type="button" id="SendMailBtn" style="width:100%">Enviar</button>
               </div>
             </div>
         </div>
@@ -258,7 +257,7 @@ Test Section
                 </div>
               </div>
         </div>
-    </div>
+    </form>
     <script>
         var selected = 1;
         var type = 1;
@@ -288,7 +287,6 @@ Test Section
         })
         $("#title").keyup(function(){
             mensajeT = $("#title").val();
-            //mensaje = mensaje.replace('@apoderado', 'Kevin Delva')
             $("#bgmail").html(mensajeT);
         });
         $("#context").keyup(function(){
@@ -304,46 +302,47 @@ Test Section
            $("#viewContent").html(mensaje);
         });
         $("#SendMailBtn").click(function(){
+            
             var temp = $("#context").val();
-            // if(lista_to.length < 1){
-            //     Swal.fire({
-            //         icon: 'error',
-            //         title: 'Ingrese destinatario.',
-            //         //showConfirmButton: false,
-            //     })
-            // }
-            // if(selected == 0){
-            //     Swal.fire({
-            //         icon: 'error',
-            //         title: 'Seleccione cuándo enviar el correo.',
-            //         //showConfirmButton: false,
-            //     })
-            // }
-            // if(selected == 2){
-            //     if(meet == ''){
-            //         Swal.fire({
-            //             icon: 'error',
-            //             title: 'Fecha y hora',
-            //             //showConfirmButton: false,
-            //         })
-            //     }
-            // }
-            // if(mensajeT == ""){
-            //     Swal.fire({
-            //         icon: 'error',
-            //         title: 'Ingrese asunto del correo',
-            //         //showConfirmButton: false,
-            //     })
-            // }
-            // if(temp == ""){
-            //     Swal.fire({
-            //         icon: 'error',
-            //         title: 'Ingrese mensaje',
-            //         //showConfirmButton: false,
-            //     })
-            // }
-            // else{
-                // if(lista_to.length > 0 && selected == 2 && meet != "" && mensajeT != "" && temp != ""){
+            if(lista_to.length < 1){
+                console.log('if 1')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ingrese destinatario.',
+                    //showConfirmButton: false,
+                })
+            }
+            else if(selected == 2){
+                console.log('if 2')
+                if(meet == ''){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Fecha y hora',
+                        //showConfirmButton: false,
+                    })
+                }
+            }
+            else if(mensajeT == ""){
+                console.log('if 3')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ingrese asunto del correo',
+                    //showConfirmButton: false,
+                })
+            }
+            else if(temp == ""){
+                console.log('if 4')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ingrese mensaje',
+                    //showConfirmButton: false,
+                })
+            }
+            else{
+                console.log('if 5')
+                if(lista_to.length > 0 && mensajeT != "" && temp != ""){
+                    console.log('if final')
+                    $("#SendMailBtn").attr('disabled',true);
                     var files = $("#inputGroupFile04")[0].files;
                     var formData = new FormData();
                     for(var i = 0; i < files.length; i++) {
@@ -363,14 +362,28 @@ Test Section
                         data: formData,
                         success: function (data){
                             $("#result").html(data);
+                            $('#SendMailBtn').attr('disabled',false);
+                            $("#reset").click();
+                            $("#bgmail").html("Asunto del correo");
+                            $("#viewContent").html("Cuerpo");
+                            $(".file-names").html("");
+                            $("#destinatarios").html("");
+                            selected = 1;
+                            type = 1;
+                            meet = '';
+                            mensajeT = '';
+                            mensaje = '';
+                            temp = '';
+                            lista_to = [];
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Enviado'
                             })
                         }
                     })
-                // }
-            // }
+                }
+            }
+            
         })
     </script>
 </div>
