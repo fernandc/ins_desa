@@ -57,6 +57,8 @@ Test Section
                                 { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
                             @elseif($row["tipo"] == "PERSONAL")
                                 { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
+                            @elseif(($row["tipo"] == "GRUPO" && Session::get('account')['dni'] == $row["creador"]) || Session::get('account')['is_admin']=='YES')
+                                { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
                             @endif
                         @endforeach
                     ];
