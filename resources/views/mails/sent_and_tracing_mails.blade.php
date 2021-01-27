@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 @extends("layouts.mcdn")
 @section("title")
-Test Section
+Seguimiento 
 @endsection
 
 @section("headex")
@@ -9,5 +9,5 @@ Test Section
 @endsection
 
 @section("context")
-Hola
+
 @endsection

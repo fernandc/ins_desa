@@ -86,12 +86,13 @@ class View_System extends Controller {
                     $excCourses = array();
                     if(!$this->isAdmin()){
                         $class = $this->list_checked(Session::get('account')['dni']);
+                        //dd($class);
                         foreach($class as $row){
                             array_push($excCourses,$row["id_curso_periodo"]);
                         }
                     }
                     $excCourses= array_unique($excCourses);
-                    //dd($excCourses);
+                    //dd($excCourses+$list_to);
                     return view('mails/send_mail')->with("lista_para",$list_to)->with("cursos",$excCourses);                    
                 default:
                 return view('not_found')->with("path",$path);

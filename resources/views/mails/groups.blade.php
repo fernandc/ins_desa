@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 @extends("layouts.mcdn")
 @section("title")
-Correos
+Grupos
 @endsection
 
 @section("headex")
@@ -45,7 +45,7 @@ const Toast = Swal.mixin({
             <div class="card-body">      
                 <form  action="" method="GET">
                     <div class="table-responsive-sm table-bordered ">
-                        <table class="table" id="createdGroups">
+                        <table class="table thead-light" id="createdGroups">
                             <thead>
                                 <tr>
                                     <th scope="col">Nombre</th>

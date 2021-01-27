@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 @extends("layouts.mcdn")
 @section("title")
-Test Section
+Enviar correo
 @endsection
 
 @section("headex")
@@ -62,7 +62,6 @@ Test Section
                             @endif
                         @endforeach
                     ];
-                    
                     $('#autocomplete').autocomplete({
                         minChars: 3,
                         lookup: countries,
@@ -107,12 +106,12 @@ Test Section
                         $("#meeting-time").show();
                         jQuery('#meeting-time').datetimepicker({
                             minDate:0,
-                            //disabledWeekDays:[0,6],
                             dayOfWeekStart:1,
                             step:10,
                             validateOnBlur:true,
                             weeks:true,
-                            todayButton:true
+                            todayButton:true,
+                            format:'Y-m-d H:i a'
                             });
                         $.datetimepicker.setLocale('es');
                     }
@@ -184,7 +183,6 @@ Test Section
                                     var ext = names[i].split('.').pop();
                                     if(ext == "pdf"){
                                         addext = ' <i class="far fa-file-pdf text-danger"></i>'
-                                        //names[i] = names[i] + addext;
                                     }
                                     else if(ext == "xlsx"){
                                         addext = '<i class="far fa-file-excel text-success"></i>'
@@ -266,7 +264,6 @@ Test Section
         var meet = '';
         var mensajeT = '';
         var mensaje;
-
         $("#addStu").keyup(function(){
             
         });
@@ -285,8 +282,22 @@ Test Section
             selected = $(this).val();
         })
         $("#meeting-time").change(function(){
-            meet = $(this).val();
+            meet = $(this).datetimepicker('getValue');
+            var d = meet
+            var year = d.getFullYear();
+            var month = d.getMonth()+1;
+            var day = d.getDate();
+            var hours = d.getHours();
+            var mins = d.getMinutes();
+            if(month<10){month = "0"+month;}
+            if(day<10){day = "0"+day;}
+            if(hours<10){hours = "0"+hours;}
+            if(mins<10){mins = "0"+mins;}
+            var fulldate = year+"-"+month+"-"+day+" "+hours+":"+mins+":00";
+            meet = fulldate;     
+            alert(meet);
         })
+
         $("#title").keyup(function(){
             mensajeT = $("#title").val();
             $("#bgmail").html(mensajeT);
@@ -307,43 +318,33 @@ Test Section
             
             var temp = $("#context").val();
             if(lista_to.length < 1){
-                console.log('if 1')
                 Swal.fire({
                     icon: 'error',
-                    title: 'Ingrese destinatario.',
-                    //showConfirmButton: false,
+                    title: 'Ingrese destinatario.'
                 })
             }
-            else if(selected == 2){
-                console.log('if 2')
-                if(meet == ''){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Fecha y hora',
-                        //showConfirmButton: false,
-                    })
-                }
-            }
-            else if(mensajeT == ""){
-                console.log('if 3')
+            else if(meet == ''){
                 Swal.fire({
                     icon: 'error',
-                    title: 'Ingrese asunto del correo',
-                    //showConfirmButton: false,
+                    title: 'Fecha y hora'
+
+                })
+                
+            }
+            else if(mensajeT == ""){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ingrese asunto del correo'
                 })
             }
             else if(temp == ""){
-                console.log('if 4')
                 Swal.fire({
                     icon: 'error',
-                    title: 'Ingrese mensaje',
-                    //showConfirmButton: false,
+                    title: 'Ingrese mensaje'
                 })
             }
             else{
-                console.log('if 5')
                 if(lista_to.length > 0 && mensajeT != "" && temp != ""){
-                    console.log('if final')
                     $("#SendMailBtn").attr('disabled',true);
                     var files = $("#inputGroupFile04")[0].files;
                     var formData = new FormData();
