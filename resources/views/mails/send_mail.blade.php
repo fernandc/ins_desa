@@ -166,7 +166,6 @@ Enviar correo
                 <p class="card-text">
                     <textarea class="form-control" id="context" rows="10" placeholder="Mensaje"></textarea>
                 </p>
-                {{-- revisar --}}
                 <div class="input-group form-control-sm ">
                     <div class="custom-file">
                       <input type="file" class="custom-file-input" name="files[]" id="inputGroupFile04" multiple="" aria-describedby="inputGroupFileAddon04">

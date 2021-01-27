@@ -44,7 +44,7 @@
                 title: 'Oops...',
                 text: '{{$text}}',
                 }).then(function (result){
-                    window.location = '/logout'; 
+                    window.location = 'logout'; 
                 })
         </script>
     </body>
