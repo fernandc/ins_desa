@@ -322,13 +322,12 @@ Enviar correo
                     title: 'Ingrese destinatario.'
                 })
             }
-            else if(meet == ''){
+            else if(meet == '' && selected == 2 ){
                 Swal.fire({
                     icon: 'error',
                     title: 'Fecha y hora'
 
                 })
-                
             }
             else if(mensajeT == ""){
                 Swal.fire({
