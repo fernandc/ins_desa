@@ -45,5 +45,4 @@ Route::get('/g-response',[Google_api::class, 'user_data']);
 Route::get('/modal_asignatura', [View_System::class, 'modal_asignatura']);
 Route::get('/destinatarios_sent_mails', [View_System::class, 'destinatarios_sent_mails']);
 Route::get('/modal_edit_group', [View_System::class, 'modal_edit_group']);
-Route::get('/testmail', [MailController::class, 'send_mail']);
 Route::get('/{param}',[View_System::class, 'main']);
