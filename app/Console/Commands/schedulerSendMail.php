@@ -70,7 +70,7 @@ class schedulerSendMail extends Command
                                 $datecomp = date('Y-m-d H:i:s',$dbdate);
                             }
                             $dbdate2 = strtotime($mail["fecha_emision"]);
-                            $datesend = date('Y-m-d H:i:s',$dbdate2);
+                            $datesend = date('Y-m-d',$dbdate2);
                             $attach=null;
                             $mensaje = "";
                             if($to["team"]=="ALUMNO"){
