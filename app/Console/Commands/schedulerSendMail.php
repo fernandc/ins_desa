@@ -66,10 +66,10 @@ class schedulerSendMail extends Command
                         if ($to["send_status"]=="CARGANDO"){
                             $datecomp = null;
                             if(isset($to["fecha_para"])){
-                                $dbdate = strtotime($to["fecha_para"]);
+                                $dbdate = strtotime($mail["fecha_para"]);
                                 $datecomp = date('Y-m-d H:i:s',$dbdate);
                             }
-                            $dbdate2 = strtotime($to["fecha_emision"]);
+                            $dbdate2 = strtotime($mail["fecha_emision"]);
                             $datesend = date('Y-m-d H:i:s',$dbdate2);
                             $attach=null;
                             $mensaje = "";
