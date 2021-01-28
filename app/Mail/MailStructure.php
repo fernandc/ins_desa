@@ -15,9 +15,9 @@ class MailStructure extends Mailable
 
     public $msg = "";
 
-    public $replyTo = array();
+    public $replyTo = [];
 
-    public $attachments = array();
+    public $attachments = [];
 
     public $color = "";
 
@@ -30,9 +30,7 @@ class MailStructure extends Mailable
     {
         $this->subject = $titulo;
         $this->msg = $mensaje;
-        $arrayReply = array();
-        array_push($arrayReply,$responder);
-        $this->replyTo = $arrayReply;
+        $this->replyTo = [$responder];
         //$this->attachments = $archivos;
         $this->color = $color;
     }
