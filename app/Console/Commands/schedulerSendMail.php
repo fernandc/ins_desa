@@ -97,7 +97,7 @@ class schedulerSendMail extends Command
                                 $color = "#dc3545";
                             }
                             $flag = false;
-                            if ($datecomp == null]) {
+                            if ($datecomp == null) {
                                 $flag = true;
                                 Mail::to($to["email"])->queue(new MailStructure($mail["titulo"],$mail["mensaje"],$mail["email_staff"],$attach,$color));
                             }elseif(date("Y-m-d H:i:s") >= $datecomp){
