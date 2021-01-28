@@ -46,7 +46,7 @@ Enviar correo
                 <input type="text" hidden="" id="idMateria" name="idMateria">
                 <input type="text" class="form-control"  placeholder="Buscar destinatario(s)..." id="autocomplete">
                 <script>            
-                    var lista_to = [];
+                    var lista_to = new Array();
                     var countries = [ 
                         //Filtro de cursos de usuario
                         { data: '0-PERSONAL-TODO PERSONAL', value: 'TODO PERSONAL' },
@@ -117,8 +117,7 @@ Enviar correo
                     }
                     else{
                         $("#meeting-time").attr('readonly',true);
-                        $("#meeting-time").hide();
-                        
+                        $("#meeting-time").hide();                       
                     }
                 })
             </script>
@@ -126,21 +125,20 @@ Enviar correo
         <div class="col-md-12 my-2">
             <span>Destinatarios Seleccionados:</span>
             <br>
-            <div id="destinatarios">
-                
+            <div id="destinatarios">              
             </div>
             <script>
                 function eliminarDes(id,tipo,nombre){
-                    var new_list = [];
+                    var new_list = lista_to;
                     $("#"+tipo+id).remove();
-                    for (var item of lista_to){
-                        if(item[0] == id && item[1] == tipo && item[2] == nombre){
-
-                        }else{
-                            new_list.push(item);
+                    if(lista_to){
+                        for (var item = 0 ; item < lista_to.length ; item ++){                            
+                            if(new_list[item][0][0] == id && new_list[item][0][1] == tipo && new_list[item][0][2] == nombre){
+                                new_list.splice(item,1)
+                            }
+                        lista_to = new_list;
                         }
                     }
-                    lista_to = new_list;
                 }
             </script>
         </div>
@@ -293,8 +291,7 @@ Enviar correo
             if(hours<10){hours = "0"+hours;}
             if(mins<10){mins = "0"+mins;}
             var fulldate = year+"-"+month+"-"+day+" "+hours+":"+mins+":00";
-            meet = fulldate;     
-            alert(meet);
+            meet = fulldate;
         })
 
         $("#title").keyup(function(){
@@ -369,6 +366,13 @@ Enviar correo
                             $("#viewContent").html("Cuerpo");
                             $(".file-names").html("");
                             $("#destinatarios").html("");
+                            $("#meeting-time").hide();
+                            $("#bgmail").removeClass('bg-primary');
+                            $("#bgmail").removeClass('bg-info');
+                            $("#bgmail").removeClass('bg-success');
+                            $("#bgmail").removeClass('bg-danger');
+                            $("#bgmail").addClass('bg-primary');
+
                             selected = 1;
                             type = 1;
                             meet = '';

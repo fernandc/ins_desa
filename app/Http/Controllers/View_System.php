@@ -80,7 +80,10 @@ class View_System extends Controller {
                     $list_students_groups = $this->list_students_groups();
                     return view('mails/groups')->with("list_groups",$list_groups)->with("list_students_groups",$list_students_groups)->with("message",$message);                    
                 case "mail_sent_and_tracing_mails":
-                    return view('mails/sent_and_tracing_mails');                    
+                    $info = $this->info_sent_mails();
+                    //dd($info);
+                    //$destinatarios = $this->destinatarios_sent_mails($gets);->with("destinatarios",$destinatarios)
+                    return view('mails/sent_and_tracing_mails')->with("info_mails",$info);                    
                 case "mail_send_mail":
                     $list_to = $this->list_to();
                     $excCourses = array();
@@ -245,6 +248,33 @@ class View_System extends Controller {
             return ('/');
         }
     }
+    // Sent Mails
+    public function info_sent_mails(){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'mails_sended'
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return $data;
+    }
+    public function destinatarios_sent_mails(Request $request){
+        $gets = $request->input();        
+        $id_mail = $gets["id_mail"];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'mails_sended_to',
+            'data' => ['id_mail' => $id_mail]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return view('includes/mdl_sent_mails')->with('correos',$data);
+    }
+    // Sent Mails
     private function contarCursosYAsignaturas($staffs){
         $cclass = array();
         foreach($staffs as $staff){

@@ -23,7 +23,6 @@ class MailController extends Controller
             return "Done";
         }else{
             return "Missing params";
-        }
-        
+        }        
     }
 }
