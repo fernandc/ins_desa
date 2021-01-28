@@ -75,13 +75,13 @@ class schedulerSendMail extends Command
                             $mensaje = "";
                             if($to["team"]=="ALUMNO"){
                                 $mensaje = str_replace("@apoderado",$to["name"],$mail["mensaje"]);
-                                $mensaje = str_replace("@Apoderado",$to["name"],$mail["mensaje"]);
-                                $mensaje = str_replace("@alumno",$to["student"],$mail["mensaje"]);
-                                $mensaje = str_replace("@Alumno",$to["student"],$mail["mensaje"]);
-                                $mensaje = str_replace("@curso",$to["grade"],$mail["mensaje"]);
-                                $mensaje = str_replace("@Curso",$to["grade"],$mail["mensaje"]);
-                                $mensaje = str_replace("@hoy",$datesend,$mail["mensaje"]);
-                                $mensaje = str_replace("@Hoy",$datesend,$mail["mensaje"]);
+                                $mensaje = str_replace("@Apoderado",$to["name"],$mensaje);
+                                $mensaje = str_replace("@alumno",$to["student"],$mensaje);
+                                $mensaje = str_replace("@Alumno",$to["student"],$mensaje);
+                                $mensaje = str_replace("@curso",$to["grade"],$mensaje);
+                                $mensaje = str_replace("@Curso",$to["grade"],$mensaje);
+                                $mensaje = str_replace("@hoy",$datesend,$mensaje);
+                                $mensaje = str_replace("@Hoy",$datesend,$mensaje);
                             }else{
                                 $mensaje = $mail["mensaje"];
                             }
