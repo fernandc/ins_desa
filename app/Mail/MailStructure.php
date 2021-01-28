@@ -42,6 +42,6 @@ class MailStructure extends Mailable
      */
     public function build()
     {
-        return $this->view('Plantilla_Mail.mail')->with("body",$msg)->with("head",$subject)->with("color",$color);
+        return $this->view('Plantilla_Mail.mail')->with("body",$this->msg)->with("head",$this->subject)->with("color",$this->color);
     }
 }
