@@ -97,6 +97,7 @@ class schedulerSendMail extends Command
                                 $color = "#dc3545";
                             }
                             $flag = false;
+                            date_default_timezone_set("America/Santiago");
                             if ($datecomp == null) {
                                 $flag = true;
                                 Mail::to($to["email"])->queue(new MailStructure($mail["titulo"],$mensaje,$mail["email_staff"],$attach,$color));
