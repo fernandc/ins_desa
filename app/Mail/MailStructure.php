@@ -16,7 +16,7 @@ class MailStructure extends Mailable
 
     public $msg = "";
 
-    public $responderA = "";
+    //public $responderA = "";
 
     public $archivos = [];
 
@@ -31,7 +31,7 @@ class MailStructure extends Mailable
     {
         $this->subject = $titulo;
         $this->msg = $mensaje;
-        $this->$responderA = $responder;
+        //$this->$responderA = $responder;
         $this->archivos = $archivos;
         $this->color = $color;
     }
@@ -48,7 +48,6 @@ class MailStructure extends Mailable
             $path = Storage::path($path_to["path"]);
             $email->attach($path);
         }
-        $email->replyTo($this->responderA);
         return $email;
     }
 }
