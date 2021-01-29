@@ -31,7 +31,7 @@ class MailStructure extends Mailable
     {
         $this->subject = $titulo;
         $this->msg = $mensaje;
-        $this->responderA = $responder;
+        $this->$responderA = $responder;
         $this->archivos = $archivos;
         $this->color = $color;
     }
@@ -46,9 +46,9 @@ class MailStructure extends Mailable
         $email = $this->view('Plantilla_Mail.mail')->with("body",$this->msg)->with("head",$this->subject)->with("color",$this->color);
         foreach ($this->archivos as $path_to) {
             $path = Storage::path($path_to["path"]);
-            $email->attach($this->archivos);
+            $email->attach($path);
         }
-        $email->replyTo($responderA);
+        $email->replyTo($this->responderA);
         return $email;
     }
 }
