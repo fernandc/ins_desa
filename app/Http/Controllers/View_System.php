@@ -22,7 +22,9 @@ class View_System extends Controller {
             $this->periods();
             switch ($path) {
                 case "home":
-                    return view('home');
+                    $info = $this->info_sent_mails();
+                    //dd($info);
+                    return view('home')->with("info_mails",$info);
                     break;
                 case "adm_periods":
                     if($this->isAdmin()){
