@@ -31,7 +31,7 @@ class MailStructure extends Mailable
     {
         $this->subject = $titulo;
         $this->msg = $mensaje;
-        $this->$responderA = $responder;
+        $this->responderA = $responder;
         $this->archivos = $archivos;
         $this->color = $color;
     }
