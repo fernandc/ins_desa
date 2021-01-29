@@ -19,7 +19,7 @@ class App_Controller extends Controller {
             $arr = array(
                 'institution' => getenv("APP_NAME"),
                 'public_key' => getenv("APP_PUBLIC_KEY"),
-                'method' => '',
+                'method' => 'update_reader',
                 'data' => ['hash' => $hash, 'id' => $id]);
             Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         }
