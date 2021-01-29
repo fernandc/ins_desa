@@ -13,7 +13,7 @@
                             <div class="m_942692651051247032o_xs-center" style="font-family:'Open Sans',Arial,Helvetica,sans-serif;margin-top:0px;margin-bottom:0px;font-size:16px;line-height:24px;text-align:left;padding-left:8px;padding-right:8px">
                                <p style="margin-top:0px;margin-bottom:0px">
                                    <a style="text-decoration:none;outline:none;color:#ffffff">
-                                      <img alt="INS Logo" title="Ins Logo" style="max-width:120px;vertical-align:middle;border:0;line-height:100%;height:auto;outline:none;text-decoration:none" class="CToWUd" src="https://saintcharlescollege.cl/wp/wp-content/uploads/2019/08/cropped-logo-stcharles-with-text-180x200.png" width="120" height="36">
+                                      <img alt="INS Logo" title="Ins Logo" style="max-width:120px;vertical-align:middle;border:0;line-height:100%;height:auto;outline:none;text-decoration:none" class="CToWUd" src="{{$params}}" width="120" height="36">
                                    </a>
                               </p>
                             </div>

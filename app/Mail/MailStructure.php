@@ -22,18 +22,21 @@ class MailStructure extends Mailable
 
     public $color = "";
 
+    public $params = "";
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($titulo,$mensaje,$responder,$archivos,$color)
+    public function __construct($titulo,$mensaje,$responder,$archivos,$color,$params)
     {
         $this->subject = $titulo;
         $this->msg = $mensaje;
         //$this->$responderA = $responder;
         $this->archivos = $archivos;
         $this->color = $color;
+        $this->params = $params;
     }
 
     /**
@@ -43,7 +46,7 @@ class MailStructure extends Mailable
      */
     public function build()
     {
-        $email = $this->view('Plantilla_Mail.mail')->with("body",$this->msg)->with("head",$this->subject)->with("color",$this->color);
+        $email = $this->view('Plantilla_Mail.mail')->with("body",$this->msg)->with("head",$this->subject)->with("color",$this->color)->with("params",$this->params);
         foreach ($this->archivos as $path_to) {
             $path = Storage::path($path_to["path"]);
             $email->attach($path);

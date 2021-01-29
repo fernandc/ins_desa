@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Hash;
 
 class schedulerSendMail extends Command
 {
@@ -109,14 +110,18 @@ class schedulerSendMail extends Command
                             }elseif($tipo == 4){
                                 $color = "#dc3545";
                             }
+                            //hash
+                            $hashed = Hash::make($to["id"].$to["email"]);
+                            $params = "https://".getenv("APP_URL")."logo_ins/?h=$hashed&key=".$to["id"];
+                            //flag
                             $flag = false;
                             date_default_timezone_set("America/Santiago");
                             if ($datecomp == null) {
                                 $flag = true;
-                                Mail::to($to["email"])->queue(new MailStructure($mail["titulo"],$mensaje,[$mail["email_staff"],$mail["nombre_staff"]],$attach,$color));
+                                Mail::to($to["email"])->queue(new MailStructure($mail["titulo"],$mensaje,[$mail["email_staff"],$mail["nombre_staff"]],$attach,$color,$params));
                             }elseif(date("Y-m-d H:i:s") >= $datecomp){
                                 $flag = true;
-                                Mail::to($to["email"])->queue(new MailStructure($mail["titulo"],$mensaje,[$mail["email_staff"],$mail["nombre_staff"]],$attach,$color));
+                                Mail::to($to["email"])->queue(new MailStructure($mail["titulo"],$mensaje,[$mail["email_staff"],$mail["nombre_staff"]],$attach,$color,$params));
                             }
                             if($flag){
                                 $arr = array(

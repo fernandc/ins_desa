@@ -8,8 +8,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 
 class App_Controller extends Controller {
+    public function logo_ins(Request $request){
+        $gets = $request->input();
+        if (isset($gets["h"]) && isset($gets["key"])) {
+            $hash = $gets["h"];
+            $id = $gets["key"];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => '',
+                'data' => ['hash' => $hash, 'id' => $id]);
+            Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        }
+        $img = $contents = Storage::get('public/ins_logo.png');
+        return response($img)->header('Content-type','image/png');
+    }
     public function logout() {
         if(Session::has('account')){
             $token = Session::get('account')['token'];

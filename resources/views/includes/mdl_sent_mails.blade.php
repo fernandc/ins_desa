@@ -10,8 +10,8 @@
         <tr>
           <th scope="col">Destinatario</th>
           <th scope="col">Mail</th>
-          <th scope="col">Rol</th>
-          <th scope="col">Status</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Estado</th>
           <th scope="col">Fecha lectura</th>
         </tr>
       </thead>
@@ -20,8 +20,21 @@
                 <tr>
                     <td>{{$correo["name"]}}</td>
                     <td>{{$correo["email"]}}</td>
-                    <td>{{$correo["team"]}}</td>
-                    <td>{{$correo["send_status"]}}</td>
+                    <td>
+                      @if ($correo["team"] == "ALUMNO")
+                        <span class="badge badge-primary">{{$correo["team"]}}</span> 
+                      @else
+                        <span class="badge badge-warning">{{$correo["team"]}}</span> 
+                      @endif
+                      
+                    </td>
+                    <td>
+                      @if ($correo["send_status"] == "CARGANDO")
+                        <span class="badge badge-secondary">En cola</span>
+                      @elseif($correo["send_status"] == "ENVIADO")
+                        <span class="badge badge-success">Enviado</span>
+                      @endif
+                    </td>
                     <td>
                         @if (isset($correo["date_mail_readed"]))
                             {{$correo["date_mail_readed"]}}
