@@ -53,6 +53,20 @@ class schedulerSendMail extends Command
         $mails = json_decode($response1->body(), true);
         if(isset($mails)){
             foreach ($mails as $mail) {
+                //ATTACHES
+                $attach=null;
+                $arr = array(
+                    'institution' => getenv("APP_NAME"),
+                    'public_key' => getenv("APP_PUBLIC_KEY"),
+                    'method' => 'mails_sended_attach',
+                    'data' => ['id_mail' => $mail["id_mail"]]
+                );
+                $responseA = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                $recipentsA = json_decode($responseA->body(), true);
+                if(isset($recipentsA)){
+                    $attach=$recipentsA;
+                }
+                //MAIL_TO
                 $arr = array(
                     'institution' => getenv("APP_NAME"),
                     'public_key' => getenv("APP_PUBLIC_KEY"),
@@ -71,7 +85,6 @@ class schedulerSendMail extends Command
                             }
                             $dbdate2 = strtotime($mail["fecha_emision"]);
                             $datesend = date('Y-m-d',$dbdate2);
-                            $attach=null;
                             $mensaje = "";
                             if($to["team"]=="ALUMNO"){
                                 $mensaje = str_replace("@apoderado",$to["name"],$mail["mensaje"]);
