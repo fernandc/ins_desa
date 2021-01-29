@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class MailStructure extends Mailable
 {
@@ -17,7 +18,7 @@ class MailStructure extends Mailable
 
     //public $replyTo = [];
 
-    //public $attachments = [];
+    public $archivos = [];
 
     public $color = "";
 
@@ -31,7 +32,7 @@ class MailStructure extends Mailable
         $this->subject = $titulo;
         $this->msg = $mensaje;
         //$this->replyTo = [$responder];
-        //$this->attachments = $archivos;
+        $this->archivos = $archivos;
         $this->color = $color;
     }
 
@@ -42,6 +43,9 @@ class MailStructure extends Mailable
      */
     public function build()
     {
+        foreach ($this->archivos as $archivo) {
+            $this->attach(Storage::gets($archivo));
+        }
         return $this->view('Plantilla_Mail.mail')->with("body",$this->msg)->with("head",$this->subject)->with("color",$this->color);
     }
 }
