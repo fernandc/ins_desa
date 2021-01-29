@@ -59,7 +59,7 @@
                                            &nbsp; 
                                         </div>
                                         <div id="m_942692651051247032heroBodyf3f89143-341d-45c7-9d67-fe31f4551152">
-                                           <p>{{$body}}</p>
+                                           <p style="white-space: pre;">{{$body}}</p>
                                         </div>
                                      </div>
                                   </td>
