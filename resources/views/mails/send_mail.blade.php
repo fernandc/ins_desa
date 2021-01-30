@@ -37,8 +37,8 @@ Enviar correo
         <h2 style="text-align: center;" id="result">
             Enviar Correos
         </h2>
+        <hr>
     </div>
-    <hr>
 
     <form class="row" id="formSendMails" >
         <div class="col-md-4">

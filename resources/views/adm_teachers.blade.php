@@ -22,12 +22,12 @@ const Toast = Swal.mixin({
 
 @section("context")
 <div class="container">
-    <br>
     <h2 style="text-align: center;">Administrar Profesores 
             @if(Session::has('period'))
                 {{Session::get('period')}}
             @endif
     </h2>
+    <hr>
     @if(isset($message))
         <script>
             Swal.fire({

@@ -7,7 +7,6 @@ Inicio
 @endsection
 
 @section("headex")
-<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 @endsection
 
 @section("context")
@@ -122,111 +121,101 @@ Inicio
     enviados_Y_M.push(env_year);
     enviados_Y_M.push(env_month);
 </script>
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
-    </head>
 
-    <body>
-        <hr>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5 style="text-align: center">Correos Enviados Este Més </h5>
-                    <hr>
-                    <canvas id="myChart1" width="200px" height="200px"></canvas>    
-                </div>                              
-                <div class="col-md-8">
-                    <h5 style="text-align: center">Correos Enviados y Leídos Periodo 
-                        @if(Session::has('period'))
-                            {{Session::get('period')}}
-                        @endif
-                    </h5>
-                    <hr>
-                    <canvas id="myChart2" width="auto" height="auto"></canvas>    
-                </div>                              
-            </div>
-        </div>
-    </body>
-    <script>
-        var ctx= document.getElementById("myChart1").getContext("2d");
-        var myChart= new Chart(ctx,{
-            type:"doughnut",
-            data:{
-                labels:['Generál' , 'Informativo','Buenas Noticias', 'Malas Noticias'],
-                datasets:[{
-                    label: 'Correos Enviados',
-                    //
-                    data:[tipos[0],tipos[1],tipos[2],tipos[3]],
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h5 style="text-align: center">Correos Enviados Este Més </h5>
+            <hr>
+            <canvas id="myChart1" width="200px" height="200px"></canvas>    
+        </div>                              
+        <div class="col-md-8">
+            <h5 style="text-align: center">Correos Enviados y Leídos Periodo 
+                @if(Session::has('period'))
+                    {{Session::get('period')}}
+                @endif
+            </h5>
+            <hr>
+            <canvas id="myChart2" width="auto" height="auto"></canvas>    
+        </div>                              
+    </div>
+</div>
+<script>
+    var ctx= document.getElementById("myChart1").getContext("2d");
+    var myChart= new Chart(ctx,{
+        type:"doughnut",
+        data:{
+            labels:['General' , 'Informativo','Buenas Noticias', 'Malas Noticias'],
+            datasets:[{
+                label: 'Correos Enviados',
+                //
+                data:[tipos[0],tipos[1],tipos[2],tipos[3]],
+                backgroundColor:[
+                    "rgb(0, 123, 255)",
+                    "rgb(40, 167, 69)",
+                    "rgb(23, 162, 184)",
+                    "rgb(224, 82, 96)"
+                ]
+            }]
+        },
+    });
+</script>
+
+<script>
+    var ctx= document.getElementById("myChart2").getContext("2d");
+    var myChart= new Chart(ctx,{
+        type:"bar",
+        data:{
+            labels:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Juilo','Agosto','Septiembre','Noviembre','Diciembre'],
+            datasets:[{
+                label: 'Correos Enviados',
+                data:[envMes[0][0],envMes[1][0],envMes[2][0],envMes[3][0],envMes[4][0],envMes[5][0],envMes[6][0],envMes[7][0],envMes[8][0],envMes[9][0],envMes[10][0],envMes[11][0]],
+                backgroundColor:[
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}",                    
+                    "{{$colorEnviados}}"                    
+                ]
+            },{
+                label: 'Correos Leídos',
+                    data:[envMes[0][1],envMes[1][1],envMes[2][1],envMes[3][1],envMes[4][1],envMes[5][1],envMes[6][1],envMes[7][1],envMes[8][1],envMes[9][1],envMes[10][1],envMes[11][1]],
                     backgroundColor:[
-                        "rgb(0, 123, 255)",
-                        "rgb(40, 167, 69)",
-                        "rgb(23, 162, 184)",
-                        "rgb(224, 82, 96)"
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}"
                     ]
+            }],
+
+        },
+
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
                 }]
-            },
-        });
-    </script>
-
-    <script>
-        var ctx= document.getElementById("myChart2").getContext("2d");
-        var myChart= new Chart(ctx,{
-            type:"bar",
-            data:{
-                labels:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Juilo','Agosto','Septiembre','Noviembre','Diciembre'],
-                datasets:[{
-                    label: 'Correos Enviados',
-                    data:[envMes[0][0],envMes[1][0],envMes[2][0],envMes[3][0],envMes[4][0],envMes[5][0],envMes[6][0],envMes[7][0],envMes[8][0],envMes[9][0],envMes[10][0],envMes[11][0]],
-                    backgroundColor:[
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}",                    
-                        "{{$colorEnviados}}"                    
-                    ]
-                },{
-                    label: 'Correos Leídos',
-                        data:[envMes[0][1],envMes[1][1],envMes[2][1],envMes[3][1],envMes[4][1],envMes[5][1],envMes[6][1],envMes[7][1],envMes[8][1],envMes[9][1],envMes[10][1],envMes[11][1]],
-                        backgroundColor:[
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}",
-                            "{{$colorLeidos}}"
-                        ]
-                }],
-
-            },
-
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
             }
-        });
-    </script>
-</html>
+        }
+    });
+</script>
+
 
 @endsection

@@ -12,9 +12,8 @@ Administrar Usuarios
 
 @section("context")
     <div class="container">
-        <br>
         <h2 style="text-align: center;">Administrar Usuarios</h2>
-        <br>
+        <hr>
         <button class="btn btn-success " type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Agregar nuevo usuario</button>
         <br>
         <div class="collapse mt-2" id="collapseExample">

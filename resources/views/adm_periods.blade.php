@@ -13,7 +13,6 @@ Administrar Periodos
 @endsection
 
 @section("context")
-    <hr>
     @if(isset($message))
         <script>
             Swal.fire({
@@ -24,9 +23,8 @@ Administrar Periodos
         </script>
     @endif
     <div class="container">
-        <br>
         <h2 style="text-align: center;">Administrar Periodos</h2>
-        <br>
+        <hr>
         <form action="add_new_period" method="GET">
             <div class="form-row">
                 <div class="col-3">

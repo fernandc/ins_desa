@@ -25,7 +25,6 @@ const Toast = Swal.mixin({
 @section("context")
 
 <div class="container">
-    <br>
     <h2 style="text-align: center;" id="temp1">Administrar Estudiantes 
             @if(Session::has('period'))
                 {{Session::get('period')}}
@@ -40,7 +39,7 @@ const Toast = Swal.mixin({
                 })
         </script>
     @endif
-    <br>
+    <hr>
     <!-- <button class="btn btn-primary btn-sm ">Administrador de Matrículas</button> -->
     <a target="_blank" href="https://www.scc.cloupping.com/admin" class="btn btn-primary btn-sm">Proceso de Matrículas</a>
     <ul class="nav nav-tabs my-3 justify-content-center">

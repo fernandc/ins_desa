@@ -13,13 +13,12 @@ Administrar Estudiantes
 
 @section("context")
 <div class="container">
-        <br>
         <h2 style="text-align: center;">Administrar Cursos 
             @if(Session::has('period'))
                 {{Session::get('period')}}
             @endif            
         </h2>
-        <br>
+        <hr>
         <button class="btn btn-success " type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Agregar Curso</button>
         <br>
         @php

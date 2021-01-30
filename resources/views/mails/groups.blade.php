@@ -29,8 +29,8 @@ const Toast = Swal.mixin({
 @endsection
 
 @section("context")
-<br>
-<h5 class="card-title m-3" >Grupos</h5>
+<h3 class="card-title m-3" style="text-align:center">Grupos</h3>
+<hr>
 <div class="row" style="margin:0;">
   <div class="col-3">
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">

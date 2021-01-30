@@ -108,8 +108,7 @@ if(Session::has('period')){
                 </form>
             </div>
         </nav>
-        <div>
-        </div>
+        <hr>
         @yield("context")
     </body>
 </html>
