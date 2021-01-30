@@ -139,6 +139,7 @@ class schedulerSendMail extends Command
                             'method' => 'update_all_sended',
                             'data' => ['id_mail' => $mail["id_mail"]]
                         );
+                        Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
                     }
                 }
             }
