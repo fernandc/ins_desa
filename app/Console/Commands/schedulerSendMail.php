@@ -48,7 +48,7 @@ class schedulerSendMail extends Command
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => 'mails_sended'
+            'method' => 'mails_sended_load'
         );
         $response1 = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $mails = json_decode($response1->body(), true);
@@ -77,13 +77,14 @@ class schedulerSendMail extends Command
                 $response2 = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
                 $recipents = json_decode($response2->body(), true);
                 if(isset($recipents)){
-                    foreach ($recipents as $to ) {
+                    $totales = 0;
+                    $enviados = 0;
+                    foreach ($recipents as $to) {
+                        $totales++;
+                        if ($to["send_status"]=="ENVIADO") {
+                            $enviados++;
+                        }
                         if ($to["send_status"]=="CARGANDO"){
-                            $datecomp = null;
-                            if(isset($to["fecha_para"])){
-                                $dbdate = strtotime($mail["fecha_para"]);
-                                $datecomp = date('Y-m-d H:i:s',$dbdate);
-                            }
                             $dbdate2 = strtotime($mail["fecha_emision"]);
                             $datesend = date('Y-m-d',$dbdate2);
                             $mensaje = "";
@@ -116,12 +117,9 @@ class schedulerSendMail extends Command
                             //flag
                             $flag = false;
                             date_default_timezone_set("America/Santiago");
-                            if ($datecomp == null) {
-                                $flag = true;
+                            if ($mail["envio"] == "SEND") {
                                 Mail::to($to["email"])->queue(new MailStructure($mail["titulo"],$mensaje,[$mail["email_staff"],$mail["nombre_staff"]],$attach,$color,$params));
-                            }elseif(date("Y-m-d H:i:s") >= $datecomp){
                                 $flag = true;
-                                Mail::to($to["email"])->queue(new MailStructure($mail["titulo"],$mensaje,[$mail["email_staff"],$mail["nombre_staff"]],$attach,$color,$params));
                             }
                             if($flag){
                                 $arr = array(
@@ -133,6 +131,14 @@ class schedulerSendMail extends Command
                                 Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
                             }
                         }
+                    }
+                    if ($totales==$enviados) {
+                        $arr = array(
+                            'institution' => getenv("APP_NAME"),
+                            'public_key' => getenv("APP_PUBLIC_KEY"),
+                            'method' => 'update_all_sended',
+                            'data' => ['id_mail' => $mail["id_mail"]]
+                        );
                     }
                 }
             }
