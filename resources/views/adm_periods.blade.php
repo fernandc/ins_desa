@@ -55,9 +55,9 @@ Administrar Periodos
                         <td>45658</td>
                         <td>
                             @if($row["status"] == 1)
-                                <a href="/change_period?year={{$row["year"]}}" class="btn btn-primary btn-sm">Activado</a>    
+                                <a href="change_period?year={{$row["year"]}}" class="btn btn-primary btn-sm">Activado</a>    
                             @else
-                                <a href="/change_period?year={{$row["year"]}}" class="btn btn-secondary btn-sm">Desactivado</a>
+                                <a href="change_period?year={{$row["year"]}}" class="btn btn-secondary btn-sm">Desactivado</a>
                             @endif
                         </td>
                     </tr>                

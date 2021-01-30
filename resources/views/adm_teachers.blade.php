@@ -34,7 +34,7 @@ const Toast = Swal.mixin({
                 icon: 'error',
                 title: 'Oops...',
                 text: '{{$message}}',
-                })
+            })
         </script>
     @endif
     
@@ -98,11 +98,12 @@ const Toast = Swal.mixin({
                                 @endforeach
                             </select>
                             <script>
+                                //var table = $('#list_teachers').DataTable();
                                 $("#select{{$id_staff}}").change(function(){
                                     Toast.fire({
-                                                icon: 'info',
-                                                title: 'Cargando'
-                                            })
+                                        icon: 'info',
+                                        title: 'Cargando'
+                                    })
                                     var id_curso = $(this).val();
                                     $.ajax({
                                         type: "GET",
@@ -113,6 +114,8 @@ const Toast = Swal.mixin({
                                         },
                                         success: function (data)
                                         {
+                                            //table.draw();
+                                            //$("#select").html(data);
                                             Toast.fire({
                                                 icon: 'success',
                                                 title: 'Completado'

@@ -51,6 +51,7 @@ $(".input-trigger").click(function(){
         icon: 'info',
         title: 'Cargando',
         showConfirmButton: false,
+        timer: 3000,
     });
     var id_curso = $(this).attr('datac');
     var id_materia = $(this).attr('datam');

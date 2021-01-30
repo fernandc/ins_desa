@@ -12,12 +12,22 @@ Administrar Estudiantes
 @endsection
 
 @section("context")
+
 <div class="container">
         <h2 style="text-align: center;">Administrar Cursos 
             @if(Session::has('period'))
                 {{Session::get('period')}}
             @endif            
         </h2>
+        @if(isset($message))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{$message}}',
+                    })
+            </script>
+        @endif
         <hr>
         <button class="btn btn-success " type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Agregar Curso</button>
         <br>
@@ -91,7 +101,7 @@ Administrar Estudiantes
                             icon: 'error',
                             title: 'Oops...',
                             text: 'Seleccione campos faltantes.',
-                            })
+                        })
                     }
                 });
             </script>

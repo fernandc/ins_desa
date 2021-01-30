@@ -132,7 +132,12 @@ class App_Controller extends Controller {
                 'data' => ['grade_id' => $gets["grade_id"],'section' => $gets["letter"]]
             );
             $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-            return back();
+            if($response->status() == 400){
+                return redirect('adm_courses')->with('message', 'Este curso ya existe!'); 
+            }
+            else{
+                return back();
+            }
         }
         else{
             return ('/');
@@ -237,20 +242,25 @@ class App_Controller extends Controller {
     public function add_subject(Request $request){
         if($this->isAdmin()){
             $gets = $request->input();
-            $arr = array(
-                'institution' => getenv("APP_NAME"),
-                'public_key' => getenv("APP_PUBLIC_KEY"),
-                'method' => 'add_matter',
-                'data' => ['id' => $gets["idMateria"]]
-            );
-            //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-            $data = json_decode($response->body(), true);
-            if($response->status()==400){
-                return redirect('adm_subject')->with('message', 'Esta asignatura ya existe!');
-            }  
-            //dd($data);
-            return back();
+            if($gets["idMateria"] > 0 ){
+                $arr = array(
+                    'institution' => getenv("APP_NAME"),
+                    'public_key' => getenv("APP_PUBLIC_KEY"),
+                    'method' => 'add_matter',
+                    'data' => ['id' => $gets["idMateria"]]
+                );
+                //dd($arr);
+                $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                $data = json_decode($response->body(), true);
+                if($response->status()==400){
+                    return redirect('adm_subject')->with('message', 'Esta asignatura ya existe!');
+                }  
+                //dd($data);
+                return back();
+            }
+            else{
+                return redirect('adm_subject')->with('message', 'Asignatura no encontrada!');
+            }
         }
         else{
             return ('/');
