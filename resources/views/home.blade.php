@@ -132,7 +132,7 @@ Inicio
             <canvas id="myChart1" width="200px" height="200px"></canvas>    
         </div>                              
         <div class="col-md-8">
-            <h5 style="text-align: center">Correos Enviados y Leídos Periodo 
+            <h5 style="text-align: center">Cantidad de Destinatarios y Leídos Periodo 
                 @if(Session::has('period'))
                     {{Session::get('period')}}
                 @endif
