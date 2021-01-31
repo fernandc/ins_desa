@@ -45,8 +45,6 @@ const Toast = Swal.mixin({
                     <th scope="col">Rut</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Jefatura</th>
-                    <th scope="col">Cursos</th>
-                    <th scope="col">Asignaturas</th>
                     <th scope="col">Clases</th>
                 </tr>
             </thead>
@@ -56,14 +54,6 @@ const Toast = Swal.mixin({
                         $cursos = 0;
                         $asignaturas = 0;
                     @endphp
-                    @foreach ($cclass as $item)
-                        @if ($row["dni"] == $item["dni_staff"])
-                            @php
-                                $cursos = $item["cursos"];
-                                $asignaturas = $item["asignaturas"];
-                            @endphp
-                        @endif
-                    @endforeach
                     <?php $id_staff = str_replace([".","-"], "", $row["dni"]);?>
                     <tr>
                         <td>{{$row["dni"]}}</td>
@@ -71,39 +61,22 @@ const Toast = Swal.mixin({
                         <td>
                             <select name="select" class="form-control" id="select{{$id_staff}}">
                                 <option value="0">Seleccionar...</option>
-                                @php
-                                    $arr = array();
-                                @endphp
                                 @foreach($grades as $row2)
                                     @if($row["full_name"] == $row2["profesor"] )
                                         <option selected value="{{$row2["id"]}}" >{{$row2["nombre_curso"]}} - {{$row2["seccion"]}}</option>
-                                        @php
-                                            array_push($arr,$row2["profesor"])
-                                        @endphp
                                     @else
-                                        @php
-                                            $flag = true;
-                                        @endphp
-                                        @foreach($staff as $row3)
-                                            @if($row3["full_name"] == $row2["profesor"])
-                                                @php
-                                                    $flag = false;
-                                                @endphp 
-                                            @endif
-                                        @endforeach                                        
-                                        @if($flag)
-                                            <option value="{{$row2["id"]}}" >{{$row2["nombre_curso"]}} - {{$row2["seccion"]}}</option>
-                                        @endif    
+                                        <option value="{{$row2["id"]}}" >{{$row2["nombre_curso"]}} - {{$row2["seccion"]}}</option>  
                                     @endif
                                 @endforeach
                             </select>
                             <script>
                                 //var table = $('#list_teachers').DataTable();
                                 $("#select{{$id_staff}}").change(function(){
-                                    Toast.fire({
+                                    Swal.fire({
                                         icon: 'info',
-                                        title: 'Cargando'
-                                    })
+                                        title: 'Cargando',
+                                        showConfirmButton: false,
+                                    });
                                     var id_curso = $(this).val();
                                     $.ajax({
                                         type: "GET",
@@ -114,19 +87,12 @@ const Toast = Swal.mixin({
                                         },
                                         success: function (data)
                                         {
-                                            //table.draw();
-                                            //$("#select").html(data);
-                                            Toast.fire({
-                                                icon: 'success',
-                                                title: 'Completado'
-                                            })
+                                            location.reload(true);
                                         }
                                     });
                                 })
                             </script>
                         </td> 
-                        <td>{{$cursos}}</td>
-                        <td>{{$asignaturas}}</td>
                         <td>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" id="modalAsignatura{{$id_staff}}">Administrar</button>                           
                             <script>

@@ -5,7 +5,7 @@ Seguimiento
 @endsection
 
 @section("headex")
-
+  
 @endsection
 
 @section("context")
@@ -18,8 +18,8 @@ Seguimiento
               <tr>
                   <th scope="col">Fecha</th>
                   <th scope="col">Asunto</th>
-                  <th scope="col"><i class="fas fa-paper-plane"></i></th>
-                  <th scope="col"><i class="fas fa-glasses"></i></th>
+                  <th scope="col"><i class="fas fa-paper-plane tooltip-info" data-toggle="tooltip" data-placement="top" title="Cantidad de destinatarios"></i></th>
+                  <th scope="col"><i class="fas fa-glasses tooltip-info" data-toggle="tooltip" data-placement="top" title="Cantidad de correos leídos"></i></th>
                   <th scope="col">Seguimiento</th>
               </tr>
           </thead>
@@ -29,7 +29,7 @@ Seguimiento
                       <tr>
                           <td>
                               @if(isset($row["fecha_para"]))
-                                  {{$row["fecha_para"]}} <span class="badge badge-warning">P</span>
+                                  {{$row["fecha_para"]}} <span class="badge badge-warning tooltip-info" data-toggle="tooltip" data-placement="top" title="Correo Programado">P</span>
                               @else
                                   {{$row["fecha_emision"]}}    
                               @endif
@@ -132,7 +132,9 @@ Seguimiento
     </div>
 </div>
 <script>
+  
   $(document).ready( function () {
+    $('.tooltip-info').tooltip();
       $('#tableSentMails').DataTable({
               order: [],
               language: {

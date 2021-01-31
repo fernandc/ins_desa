@@ -47,46 +47,46 @@ const Toast = Swal.mixin({
             <a class="nav-link" data="0" href="adm_students">Todos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="1" href="adm_students/?curso=1">PK</a>
+            <a class="nav-link" data="1" href="adm_students?curso=1">PK</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="2" href="adm_students/?curso=2">KI</a>
+            <a class="nav-link" data="2" href="adm_students?curso=2">KI</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="3" href="adm_students/?curso=3">1B</a>
+            <a class="nav-link" data="3" href="adm_students?curso=3">1B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="4" href="adm_students/?curso=4">2B</a>
+            <a class="nav-link" data="4" href="adm_students?curso=4">2B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="5" href="adm_students/?curso=5">3B</a>
+            <a class="nav-link" data="5" href="adm_students?curso=5">3B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="6" href="adm_students/?curso=6">4B</a>
+            <a class="nav-link" data="6" href="adm_students?curso=6">4B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="7" href="adm_students/?curso=7">5B</a>
+            <a class="nav-link" data="7" href="adm_students?curso=7">5B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="8" href="adm_students/?curso=8">6B</a>
+            <a class="nav-link" data="8" href="adm_students?curso=8">6B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="9" href="adm_students/?curso=9">7B</a>
+            <a class="nav-link" data="9" href="adm_students?curso=9">7B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="10" href="adm_students/?curso=10">8B</a>
+            <a class="nav-link" data="10" href="adm_students?curso=10">8B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="11" href="adm_students/?curso=11">1M</a>
+            <a class="nav-link" data="11" href="adm_students?curso=11">1M</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="12" href="adm_students/?curso=12">2M</a>
+            <a class="nav-link" data="12" href="adm_students?curso=12">2M</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="13" href="adm_students/?curso=13">3M</a>
+            <a class="nav-link" data="13" href="adm_students?curso=13">3M</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="14" href="adm_students/?curso=14">4M</a>
+            <a class="nav-link" data="14" href="adm_students?curso=14">4M</a>
         </li>
         @php
             $active = 0;
@@ -163,7 +163,7 @@ const Toast = Swal.mixin({
                                     var val_sel = $(this).val();
                                     $.ajax({
                                         type: "GET",
-                                        url: "/change_student_section",
+                                        url: "change_student_section",
                                         data:{
                                             id_stu: '{{$row["id_stu"]}}',
                                             id_curso: '{{$row["id_curso"]}}',
@@ -211,7 +211,7 @@ const Toast = Swal.mixin({
                                             $("#inputCP{{$row["id_stu"]}}").addClass('is-valid');
                                             $.ajax({
                                                 type: "GET",
-                                                url: "/change_student_CP",
+                                                url: "change_student_CP",
                                                 data:{
                                                     id_stu: '{{$row["id_stu"]}}',
                                                     id_curso:'{{$row["id_curso"]}}',
@@ -263,7 +263,7 @@ const Toast = Swal.mixin({
                                         })
                                         $.ajax({
                                             type: "GET",
-                                            url: "/student_activate",
+                                            url: "student_activate",
                                             data:{
                                                 id_stu: '{{$row["id_stu"]}}',
                                                 id_matricula: '{{$row["id_matricula"]}}'  

@@ -63,9 +63,9 @@ class View_System extends Controller {
                     if($this->isAdmin()){
                         $staff = $this->staff();
                         $grades = $this->grades();
-                        $cclass = $this->contarCursosYAsignaturas($staff);
+                        //cclass = $this->contarCursosYAsignaturas($staff);
                         //dd($cclass);
-                        return view('adm_teachers')->with("staff",$staff)->with("grades",$grades)->with("message",$message)->with("cclass",$cclass);
+                        return view('adm_teachers')->with("staff",$staff)->with("grades",$grades)->with("message",$message);//->with("cclass",$cclass);
                     }else{
                         return redirect('');
                     }
