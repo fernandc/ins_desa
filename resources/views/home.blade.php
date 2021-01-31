@@ -29,7 +29,7 @@ Inicio
     var tipo = "";
     //var year = "", month = "";
     @foreach($info_mails as $datos)
-        @if($datos["dni_staff"] == Session::get("account")["dni"] || Session::get("account")["is_admin"] == "YES")
+        @if(Session::get("account")["is_admin"] == "YES" || $datos["dni_staff"] == Session::get("account")["dni"])
             @if(isset($datos["fecha_para"]))
                 enviados = "{{$datos["fecha_para"]}}";
                 enviados = enviados.split("-");
@@ -154,8 +154,8 @@ Inicio
                 data:[tipos[0],tipos[1],tipos[2],tipos[3]],
                 backgroundColor:[
                     "rgb(0, 123, 255)",
-                    "rgb(40, 167, 69)",
                     "rgb(23, 162, 184)",
+                    "rgb(40, 167, 69)",
                     "rgb(224, 82, 96)"
                 ]
             }]
