@@ -558,5 +558,20 @@ class App_Controller extends Controller {
         $data = json_decode($response->body(), true); 
         //dd($data);
         return $response->body();
+        
+    }
+    public function eliminar_correo(Request $request){
+        $gets = $request->input();
+        $dni = Session::get('account')['dni'];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => '',
+            'data' => ['dni' =>$dni, 'id_mail' => $gets["id_mail"]]
+        );
+        dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        
     }
 }

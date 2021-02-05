@@ -40,6 +40,7 @@ Route::get('/change_student_section', [App_Controller::class, 'change_student_se
 Route::post('/send_mail_info', [App_Controller::class, 'send_mail_info']);
 Route::get('/change_student_CP', [App_Controller::class, 'change_student_CP']);
 Route::get('/del_group', [App_Controller::class, 'del_group']);
+Route::get('/eliminar_correo', [App_Controller::class, 'eliminar_correo']);
 Route::get('/logout', [App_Controller::class, 'logout']);
 Route::get('/g-response',[Google_api::class, 'user_data']);
 Route::get('/modal_asignatura', [View_System::class, 'modal_asignatura']);
