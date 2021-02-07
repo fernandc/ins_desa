@@ -122,14 +122,6 @@ Seguimiento
                                           const MILLISECONDS_OF_A_MINUTE = MILLISECONDS_OF_A_SECOND * 60;
                                           const MILLISECONDS_OF_A_HOUR = MILLISECONDS_OF_A_MINUTE * 60;
                                           const MILLISECONDS_OF_A_DAY = MILLISECONDS_OF_A_HOUR * 24
-                                  
-                                          //===
-                                          // FUNCTIONS
-                                          //===
-                                  
-                                          /**
-                                          * Method that updates the countdown and the sample
-                                          */
                                           function updateCountdown() {
                                             // Calcs
                                             const NOW = new Date();
@@ -138,8 +130,6 @@ Seguimiento
                                             const REMAINING_HOURS = Math.floor((DURATION % MILLISECONDS_OF_A_DAY) / MILLISECONDS_OF_A_HOUR);
                                             const REMAINING_MINUTES = Math.floor((DURATION % MILLISECONDS_OF_A_HOUR) / MILLISECONDS_OF_A_MINUTE);
                                             const REMAINING_SECONDS = Math.floor((DURATION % MILLISECONDS_OF_A_MINUTE) / MILLISECONDS_OF_A_SECOND);
-                                            // Thanks Pablo Monteserín (https://pablomonteserin.com/cuenta-regresiva/)
-                                
                                             // Render
                                             SPAN_DAYS.textContent = REMAINING_DAYS;
                                             SPAN_HOURS.textContent = REMAINING_HOURS;
@@ -161,22 +151,10 @@ Seguimiento
                                                 
                                         });
                                       @endif
-                                      function val_date(id){
-                                        $.ajax({
-                                                type: "GET",
-                                                url: "eliminar_correo",
-                                                data:{
-                                                  id_mail: id
-                                                },
-                                                success: function (data)
-                                                {                                                                                          
-                                                  $("#result").html(data);                                            
-                                                }
-                                          });
-                                      }
+                                      
                                     </script>
                                     {{-- script --}}
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" id="btnCerrarModal{{$row["id_mail"]}}" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                   </div>
                                 </div>
                               </div>
@@ -212,6 +190,26 @@ Seguimiento
                       </tr> 
                   @endif  
               @endforeach
+              <script>
+                function val_date(id){
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Cargando',
+                    showConfirmButton: false                  
+                    })
+                  $.ajax({
+                          type: "GET",
+                          url: "eliminar_correo",
+                          data:{
+                            id_mail: id
+                          },
+                          success: function (data)
+                          {                                                                                            
+                            location.reload();                                                                                          
+                          }
+                    });
+                }
+              </script>
               <!-- Modal -->
               <div class="modal fade" id="exampleModalCenterTracing" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTracingTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
