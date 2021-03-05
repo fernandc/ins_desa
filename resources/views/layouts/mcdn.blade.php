@@ -19,8 +19,11 @@ if(Session::has('period')){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--DATATABLES-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css" integrity="sha512-PT0RvABaDhDQugEbpNMwgYBCnGCiTZMh9yOzUsJHDgl/dMhD9yjHAwoumnUk3JydV3QTcIkNDuN40CJxik5+WQ==" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.jqueryui.min.css" integrity="sha512-x2AeaPQ8YOMtmWeicVYULhggwMf73vuodGL7GwzRyrPDjOUSABKU7Rw9c3WNFRua9/BvX/ED1IK3VTSsISF6TQ==" crossorigin="anonymous" />	
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
         <!-- PUSHER -->
         <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
@@ -72,21 +75,29 @@ if(Session::has('period')){
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="home">Inicio</a>
+                        <a class="nav-link active" href="home">Inicio</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a  class="nav-link dropdown-toggle" href="#" id="navbarDropdownCorreo" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Correos</a>
+                        <a  class="nav-link active dropdown-toggle" href="#" id="navbarDropdownCorreo" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Correos</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownCorreo">
                             <a class="dropdown-item" href="mail_send_mail">Enviar Correo</a>
                             <a class="dropdown-item" href="mail_sent_and_tracing_mails">Correos Enviados y Seguimiento</a>
                             <a class="dropdown-item" href="mail_groups">Grupos</a>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="inscriptions">Alumnos Inscritos y Pendientes</a>
+                    </li>
                     @if(Session::get('account')["is_admin"]=="YES")
-                    <li class="nav-item dropdown">
+						<li class="nav-item active">
+							<a class="nav-link" href="noticias">Comunicaciones</a>
+						</li>
+					@endif
+                    @if(Session::get('account')["is_admin"]=="YES")
+                    <li class="nav-item active dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Administrar
-                        </a>        
+                        </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="adm_periods">Periodos</a>
                             <a class="dropdown-item" href="adm_users">Usuarios</a>
@@ -98,8 +109,7 @@ if(Session::has('period')){
                     </li>
                     @endif
                 </ul>
-                <!-- -->
-                <a class="btn btn-light mr-2" >    <!--nombre foto perfil -->
+                <a class="btn btn-light mr-2" >
                     <img class="rounded-circle" src="{{ Session::get('account')["url_img"]}}" rel="Profile" height="22px" style="margin-top: -6px;margin-left: -4px;margin-right: 2px;">
                     {{ Session::get('account')["full_name"]}}
                 </a> 

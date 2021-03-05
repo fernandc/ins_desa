@@ -70,6 +70,29 @@ class App_Controller extends Controller {
             return redirect('/');
         }
     }
+    public function new_new(Request $request){
+        if($this->isAdmin()){
+            $gets = $request->input();
+            $dni = Session::get('account')['dni'];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'new_new',
+                'data' => [
+                    'dni' => $dni,
+                    'title' => $gets["title"],
+                    'subtitle' => $gets["subtitle"],
+                    'body' => $gets["body"],
+                    'url' => $gets["url"],
+                    'textlink' => $gets["textlink"]
+                ]);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            return back();
+        }
+        else{
+            return redirect('/');
+        }
+    }
     public function change_staff_status(Request $request){
         if($this->isAdmin()){
             $gets = $request->input();

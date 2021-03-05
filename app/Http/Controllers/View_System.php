@@ -98,13 +98,59 @@ class View_System extends Controller {
                     }
                     $excCourses= array_unique($excCourses);
                     //dd($excCourses+$list_to);
-                    return view('mails/send_mail')->with("lista_para",$list_to)->with("cursos",$excCourses);                    
+                    return view('mails/send_mail')->with("lista_para",$list_to)->with("cursos",$excCourses);    
+                case "noticias":            
+                    if($this->isAdmin()){
+                        $noticias = $this->listar_noticias();
+                        return view('adm_news')->with("news",$noticias)->with("message",$message);
+                    }else{
+                        return redirect('');
+                    }
+                case "iframe_news":
+                    header('Access-Control-Allow-Origin: https://saintcharlescollege.cl/wp/comunicaciones-2021/'); 
+                    $noticias = $this->listar_noticias();
+                    return view('iframe_news')->with("news",$noticias)->with("message",$message);
+                case "inscriptions":
+                    $curso = 0;
+                    if(isset($gets['curso'])){
+                        $curso = $gets['curso'];
+                    }
+                    $students = $this->inscriptions($curso);
+                    return view('inscriptions')->with("students",$students)->with("message",$message);
                 default:
                 return view('not_found')->with("path",$path);
             }
         }else{
+            if($path == "iframe_news"){
+                header('Access-Control-Allow-Origin: https://saintcharlescollege.cl/wp/comunicaciones-2021/'); 
+                $noticias = $this->listar_noticias();
+                return view('iframe_news')->with("news",$noticias)->with("message",$message);
+            }
             return redirect('/logout');
         }
+    }
+    private function inscriptions($id_curso){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'inscriptions',
+            'data' => [ "id_curso" => $id_curso ]
+        );
+        //dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return $data;
+    }
+    private function listar_noticias(){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'list_news'
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return $data;       
     }
     private function valSession(){
         if (Session::has('account')){
