@@ -111,12 +111,16 @@ class View_System extends Controller {
                     $noticias = $this->listar_noticias();
                     return view('iframe_news')->with("news",$noticias)->with("message",$message);
                 case "inscriptions":
-                    $curso = 0;
-                    if(isset($gets['curso'])){
-                        $curso = $gets['curso'];
+                    if($this->isAdmin()){
+                        $curso = 0;
+                        if(isset($gets['curso'])){
+                            $curso = $gets['curso'];
+                        }
+                        $students = $this->inscriptions($curso);
+                        return view('inscriptions')->with("students",$students)->with("message",$message);
+                    }else{
+                        return redirect('');
                     }
-                    $students = $this->inscriptions($curso);
-                    return view('inscriptions')->with("students",$students)->with("message",$message);
                 default:
                 return view('not_found')->with("path",$path);
             }

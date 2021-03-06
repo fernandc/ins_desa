@@ -45,7 +45,16 @@
             @foreach ($news as $new)
             <div class="card bg-light mt-2" >
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted" style="text-align: right;">{{$new["date_in"]}}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted" style="text-align: right;">
+                        @if ($new["diff"] == 0)
+                        <span class="badge badge-success">HOY</span>
+                        @elseif($new["diff"] == 1)
+                        <span class="badge badge-primary">AYER</span>
+                        @else
+                        <span class="badge badge-secondary">Hace {{$new["diff"]}} días</span>
+                        @endif
+                        {{$new["date_in"]}}
+                    </h6>
                     <h5 class="card-title">{{$new["title"]}}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{$new["subtitle"]}}</h6>
                     <p class="card-text" style="white-space: pre-wrap;max-height: 190px;overflow-y: auto;">{{$new["body"]}}</p>
