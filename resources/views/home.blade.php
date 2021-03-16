@@ -15,7 +15,7 @@ Inicio
 <script>
     @php
         $colorEnviados = "rgb(25, 128, 209 )";
-        $colorLeidos = "rgb(86, 203, 31)";
+        $colorLeidos = "rgb(121, 223, 73)";
     @endphp
     var enviados;
     var env_year = 0;
@@ -30,6 +30,7 @@ Inicio
     //var year = "", month = "";
 	@if(isset($info_mails))
 		@foreach($info_mails as $datos)
+            
 			@if(Session::get("account")["is_admin"] == "YES" || $datos["dni_staff"] == Session::get("account")["dni"])
 				@if(isset($datos["fecha_para"]))
 					enviados = "{{$datos["fecha_para"]}}";
@@ -59,18 +60,18 @@ Inicio
 							@endif
 
 						}
-						if(month == 1){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM1[0] = contM1[0] + num;}
-						else if(month == 2){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM2[0] = contM2[0] + num;}
-						else if(month == 3){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM3[0] = contM3[0] + num;}
-						else if(month == 4){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM4[0] = contM4[0] + num;}
-						else if(month == 5){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM5[0] = contM5[0] + num;}
-						else if(month == 6){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM6[0] = contM6[0] + num;}
-						else if(month == 7){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM7[0] = contM7[0] + num;}
-						else if(month == 8){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM8[0] = contM8[0] + num;}
-						else if(month == 9){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM9[0] = contM9[0] + num;}
-						else if(month == 10){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM10[0] = contM10[0] + num;}
-						else if(month == 11){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM11[0] = contM11[0] + num;}
-						else if(month == 12){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM12[0] = contM12[0] + num;}
+						if(month == 1){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM1[0] = contM1[0] + num;contM1[1] = contM1[1] + num2;}
+						else if(month == 2){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM2[0] = contM2[0] + num;contM2[1] = contM2[1] + num2;}
+						else if(month == 3){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM3[0] = contM3[0] + num;contM3[1] = contM3[1] + num2;}
+						else if(month == 4){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM4[0] = contM4[0] + num;contM4[1] = contM4[1] + num2;}
+						else if(month == 5){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM5[0] = contM5[0] + num;contM5[1] = contM5[1] + num2;}
+						else if(month == 6){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM6[0] = contM6[0] + num;contM6[1] = contM6[1] + num2;}
+						else if(month == 7){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM7[0] = contM7[0] + num;contM7[1] = contM7[1] + num2;}
+						else if(month == 8){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM8[0] = contM8[0] + num;contM8[1] = contM8[1] + num2;}
+						else if(month == 9){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM9[0] = contM9[0] + num;contM9[1] = contM9[1] + num2;}
+						else if(month == 10){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM10[0] = contM10[0] + num;contM10[1] = contM10[1] + num2;}
+						else if(month == 11){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM11[0] = contM11[0] + num;contM11[1] = contM11[1] + num2;}
+						else if(month == 12){let num ="{{$datos["destinatarios"]}}";let num2 ="{{$datos["leidos"]}}";num = parseInt(num);num2 = parseInt(num2);contM12[0] = contM12[0] + num;contM12[1] = contM12[1] + num2;}
 					}
 				@else
 					enviados = "{{$datos["fecha_emision"]}}";
@@ -115,10 +116,8 @@ Inicio
 			@endif
 		@endforeach
 	@endif
-    console.log(contM1)
     var tipos = [contTypeM1,contTypeM2,contTypeM3,contTypeM4];
     var envMes = [contM1,contM2,contM3,contM4,contM5,contM6,contM7,contM8,contM9,contM10,contM11,contM12]
-    console.log(tipos);
     var enviados_Y_M = [];
     env_year = cont_y;
     env_month = cont_m;

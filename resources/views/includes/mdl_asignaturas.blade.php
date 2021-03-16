@@ -33,7 +33,6 @@
                                 <label class="custom-control-label text-success" for="cursos{{$curso["id"]}}-{{$asignatura["id_materia"]}}"></label>
                             </div>
                         </td>
-                        
                     @endforeach
                 </tr>
                 @endforeach

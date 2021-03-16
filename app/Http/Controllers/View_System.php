@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 class View_System extends Controller {
     public function main(request $request) {
-        
+        $privileges = $this->user_privileges(Session::get('account')['dni']);
         $path = $request->path();
         $gets = $request->input();
         $message = null;
@@ -107,20 +107,37 @@ class View_System extends Controller {
                         return redirect('');
                     }
                 case "iframe_news":
-                    header('Access-Control-Allow-Origin: https://saintcharlescollege.cl/wp/comunicaciones-2021/'); 
+                    header('Access-Control-Allow-Origin: https://saintcharlescollege.cl/wp/comunicaciones-2021/');
+
                     $noticias = $this->listar_noticias();
                     return view('iframe_news')->with("news",$noticias)->with("message",$message);
                 case "inscriptions":
-                    if($this->isAdmin()){
+                    $has_priv = false;
+                    foreach ($privileges as $priv) {
+                        if ($priv["id_privilege"] == 1) {
+                            $has_priv = true;
+                        }
+                    }
+                    $curso = null;
+                    if($this->isAdmin() || $has_priv){
+                        $has_priv = true;
                         $curso = 0;
                         if(isset($gets['curso'])){
                             $curso = $gets['curso'];
                         }
-                        $students = $this->inscriptions($curso);
-                        return view('inscriptions')->with("students",$students)->with("message",$message);
                     }else{
-                        return redirect('');
+                        $arr = $this->myCourses();
+                        if (count($arr)==1) {
+                            $curso = $arr[0]["id_grade"];
+                        }else{
+                            $curso = null;
+                        }
                     }
+                    if ($curso === null) {
+                        return back();
+                    }
+                    $students = $this->inscriptions($curso);
+                    return view('inscriptions')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv);
                 default:
                 return view('not_found')->with("path",$path);
             }
@@ -132,6 +149,19 @@ class View_System extends Controller {
             }
             return redirect('/logout');
         }
+    }
+    private function myCourses(){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'myCourses',
+            'data' => ['dni' => Session::get('account')['dni']]
+        );
+        //dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return $data;
     }
     private function inscriptions($id_curso){
         $arr = array(
@@ -285,6 +315,19 @@ class View_System extends Controller {
         //dd($data);
         return $data;
     }
+    public function modal_privileges(Request $request){
+        $gets = $request->input();
+        $dni = $gets["dni"];
+        $all_privileges = $this->all_privileges();
+        $user_privileges = $this->user_privileges($dni);
+        return view("includes/mdl_privileges")->with("all_privileges",$all_privileges)->with("user_privileges",$user_privileges)->with("dni",$dni);
+    }
+    public function modal_apoderados(Request $request){
+        $gets = $request->input();
+        $dni = $gets["dni"];
+        $apoderado = $this->get_apoderado_by_dni_stu($dni);
+        return view("includes/mdl_apoderado")->with("apoderado",$apoderado);
+    }
     public function modal_asignatura(Request $request){
         if(Session::get('account')['is_admin']=='YES'){
             $gets = $request->input();
@@ -299,6 +342,41 @@ class View_System extends Controller {
         else{
             return ('/');
         }
+    }
+    public function all_privileges(){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'all_privileges'
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return $data;
+    }
+    public function user_privileges($dni){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'user_privileges',
+            'data' => ['dni' => $dni]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return $data;
+    }
+    public function get_apoderado_by_dni_stu($dni){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'proxy_info',
+            'data' => ['dni' => $dni]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return $data;
     }
     // Sent Mails
     public function info_sent_mails(){

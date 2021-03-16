@@ -40,7 +40,7 @@ const Toast = Swal.mixin({
         </script>
     @endif
     <hr>
-    <!-- <button class="btn btn-primary btn-sm ">Administrador de Matrículas</button> -->
+    @if ($has_priv)
     <ul class="nav nav-tabs my-3 justify-content-center">
         <li class="nav-item">
             <a class="nav-link" data="0" href="inscriptions">Todos</a>
@@ -101,6 +101,7 @@ const Toast = Swal.mixin({
             });
         </script>
     </ul>
+    @endif
     @php $cantidad_mat = 0; @endphp
     @foreach($students as $rowM)
         @if($rowM["id_reg"] != null)
@@ -113,17 +114,24 @@ const Toast = Swal.mixin({
         <table class="table table-sm" style="text-align: center;" id="list_students">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">Registro Matricula</th>
+                    <th scope="col"># Matricula</th>
                     <th scope="col">Rut</th>
                     <th scope="col">Nombre Completo</th>
                     <th scope="col">Curso</th>
                     <th scope="col">Estado</th>
+                    <th scope="col">Apoderado</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($students as $row)
                 <tr>
-                        <td>{{$row["reg_mat"]}} </td>
+                        <td>
+                            @if ($row["reg_mat"] == 0)
+                                <span class="text-danger">Sin # Matricula</span>
+                            @else
+                                <span class="text-primary">{{$row["reg_mat"]}}</span>
+                            @endif
+                        </td>
                         <td>{{$row["dni"]}} </td>
                         <td>{{$row["full_name"]}} </td>
                         <td>{{$row["curso"]}}</td>
@@ -134,16 +142,53 @@ const Toast = Swal.mixin({
                             <span class="badge badge-danger">No Completado</span>
                             @endif
                         </td>
+                        <td>
+                            @if ($row["id_reg"] != null)
+                            <button class="btn btn-outline-secondary btn-sm data-apo" data="{{$row["dni"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Apoderado</button>
+                            @endif
+                        </td>
                     </tr>             
                 @endforeach                      
             </tbody>
         </table>
+        <script>
+            $(".data-apo").click(function(){
+                var dni = $(this).attr('data');
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Cargando',
+                    showConfirmButton: false,
+                })
+                $.ajax({
+                    type: "GET",
+                    url: "modal_apoderados",
+                    data:{
+                        dni
+                    },
+                    success: function (data)
+                    {
+                        $("#modalContent").html(data);
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Completado'
+                        })
+                    }
+                });
+            });
+        </script>
+        <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" >
+                <div class="modal-content" id="modalContent">
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         $(document).ready( function () {
             $('#list_students').DataTable({
-                    dom: 'Bfrtip',
-                    //order: [],
+                    "ordering": true,
+                    "order": [],
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
                     language: {
                         "decimal": "",
                         "emptyTable": "No hay información",
@@ -163,10 +208,7 @@ const Toast = Swal.mixin({
                             "next": "Siguiente",
                             "previous": "Anterior"
                             }
-                    },
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf'
-                    ]
+                    }
                 });
         } );
     </script>

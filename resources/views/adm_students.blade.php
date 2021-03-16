@@ -41,7 +41,7 @@ const Toast = Swal.mixin({
     @endif
     <hr>
     <!-- <button class="btn btn-primary btn-sm ">Administrador de Matrículas</button> -->
-    <a target="_blank" href="https://www.scc.cloupping.com/admin" class="btn btn-primary btn-sm">Proceso de Matrículas</a>
+    <a target="_blank" href="/apoderados/admin" class="btn btn-primary btn-sm">Proceso de Matrículas</a>
     <ul class="nav nav-tabs my-3 justify-content-center">
         <li class="nav-item">
             <a class="nav-link" data="0" href="adm_students">Todos</a>
@@ -102,14 +102,6 @@ const Toast = Swal.mixin({
             });
         </script>
     </ul>
-    @php $cantidad_mat = 0; @endphp
-    @foreach($students as $rowM)
-        @if($rowM["matricula"] == 'si')
-            @php $cantidad_mat++; @endphp
-        @endif
-    @endforeach
-    <span>Matriculados <span class="badge badge-primary" id="cantidadMat">{{$cantidad_mat}}</span> de <span class="badge badge-light">{{count($students)}}</span></span>
-    <hr>
     <div class="table-responsive">
         <table class="table table-sm" style="text-align: center;" id="list_students">
             <thead class="thead-light">
@@ -118,9 +110,9 @@ const Toast = Swal.mixin({
                     <th scope="col">Rut</th>
                     <th scope="col">Curso</th>
                     <th scope="col">Sección</th>
-                    <th scope="col">Apoderado</th>
+                    <th scope="col"># Matrícula</th>
                     <th scope="col">Centro de Padres</th>
-                    <th scope="col">Matrícula</th>
+                    <th scope="col">Matriculado</th>
                 </tr>
             </thead>
             <tbody>
@@ -141,6 +133,7 @@ const Toast = Swal.mixin({
                         <td>{{$row["nombre_stu"]}} </td>
                         <td>{{$row["dni_stu"]}}</td>
                         <td>@if($flag) <span class="text-success">{{$row["curso"]}}</span> @else <span class="text-danger">{{$row["curso"]}}</span> @endif </td>
+                        
                         <td>
                             @php
                                 $selec_en = 'disabled=""';
@@ -182,7 +175,62 @@ const Toast = Swal.mixin({
                                 });
                             </script>
                         </td>
-                        <td>{{$row["apoderado"]}}</td>
+                        <td>
+                            <input class="form-control" type="number" min="0" max="999" value="{{$row["numero_matricula"]}}" id="inputNM{{$row["id_stu"]}}" required="">
+                            <script>
+                                // $(document).ready(function(){
+                                //     $("#selectSection{{$row["id_stu"]}} [value={{$row["seccion"]}}]").prop('selected',true);
+                                // });
+                                $("#inputNM{{$row["id_stu"]}}").focus(function(){
+                                    Toast.fire({
+                                        icon: 'info', 
+                                        title: 'Para guardar presione enter.'
+                                    })
+                                });
+                                $("#inputNM{{$row["id_stu"]}}").on('keypress', function (e){
+                                    var input= $(this).val();
+                                   // alert('many');
+                                    
+                                    if(e.which == 13) {
+                                     //   alert('You pressed enter!');
+                                        if(input > 0 && input < 999){
+                                            $("#inputNM{{$row["id_stu"]}}").removeClass('is-invalid');
+                                            $("#inputNM{{$row["id_stu"]}}").addClass('is-valid');
+                                            $.ajax({
+                                                type: "GET",
+                                                url: "change_student_NM",
+                                                data:{
+                                                    id_stu: '{{$row["id_stu"]}}',
+                                                    id_curso:'{{$row["id_curso"]}}',
+                                                    id_matricula:'{{$row["id_matricula"]}}',
+                                                    inNM: input
+                                                },
+                                                success: function (data)
+                                                {
+                                                    if(data == ""){
+                                                        Toast.fire({
+                                                            icon: 'success', 
+                                                            title: 'Completado'
+                                                        });
+                                                    }else{
+                                                        $("#inputNM{{$row["id_stu"]}}").removeClass('is-valid');
+                                                        $("#inputNM{{$row["id_stu"]}}").addClass('is-invalid');
+                                                        Toast.fire({
+                                                            icon: 'error', 
+                                                            title: data
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        else{
+                                            $("#inputNM{{$row["id_stu"]}}").removeClass('is-valid');
+                                            $("#inputNM{{$row["id_stu"]}}").addClass('is-invalid');
+                                        }
+                                    }
+                                });
+                            </script>
+                        </td>
                         <td>
                             
                             @if($row["matricula"] == "si")

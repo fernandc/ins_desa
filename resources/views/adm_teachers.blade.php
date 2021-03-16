@@ -80,7 +80,7 @@ const Toast = Swal.mixin({
                                     var id_curso = $(this).val();
                                     $.ajax({
                                         type: "GET",
-                                        url: "/set_jefatura",
+                                        url: "set_jefatura",
                                         data:{
                                             dni:'{{$row["dni"]}}',
                                             id: id_curso,  

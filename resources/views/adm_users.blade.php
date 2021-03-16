@@ -7,7 +7,19 @@ Administrar Usuarios
 @endsection
 
 @section("headex")
-
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        onOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+    })
+    </script>
 @endsection
 
 @section("context")
@@ -50,9 +62,9 @@ Administrar Usuarios
                         <th scope="col">Rut</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Fecha de nacimiento</th>
                         <th scope="col">Administrador</th>
                         <th scope="col">Estado</th>
+                        <th scope="col">Privilegios</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,7 +73,6 @@ Administrar Usuarios
                             <td>{{$row["dni"]}}</td>
                             <td>{{$row["full_name"]}}</td>
                             <td>{{$row["email"]}}</td>
-                            <td>{{$row["birth_date"]}}</td>
                             <td>
                                 @if($row["is_admin"]=="YES")
                                     <a href="change_staff_admin?dni={{$row["dni"]}}" class="btn btn-primary btn-sm text-white" style="width: 45px">Si</a>
@@ -76,10 +87,42 @@ Administrar Usuarios
                                     <a href="change_staff_status?dni={{$row["dni"]}}" class="btn btn-secondary btn-sm">Desactivado</a>
                                 @endif
                             </td>
+                            <td><button class="btn btn-outline-primary btn-sm data-priv" data="{{$row["dni"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Administrar</button></td>
                         </tr>                
-                    @endforeach             
+                    @endforeach
                 </tbody>
             </table>
+            <script>
+                $(".data-priv").click(function(){
+                    var dni = $(this).attr('data');
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Cargando',
+                        showConfirmButton: false,
+                    })
+                    $.ajax({
+                        type: "GET",
+                        url: "modal_privileges",
+                        data:{
+                            dni
+                        },
+                        success: function (data)
+                        {
+                            $("#modalContent").html(data);
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Completado'
+                            })
+                        }
+                    });
+                });
+            </script>
+            <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl" >
+                    <div class="modal-content" id="modalContent">
+                    </div>
+                </div>
+            </div>
         </div>
         <script>
             $(document).ready( function () {

@@ -85,11 +85,12 @@ if(Session::has('period')){
                             <a class="dropdown-item" href="mail_groups">Grupos</a>
                         </div>
                     </li>
-                    @if(Session::get('account')["is_admin"]=="YES")
-                        <li class="nav-item">
-                            <a class="nav-link active" href="inscriptions">Alumnos Inscritos y Pendientes</a>
-                        </li>
-                    @endif
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownInformes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Información</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownInformes">
+                            <a class="dropdown-item" href="inscriptions">Alumnos Inscritos y Pendientes</a>
+                        </div>
+                    </li>
                     @if(Session::get('account')["is_admin"]=="YES")
 						<li class="nav-item active">
 							<a class="nav-link" href="noticias">Comunicaciones</a>
