@@ -77,7 +77,7 @@ if(Session::has('period')){
                     <li class="nav-item">
                         <a class="nav-link active" href="home">Inicio</a>
                     </li>
-                    <li class="nav-item dropdown" hidden="">
+                    <li class="nav-item dropdown">
                         <a  class="nav-link active dropdown-toggle" href="#" id="navbarDropdownCorreo" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Correos</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownCorreo">
                             <a class="dropdown-item" href="mail_send_mail">Enviar Correo</a>
