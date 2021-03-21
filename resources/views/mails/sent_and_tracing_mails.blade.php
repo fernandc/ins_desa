@@ -18,7 +18,6 @@ Seguimiento
               <tr>
                 <th scope="col">Fecha</th>
                 <th scope="col">Asunto</th>
-                <th scope="col">Eliminar</th>
                 <th scope="col"><i class="fas fa-paper-plane tooltip-info" data-toggle="tooltip" data-placement="top" title="Cantidad de destinatarios"></i></th>
                 <th scope="col"><i class="fas fa-glasses tooltip-info" data-toggle="tooltip" data-placement="top" title="Cantidad de correos leídos"></i></th>
                 <th scope="col">Seguimiento</th>
@@ -38,7 +37,6 @@ Seguimiento
                             @else
                               <span class="text-success">{{$row["fecha_emision"]}}</span>    
                             @endif
-                            
                           </td>
                           <td>
                             @if ($row["tipo_mail"] == 1)
@@ -79,7 +77,7 @@ Seguimiento
                                         </div> 
                                         @endif
                                         <div class="card-body">
-                                          <span>{{$row["mensaje"]}}</span>                   
+                                          <span style="white-space: pre-line;">{{$row["mensaje"]}}</span>                   
                                         </div>
                                       </div>
                                     </div>
@@ -160,10 +158,7 @@ Seguimiento
                               </div>
                             </div>
                           </td>
-                          <td>
-                            
-                          </td>     
-                          <td>{{$row["destinatarios"]}}</td>      
+                          <td>{{$row["destinatarios"]}}</td>
                           <td>{{$row["leidos"]}}</td>      
                           <td>
                             <!-- Button trigger modal -->

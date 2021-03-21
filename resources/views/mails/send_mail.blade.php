@@ -173,6 +173,7 @@ Enviar correo
                         $("#inputGroupFile04").change(function(ev){
                             var input = ev.target;
                             if (input.files) {
+                                $(".file-names").html("");
                                 var names = [];
                                 $.each(input.files, function(i, e){
                                     var addext = "";
@@ -209,7 +210,6 @@ Enviar correo
                                     filesADD.push(e)
                                 });
                             }
-                            
                         });
                       </script>
                     </div>

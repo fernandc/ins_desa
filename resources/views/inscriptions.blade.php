@@ -108,7 +108,13 @@ const Toast = Swal.mixin({
             @php $cantidad_mat++; @endphp
         @endif
     @endforeach
-    <span>Inscritos <span class="badge badge-primary" id="cantidadMat">{{$cantidad_mat}}</span> de <span class="badge badge-light">{{count($students)}}</span></span>
+    @php $cantidad_sub = 0; @endphp
+    @foreach($students as $rowS)
+        @if($rowS["retirado"] == "")
+            @php $cantidad_sub++; @endphp
+        @endif
+    @endforeach
+    <span>Inscritos <span class="badge badge-primary" id="cantidadMat">{{$cantidad_mat}}</span> de <span class="badge badge-light">{{$cantidad_sub}}</span></span>
     <hr>
     <div class="table-responsive">
         <table class="table table-sm" style="text-align: center;" id="list_students">
@@ -136,10 +142,14 @@ const Toast = Swal.mixin({
                         <td>{{$row["full_name"]}} </td>
                         <td>{{$row["curso"]}}</td>
                         <td>
-                            @if ($row["id_reg"] != null)
-                            <span class="badge badge-success">Completado</span>
+                            @if ($row["retirado"] != null)
+                            <span class="badge badge-warning" style="min-width: 96px;">Retirado</span>
                             @else
-                            <span class="badge badge-danger">No Completado</span>
+                                @if ($row["id_reg"] != null)
+                                <span class="badge badge-success" style="min-width: 96px;">Completado</span>
+                                @else
+                                <span class="badge badge-danger" style="min-width: 96px;">No Completado</span>
+                                @endif
                             @endif
                         </td>
                         <td>
