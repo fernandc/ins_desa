@@ -325,7 +325,6 @@ class View_System extends Controller {
     
     public function modal_bloqueHorario(Request $request){
         $gets = $request->input();
-        $dni = $gets["dni"];
         return view("includes/mdl_bloqueHorario");
     }
     public function modal_apoderados(Request $request){

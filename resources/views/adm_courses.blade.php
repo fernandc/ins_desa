@@ -146,8 +146,7 @@ Administrar Estudiantes
                                             type: "GET",
                                             url: "modal_bloqueHorario",
                                             data:{
-                                                full_name:'{{$row["full_name"]}}',
-                                                dni:'{{$row["dni"]}}'
+                                                
                                             },
                                             success: function (data)
                                             {
