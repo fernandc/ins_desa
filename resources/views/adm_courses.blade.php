@@ -133,97 +133,36 @@ Administrar Estudiantes
                                 @endif 
                             </td> 
                             <td>
-                                <div class="modal" tabindex="-1" role="dialog">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Horario</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <table class="table">
-                                                <thead>
-                                                  <tr>
-                                                    <th scope="col">Bloque</th>
-                                                    <th scope="col">Lunes</th>
-                                                    <th scope="col">Martes</th>
-                                                    <th scope="col">Miércoles</th>
-                                                    <th scope="col">Jueves</th>
-                                                    <th scope="col">Viernes</th>
-                                                    <th scope="col">Sábado</th>
-                                                  </tr>
-                                                </thead>
-                                                <tbody>
-                                                  <tr>
-                                                    <th>1</th>
-                                                    <td>
-                                                        <div class="form-control">
-                                                            <label for="">Desde</label>
-                                                            <input type="time" name="in1" id="">
-                                                            <br>
-                                                            <label for="">Hasta</label>
-                                                            <input type="time" name="out1" id="">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-control">
-                                                            <label for="">Desde</label>
-                                                            <input type="time" name="in2" id="">
-                                                            <br>
-                                                            <label for="">Hasta</label>
-                                                            <input type="time" name="out2" id="">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-control">
-                                                            <label for="">Desde</label>
-                                                            <input type="time" name="in3" id="">
-                                                            <br>
-                                                            <label for="">Hasta</label>
-                                                            <input type="time" name="out3" id="">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-control">
-                                                            <label for="">Desde</label>
-                                                            <input type="time" name="in4" id="">
-                                                            <br>
-                                                            <label for="">Hasta</label>
-                                                            <input type="time" name="out4" id="">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-control">
-                                                            <label for="">Desde</label>
-                                                            <input type="time" name="in5" id="">
-                                                            <br>
-                                                            <label for="">Hasta</label>
-                                                            <input type="time" name="out5" id="">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-control">
-                                                            <label for="">Desde</label>
-                                                            <input type="time" name="in6" id="">
-                                                            <br>
-                                                            <label for="">Hasta</label>
-                                                            <input type="time" name="out6" id="">
-                                                        </div>
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="btn btn-primary">Guardar</button>
-                                        </div>
-                                        </div>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" id="modalBloqueHorario">Asignar Bloques</button> 
+                                <script>
+                                    $("#modalBloqueHorario").click(function(){
+                                        Swal.fire({
+                                            icon: 'info',
+                                            title: 'Cargando',
+                                            showConfirmButton: false,
+                                        })
+                                        $("#modalContent").html("");
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "modal_bloqueHorario",
+                                            data:{
+                                                full_name:'{{$row["full_name"]}}',
+                                                dni:'{{$row["dni"]}}'
+                                            },
+                                            success: function (data)
+                                            {
+                                                $("#modalContent").html(data);
+                                            }
+                                        });
+                                    });
+                                </script>
+                            </td>
+                            <div class="modal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content"> 
                                     </div>
-                                </div>    
-                            </td>                                                  
+                                </div>
+                            </div>                                                  
                         </tr>               
                     @endforeach                      
                 </tbody>

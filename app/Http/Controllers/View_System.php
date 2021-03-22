@@ -322,6 +322,12 @@ class View_System extends Controller {
         $user_privileges = $this->user_privileges($dni);
         return view("includes/mdl_privileges")->with("all_privileges",$all_privileges)->with("user_privileges",$user_privileges)->with("dni",$dni);
     }
+    
+    public function modal_bloqueHorario(Request $request){
+        $gets = $request->input();
+        $dni = $gets["dni"];
+        return view("includes/mdl_bloqueHorario");
+    }
     public function modal_apoderados(Request $request){
         $gets = $request->input();
         $dni = $gets["dni"];
