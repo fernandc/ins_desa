@@ -49,6 +49,7 @@ Route::get('/g-response',[Google_api::class, 'user_data']);
 Route::get('/modal_asignatura', [View_System::class, 'modal_asignatura']);
 Route::get('/modal_privileges', [View_System::class, 'modal_privileges']);
 Route::get('/modal_apoderados', [View_System::class, 'modal_apoderados']);
+Route::get('/modal_bloqueHorario', [View_System::class, 'modal_bloqueHorario']);
 Route::get('/destinatarios_sent_mails', [View_System::class, 'destinatarios_sent_mails']);
 Route::get('/modal_edit_group', [View_System::class, 'modal_edit_group']);
 Route::get('/logo_ins', [App_Controller::class, 'logo_ins']);

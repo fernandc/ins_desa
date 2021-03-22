@@ -133,32 +133,35 @@ Administrar Estudiantes
                                 @endif 
                             </td> 
                             <td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl" id="modalBloqueHorario">Asignar Bloques</button> 
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalHorario" id="modalBloqueHorario{{$row["id"]}}">Asignar Bloques</button> 
                                 <script>
-                                    $("#modalBloqueHorario").click(function(){
+                                    $("#modalBloqueHorario{{$row["id"]}}").click(function(){
                                         Swal.fire({
                                             icon: 'info',
                                             title: 'Cargando',
                                             showConfirmButton: false,
                                         })
                                         $("#modalContent").html("");
+                                        
                                         $.ajax({
                                             type: "GET",
                                             url: "modal_bloqueHorario",
-                                            data:{
-                                                
-                                            },
+                                            
                                             success: function (data)
                                             {
                                                 $("#modalContent").html(data);
+                                            }, 
+                                            error: function (request, status, error) {
+                                                alert(request.responseText);
                                             }
+
                                         });
                                     });
                                 </script>
                             </td>
-                            <div class="modal" tabindex="-1" role="dialog">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content"> 
+                            <div class="modal" id="modalHorario" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-xl" role="document">
+                                    <div class="modal-content" id="modalContent"> 
                                     </div>
                                 </div>
                             </div>                                                  
