@@ -102,6 +102,7 @@ const Toast = Swal.mixin({
                                         title: 'Cargando',
                                         showConfirmButton: false,
                                     })
+                                    $("#modalContent").html("");
                                     $.ajax({
                                         type: "GET",
                                         url: "modal_asignatura",

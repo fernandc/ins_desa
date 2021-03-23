@@ -116,6 +116,7 @@ Administrar Estudiantes
                         <th scope="col">Curso</th>
                         <th scope="col">Sección</th>
                         <th scope="col">Docente</th>
+                        <th scope="col">Horario</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -130,7 +131,40 @@ Administrar Estudiantes
                                 @else
                                     <strong>{{$row["profesor"]}}</strong> 
                                 @endif 
-                            </td>                                                    
+                            </td> 
+                            <td>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalHorario" id="modalBloqueHorario{{$row["id"]}}">Asignar Bloques</button> 
+                                <script>
+                                    $("#modalBloqueHorario{{$row["id"]}}").click(function(){
+                                        Swal.fire({
+                                            icon: 'info',
+                                            title: 'Cargando',
+                                            showConfirmButton: false,
+                                        })
+                                        $("#modalContent").html("");
+                                        
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "modal_bloqueHorario",
+                                            
+                                            success: function (data)
+                                            {
+                                                $("#modalContent").html(data);
+                                            }, 
+                                            error: function (request, status, error) {
+                                                alert(request.responseText);
+                                            }
+
+                                        });
+                                    });
+                                </script>
+                            </td>
+                            <div class="modal" id="modalHorario" tabindex="-1" role="dialog">
+                                <div class="modal-dialog modal-xl" role="document">
+                                    <div class="modal-content" id="modalContent"> 
+                                    </div>
+                                </div>
+                            </div>                                                  
                         </tr>               
                     @endforeach                      
                 </tbody>
