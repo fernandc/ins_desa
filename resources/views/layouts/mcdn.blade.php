@@ -101,6 +101,7 @@ if(Session::has('period')){
                         <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownInformes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Información</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownInformes">
                             <a class="dropdown-item" href="inscriptions">Alumnos Inscritos y Pendientes</a>
+                            <a class="dropdown-item" href="proxys">Apoderados</a>
                         </div>
                     </li>
                     @if(Session::get('account')["is_admin"]=="YES")

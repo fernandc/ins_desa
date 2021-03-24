@@ -125,7 +125,7 @@ Test Section
     <h4 class="text-secondary">Página no Encontrada</h4>
     <div class="buttons-con">
         <div class="action-link-wrap">
-            <a href="/home" class="link-button" >Ir a página home</a>
+            <a href="home" class="link-button" >Ir a página home</a>
         </div>
     </div>
 </div>

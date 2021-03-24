@@ -27,10 +27,15 @@ Inicio
     var contTypeM1 = 0,contTypeM2 = 0,contTypeM3 = 0,contTypeM4 = 0;
     var contM1 = [0,0],contM2 = [0,0],contM3 = [0,0],contM4 = [0,0],contM5 = [0,0],contM6 = [0,0],contM7 = [0,0],contM8 = [0,0],contM9 = [0,0],contM10 = [0,0],contM11 = [0,0],contM12 = [0,0];
     var tipo = "";
+    //Last
+    var last_10_names = [];
+    var last_10_total_send = [];
+    var last_10_total_read = [];
     //var year = "", month = "";
 	@if(isset($info_mails))
+        @php $contador = 0; @endphp
 		@foreach($info_mails as $datos)
-            
+            @php $contador++; @endphp
 			@if(Session::get("account")["is_admin"] == "YES" || $datos["dni_staff"] == Session::get("account")["dni"])
 				@if(isset($datos["fecha_para"]))
 					enviados = "{{$datos["fecha_para"]}}";
@@ -75,6 +80,11 @@ Inicio
 					}
 				@else
 					enviados = "{{$datos["fecha_emision"]}}";
+                    if({{$contador}} <= 10){
+                        last_10_names.push("{{$datos["titulo"]}}");
+                        last_10_total_send.push("{{$datos["destinatarios"]}}");
+                        last_10_total_read.push("{{$datos["leidos"]}}")
+                    }
 					enviados = enviados.split("-");
 					var year = enviados[0];
 					if(year == {{Session::get('period')}}){
@@ -131,7 +141,7 @@ Inicio
             <h5 style="text-align: center">Correos Enviados Este Més </h5>
             <hr>
             <canvas id="myChart1" width="200px" height="200px"></canvas>    
-        </div>                              
+        </div>
         <div class="col-md-8">
             <h5 style="text-align: center">Cantidad de Destinatarios y Leídos Periodo 
                 @if(Session::has('period'))
@@ -140,7 +150,12 @@ Inicio
             </h5>
             <hr>
             <canvas id="myChart2" width="auto" height="auto"></canvas>    
-        </div>                              
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <h5>Últimos 10 correos Enviados</h5>
+            <canvas id="myChart3" width="auto" height="auto"></canvas>   
+        </div>                           
     </div>
 </div>
 <script>
@@ -219,6 +234,55 @@ Inicio
         }
     });
 </script>
+<script>
+    var ctx= document.getElementById("myChart3").getContext("2d");
+    var myChart= new Chart(ctx,{
+    type: 'horizontalBar',
+    data: {
+      labels: last_10_names,
+      datasets: [
+        {
+          label: "enviados",
+          data: last_10_total_send,
+          backgroundColor: [
+                        "{{$colorEnviados}}",
+                        "{{$colorEnviados}}",
+                        "{{$colorEnviados}}",
+                        "{{$colorEnviados}}",
+                        "{{$colorEnviados}}",
+                        "{{$colorEnviados}}",
+                        "{{$colorEnviados}}",
+                        "{{$colorEnviados}}",
+                        "{{$colorEnviados}}",
+                        "{{$colorEnviados}}"
+                    ]
+        },
+        {
+          label: "leídos",
+          data: last_10_total_read,
+          backgroundColor:[
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}",
+                        "{{$colorLeidos}}"
+                    ]
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: false
+      }
+    }
+});
 
+</script>
 
 @endsection
