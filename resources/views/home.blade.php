@@ -7,6 +7,49 @@ Inicio
 @endsection
 
 @section("headex")
+<script>
+    Chart.pluginService.register({
+        beforeDraw: function (chart) {
+            if (chart.config.options.elements.center) {
+        //Get ctx from string
+        var ctx = chart.chart.ctx;
+        
+        //Get options from the center object in options
+        var centerConfig = chart.config.options.elements.center;
+          var fontStyle = centerConfig.fontStyle || 'Arial';
+                var txt = centerConfig.text;
+        var color = centerConfig.color || '#000';
+        var sidePadding = centerConfig.sidePadding || 20;
+        var sidePaddingCalculated = (sidePadding/100) * (chart.innerRadius * 2)
+        //Start with a base font of 30px
+        ctx.font = "30px " + fontStyle;
+        
+        //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+        var stringWidth = ctx.measureText(txt).width;
+        var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+        // Find out how much the font can grow in width.
+        var widthRatio = elementWidth / stringWidth;
+        var newFontSize = Math.floor(30 * widthRatio);
+        var elementHeight = (chart.innerRadius * 2);
+
+        // Pick a new font size so it will not be larger than the height of label.
+        var fontSizeToUse = Math.min(newFontSize, elementHeight);
+
+        //Set font settings to draw it correctly.
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+        var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+        ctx.font = fontSizeToUse+"px " + fontStyle;
+        ctx.fillStyle = color;
+        
+        //Draw text in center
+        ctx.fillText(txt, centerX, centerY);
+            }
+        }
+    });
+</script>
 @endsection
 
 @section("context")
@@ -28,9 +71,10 @@ Inicio
     var contM1 = [0,0],contM2 = [0,0],contM3 = [0,0],contM4 = [0,0],contM5 = [0,0],contM6 = [0,0],contM7 = [0,0],contM8 = [0,0],contM9 = [0,0],contM10 = [0,0],contM11 = [0,0],contM12 = [0,0];
     var tipo = "";
     //Last
-    var last_10_names = [];
-    var last_10_total_send = [];
-    var last_10_total_read = [];
+    var last_12_names = [];
+    var last_12_total_send = [];
+    var last_12_total_sended = [];
+    var last_12_total_read = [];
     //var year = "", month = "";
 	@if(isset($info_mails))
         @php $contador = 0; @endphp
@@ -80,10 +124,11 @@ Inicio
 					}
 				@else
 					enviados = "{{$datos["fecha_emision"]}}";
-                    if({{$contador}} <= 10){
-                        last_10_names.push("{{$datos["titulo"]}}");
-                        last_10_total_send.push("{{$datos["destinatarios"]}}");
-                        last_10_total_read.push("{{$datos["leidos"]}}")
+                    if({{$contador}} <= 4){
+                        last_12_names.push("{{$datos["titulo"]}}");
+                        last_12_total_send.push("{{$datos["destinatarios"]}}");
+                        last_12_total_sended.push("{{$datos["enviados"]}}");
+                        last_12_total_read.push("{{$datos["leidos"]}}");
                     }
 					enviados = enviados.split("-");
 					var year = enviados[0];
@@ -137,152 +182,71 @@ Inicio
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <h5 style="text-align: center">Correos Enviados Este Més </h5>
-            <hr>
-            <canvas id="myChart1" width="200px" height="200px"></canvas>    
-        </div>
-        <div class="col-md-8">
-            <h5 style="text-align: center">Cantidad de Destinatarios y Leídos Periodo 
-                @if(Session::has('period'))
-                    {{Session::get('period')}}
-                @endif
-            </h5>
-            <hr>
-            <canvas id="myChart2" width="auto" height="auto"></canvas>    
-        </div>
+        
         <div class="col-md-12">
             <hr>
-            <h5>Últimos 10 correos Enviados</h5>
-            <canvas id="myChart3" width="auto" height="auto"></canvas>   
-        </div>                           
+            <h5>Últimos 4 correos Enviados</h5> 
+        </div>
+        @for ($i = 0; $i < 4; $i++)
+            <div class="col-md-3" style="height: 100%;">
+                <canvas id="chart{{$i}}" width="auto" height="280"></canvas>
+                <hr>
+            </div>
+            <script>
+                var leidos = parseInt(last_12_total_read[{{$i}}]);
+                var enviados = parseInt(last_12_total_sended[{{$i}}]) - leidos;
+                var total = parseInt(last_12_total_send[{{$i}}]) - enviados - leidos;
+                var failChartData = {
+                    type: 'pie',
+                    data: {
+                    labels: ["Leídos","Enviados","Por Enviar"],
+                    datasets: [
+                            {
+                                data: [leidos,enviados,total],
+                                backgroundColor: [
+                                    "#79df49",
+                                    "#1980d1",
+                                    "#ededed"
+                                ],
+                                //hoverBackgroundColor: [
+                                //    "#ff2e2e",
+                                //    "#ededed",
+                                //],
+                                //hoverBorderColor: ["#666666","#666666"]
+                            }
+                        ]
+                    },
+                    options: {
+                        elements: {
+                            center: {
+                                display: true,
+                                text: "Total "+last_12_total_send[{{$i}}],
+                                color: '#666666', // Default is #000000
+                                fontStyle: 'Arial', // Default is Arial
+                                sidePadding: 20 // Defualt is 20 (as a percentage)
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: last_12_names[{{$i}}],
+                            fontSize: 12,
+                            position: 'top',
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            enabled: true
+                        },
+                        cutoutPercentage: 65,
+                    }
+                }
+                var canvasFail = document.getElementById('chart{{$i}}');
+                var failsChart = new Chart(canvasFail, failChartData);
+            </script>
+        @endfor
     </div>
 </div>
-<script>
-    var ctx= document.getElementById("myChart1").getContext("2d");
-    var myChart= new Chart(ctx,{
-        type:"doughnut",
-        data:{
-            labels:['General' , 'Informativo','Buenas Noticias', 'Malas Noticias'],
-            datasets:[{
-                label: 'Correos Enviados',
-                //
-                data:[tipos[0],tipos[1],tipos[2],tipos[3]],
-                backgroundColor:[
-                    "rgb(0, 123, 255)",
-                    "rgb(23, 162, 184)",
-                    "rgb(40, 167, 69)",
-                    "rgb(224, 82, 96)"
-                ]
-            }]
-        },
-    });
-</script>
 
-<script>
-    var ctx= document.getElementById("myChart2").getContext("2d");
-    var myChart= new Chart(ctx,{
-        type:"bar",
-        data:{
-            labels:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Juilo','Agosto','Septiembre','Noviembre','Diciembre'],
-            datasets:[{
-                label: 'Correos Enviados',
-                data:[envMes[0][0],envMes[1][0],envMes[2][0],envMes[3][0],envMes[4][0],envMes[5][0],envMes[6][0],envMes[7][0],envMes[8][0],envMes[9][0],envMes[10][0],envMes[11][0]],
-                backgroundColor:[
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}",                    
-                    "{{$colorEnviados}}"                    
-                ]
-            },{
-                label: 'Correos Leídos',
-                    data:[envMes[0][1],envMes[1][1],envMes[2][1],envMes[3][1],envMes[4][1],envMes[5][1],envMes[6][1],envMes[7][1],envMes[8][1],envMes[9][1],envMes[10][1],envMes[11][1]],
-                    backgroundColor:[
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}"
-                    ]
-            }],
-
-        },
-
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-</script>
-<script>
-    var ctx= document.getElementById("myChart3").getContext("2d");
-    var myChart= new Chart(ctx,{
-    type: 'horizontalBar',
-    data: {
-      labels: last_10_names,
-      datasets: [
-        {
-          label: "enviados",
-          data: last_10_total_send,
-          backgroundColor: [
-                        "{{$colorEnviados}}",
-                        "{{$colorEnviados}}",
-                        "{{$colorEnviados}}",
-                        "{{$colorEnviados}}",
-                        "{{$colorEnviados}}",
-                        "{{$colorEnviados}}",
-                        "{{$colorEnviados}}",
-                        "{{$colorEnviados}}",
-                        "{{$colorEnviados}}",
-                        "{{$colorEnviados}}"
-                    ]
-        },
-        {
-          label: "leídos",
-          data: last_10_total_read,
-          backgroundColor:[
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}",
-                        "{{$colorLeidos}}"
-                    ]
-        }
-      ]
-    },
-    options: {
-      legend: { display: false },
-      title: {
-        display: false
-      }
-    }
-});
-
-</script>
 
 @endsection

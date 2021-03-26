@@ -138,6 +138,33 @@ class View_System extends Controller {
                     }
                     $students = $this->inscriptions($curso);
                     return view('inscriptions')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv);
+                case "proxys":
+                    $has_priv = false;
+                    foreach ($privileges as $priv) {
+                        if ($priv["id_privilege"] == 2) {
+                            $has_priv = true;
+                        }
+                    }
+                    $curso = null;
+                    if($this->isAdmin() || $has_priv){
+                        $has_priv = true;
+                        $curso = 0;
+                        if(isset($gets['curso'])){
+                            $curso = $gets['curso'];
+                        }
+                    }else{
+                        $arr = $this->myCourses();
+                        if (count($arr)==1) {
+                            $curso = $arr[0]["id_grade"];
+                        }else{
+                            $curso = null;
+                        }
+                    }
+                    if ($curso === null) {
+                        return back();
+                    }
+                    $students = $this->matriculas($curso);
+                    return view('proxys')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv);
                 default:
                 return view('not_found')->with("path",$path);
             }
@@ -168,6 +195,19 @@ class View_System extends Controller {
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'inscriptions',
+            'data' => [ "id_curso" => $id_curso ]
+        );
+        //dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return $data;
+    }
+    private function matriculas($id_curso){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'matriculas',
             'data' => [ "id_curso" => $id_curso ]
         );
         //dd($arr);
