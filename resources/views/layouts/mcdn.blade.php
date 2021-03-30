@@ -120,6 +120,7 @@ if(Session::has('period')){
                             <a class="dropdown-item {{$periodenable}}"  href="adm_courses">Cursos</a>
                             <a class="dropdown-item {{$periodenable}}" href="adm_subject">Asignaturas</a>
                             <a class="dropdown-item {{$periodenable}}" href="adm_teachers">Profesores</a>
+                            <a class="dropdown-item {{$periodenable}}" href="adm_horario">Horario de clases</a>
                             <a class="dropdown-item" href="adm_students">Estudiantes</a>
                         </div>
                     </li>

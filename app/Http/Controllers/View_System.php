@@ -69,6 +69,12 @@ class View_System extends Controller {
                     }else{
                         return redirect('');
                     }
+                case "adm_horario":
+                    if($this->isAdmin()){
+                        return view('adm_schedule_course');
+                    }else{
+                        return redirect('');
+                    }
                 case "adm_subject":
                     if($this->isAdmin()){
                         $subject = $this->subject_list();

@@ -106,7 +106,7 @@ const Toast = Swal.mixin({
         <table class="table table-sm" style="text-align: center;" id="list_students">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col"  >Nombre</th>
+                    <th scope="col" >Nombre</th>
                     <th scope="col">Rut</th>
                     <th scope="col">Curso</th>
                     <th scope="col">Sección</th>
