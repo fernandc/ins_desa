@@ -52,5 +52,6 @@ Route::get('/modal_apoderados', [View_System::class, 'modal_apoderados']);
 Route::get('/modal_bloqueHorario', [View_System::class, 'modal_bloqueHorario']);
 Route::get('/destinatarios_sent_mails', [View_System::class, 'destinatarios_sent_mails']);
 Route::get('/modal_edit_group', [View_System::class, 'modal_edit_group']);
+Route::get('/save_block', [View_System::class, 'save_block']);
 Route::get('/logo_ins', [App_Controller::class, 'logo_ins']);
 Route::get('/{param}',[View_System::class, 'main']);

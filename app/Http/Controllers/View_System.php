@@ -367,6 +367,31 @@ class View_System extends Controller {
         $gets = $request->input();
         return view("includes/mdl_bloqueHorario");
     }
+    public function save_block(Request $request){
+        $gets = $request->input();
+        if(Session::has('account')){
+            $dni = Session::get('account')['dni'];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => '',
+                'data' => [
+                    'dni'=>$dni,
+                    'desde'=>$gets["inputIn"],
+                    'hasta'=>$gets["inputOu"],
+                    'type'=>$gets["val"],
+                    'block'=>$gets["block"],
+                    'day'=>$gets["day"],
+                    
+                ]
+            );
+            dd($arr);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true);
+            return $data;
+        }
+    }
+
     public function modal_apoderados(Request $request){
         $gets = $request->input();
         $dni = $gets["dni"];

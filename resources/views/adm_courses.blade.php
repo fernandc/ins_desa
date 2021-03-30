@@ -142,7 +142,7 @@ Administrar Estudiantes
                                             showConfirmButton: false,
                                         })
                                         $("#modalContent").html("");
-                                        
+                            
                                         $.ajax({
                                             type: "GET",
                                             url: "modal_bloqueHorario",
