@@ -395,8 +395,7 @@ class View_System extends Controller {
                     'type'=>$gets["val"],
                     'block'=>$gets["block"],
                     'day'=>$gets["day"],
-                    'id_group'=>''
-                    
+                    'course'=>$gets["course"]
                 ]
             );
             dd($arr);

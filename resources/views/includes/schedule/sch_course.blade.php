@@ -1,3 +1,9 @@
+@php
+    $course = $active;
+@endphp
+<div>
+    Curso {{$course}}
+</div>
 <div class="table table-responsive table-bordered">
     <table class="table" id="test">
         <thead>
@@ -47,16 +53,22 @@
                                                     if(opt == 1){
                                                         $("#optbtn1{{$i}}-{{$j}}").click(); 
                                                         $("#collapseTwo{{$i}}-{{$j}}").removeClass("show");
-        
-                                                        
+                                                        $("#headingOne{{$i}}-{{$j}}").css("background","#73c686");
+                                                        $("select.form-control").attr("disabled",true);
+                                                        $(this).attr("disabled",false);
                                                     }else{
                                                         if(opt == 2){
                                                             $("#optbtn2{{$i}}-{{$j}}").click();
                                                             $("#collapseOne{{$i}}-{{$j}}").removeClass("show");
+                                                            $("#headingOne{{$i}}-{{$j}}").css("background","#6fc5d3");
+                                                            $("select.form-control").attr("disabled",true);
+                                                            $(this).attr("disabled",false);
                                                         }
                                                         else{
                                                             $("#collapseOne{{$i}}-{{$j}}").removeClass("show");
                                                             $("#collapseTwo{{$i}}-{{$j}}").removeClass("show");
+                                                            $("#headingOne{{$i}}-{{$j}}").css("background","");
+                                                            $("select.form-control").attr("disabled",false);
                                                         }
                                                     }
                                                 });
@@ -76,14 +88,14 @@
                                     <div id="collapseTwo{{$i}}-{{$j}}" class="collapse" aria-labelledby="headingTwo{{$i}}-{{$j}}" >
                                         <div class="card-body text-white mb-3" style="background:#6fc5d3">
                                             <label for="">Desde</label>
-                                            <input class="form-control" type="time" name="in1" id="inR{{$i}}-{{$j}}">
+                                            <input class="form-control" type="time" name="in2" id="inR{{$i}}-{{$j}}">
                                             <br>
                                             <label for="">Hasta</label>
-                                            <input class="form-control" type="time" name="out1" id="ouR{{$i}}-{{$j}}">
+                                            <input class="form-control" type="time" name="out2" id="ouR{{$i}}-{{$j}}">
                                             <button class="btn btn-success btn-sm mt-4 mb-2 float-right" id="btnR{{$i}}-{{$j}}" > Guardar</button>
                                         </div>
                                     </div>
-                                    <script>
+                                    <script>                                       
                                         $("#btnA{{$i}}-{{$j}}").click(function(){
                                             var inputInA = $("#inA{{$i}}-{{$j}}").val();
                                             var inputOuA = $("#ouA{{$i}}-{{$j}}").val();
@@ -95,7 +107,7 @@
                                                 data:{
                                                     inputIn:inputInA,
                                                     inputOu:inputOuA,
-                                                    
+                                                    course:"{{$active}}",
                                                     val: "1",
                                                     block:"{{$j}}",
                                                     day:"{{$i}}" 
@@ -118,7 +130,7 @@
                                                 data:{
                                                     inputIn:inputInR,
                                                     inputOu:inputOuR,
-                                                    
+                                                    course:"{{$active}}",
                                                     val: "2",
                                                     block:"{{$j}}",
                                                     day:"{{$i}}" 

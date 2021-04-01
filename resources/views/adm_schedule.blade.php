@@ -56,37 +56,27 @@ Horario de Clases
         @php
             $active = 1;
         @endphp
-        
+        @if(isset($_GET['curso']))
+            @php
+               $active = $_GET['curso'];
+            @endphp
+        @endif
         <script>
             $(document).ready(function(){
                 $("[data={{$active}}]").addClass("active");
             });
         </script>
     </ul>
-    <ul class="nav nav-tabs my-3 justify-content-center">
-        <li class="nav-item" data=""><a class="nav-link" data="1" href=" ">Bloques de Horario</a></li>
-        <li class="nav-item" data=""><a class="nav-link" data="2" href="sch_teacher">Profesores</a></li>
-        @php
-            $active = 1;
-        @endphp
-        <script>
-            $(document).ready(function(){
-                $("[data={{$active}}]").addClass("active");
-            });
-        </script>
+    <ul class="nav nav-tabs my-3 justify-content-center" id="nav-tab">
+        <li class="nav-item" data="1"><a class="nav-link active" data="1" href="#sch_course" aria-controls="sch_course" id="course-tab" data-toggle="tab">Bloques de Horario</a></li>
+        <li class="nav-item" data="2"><a class="nav-link" data="2" href="#sch_teacher" aria-controls="sch_teachers" id="teacher-tab" data-toggle="tab">Profesores</a></li>
     </ul>
-
-    <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="sch_course" role="tabpanel" aria-labelledby="sch_course-tab">
-            @if (isset($grades))
-                @foreach ($grades as $row)
-                    @include('includes/schedule/sch_course?curso=9')
-                @endforeach
-            @endif
-        </div> 
-        <div class="tab-pane fade" id="sch_teacher" role="tabpanel" aria-labelledby="sch_teacher-tab">
-            aaaa
-            @include('includes/schedule/sch_teachers')
+    <div class="tab-content" id="nav-content">
+        <div class="tab-pane fade show active" id="sch_course" role="tabpanel" aria-labelledby="course-tab">
+            @include('includes/schedule/sch_course')
+        </div>
+        <div class="tab-pane fade" id="sch_teacher" role="tabpanel" aria-labelledby="teacher-tab">        
+            @include('includes/schedule/sch_teachers')                            
         </div>
     </div>
 </div>

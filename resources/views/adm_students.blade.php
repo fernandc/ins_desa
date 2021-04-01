@@ -132,8 +132,7 @@ const Toast = Swal.mixin({
                     <tr>
                         <td>{{$row["nombre_stu"]}} </td>
                         <td>{{$row["dni_stu"]}}</td>
-                        <td>@if($flag) <span class="text-success">{{$row["curso"]}}</span> @else <span class="text-danger">{{$row["curso"]}}</span> @endif </td>
-                        
+                        <td>@if($flag) <span class="text-success">{{$row["curso"]}}</span> @else <span class="text-danger">{{$row["curso"]}}</span> @endif </td>                        
                         <td>
                             @php
                                 $selec_en = 'disabled=""';
