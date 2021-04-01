@@ -71,7 +71,9 @@ class View_System extends Controller {
                     }
                 case "adm_horario":
                     if($this->isAdmin()){
-                        return view('adm_schedule');
+                        $teachers = $this->staff();
+						$grades = $this->grades();
+                        return view('adm_schedule')->with("grades",$grades);
                     }else{
                         return redirect('');
                     }
@@ -369,9 +371,14 @@ class View_System extends Controller {
         return view("includes/mdl_privileges")->with("all_privileges",$all_privileges)->with("user_privileges",$user_privileges)->with("dni",$dni);
     }
     
-    public function modal_bloqueHorario(Request $request){
-        $gets = $request->input();
-        return view("includes/mdl_bloqueHorario");
+    public function sch_schedule_course(Request $request){
+        
+        return view("includes/schedule/sch_course");
+    }
+    
+    public function sch_schedule_teacher(Request $request){
+       
+        return view("includes/schedule/sch_teacher");
     }
     public function save_block(Request $request){
         $gets = $request->input();
@@ -388,6 +395,7 @@ class View_System extends Controller {
                     'type'=>$gets["val"],
                     'block'=>$gets["block"],
                     'day'=>$gets["day"],
+                    'id_group'=>''
                     
                 ]
             );
