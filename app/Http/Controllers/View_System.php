@@ -73,7 +73,7 @@ class View_System extends Controller {
                     if($this->isAdmin()){
                         $teachers = $this->staff();
 						$grades = $this->grades();
-                        return view('adm_schedule')->with("grades",$grades);
+                        return view('adm_schedule')->with("grades",$grades)->with("teachers",$teachers);
                     }else{
                         return redirect('');
                     }
@@ -370,24 +370,16 @@ class View_System extends Controller {
         $user_privileges = $this->user_privileges($dni);
         return view("includes/mdl_privileges")->with("all_privileges",$all_privileges)->with("user_privileges",$user_privileges)->with("dni",$dni);
     }
-    
-    public function sch_schedule_course(Request $request){
-        
-        return view("includes/schedule/sch_course");
-    }
-    
-    public function sch_schedule_teacher(Request $request){
-       
-        return view("includes/schedule/sch_teacher");
-    }
     public function save_block(Request $request){
         $gets = $request->input();
+        $course = $gets["course"];
+
         if(Session::has('account')){
             $dni = Session::get('account')['dni'];
             $arr = array(
                 'institution' => getenv("APP_NAME"),
                 'public_key' => getenv("APP_PUBLIC_KEY"),
-                'method' => '',
+                'method' => 'save_block_course',
                 'data' => [
                     'dni'=>$dni,
                     'desde'=>$gets["inputIn"],
@@ -398,13 +390,11 @@ class View_System extends Controller {
                     'course'=>$gets["course"]
                 ]
             );
-            dd($arr);
             $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-            $data = json_decode($response->body(), true);
-            return $data;
+            //$status = $response->json()['status'];
+            //return $status;
         }
     }
-
     public function modal_apoderados(Request $request){
         $gets = $request->input();
         $dni = $gets["dni"];

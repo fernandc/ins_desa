@@ -55,12 +55,20 @@ Horario de Clases
         </li>
         @php
             $active = 1;
+            $id_curso = null; 
         @endphp
         @if(isset($_GET['curso']))
             @php
                $active = $_GET['curso'];
             @endphp
         @endif
+        @foreach ($grades as $item)
+            @php
+                if($item['id_curso'] == $active){
+                    $id_curso = $item['id'];
+                }
+            @endphp
+        @endforeach
         <script>
             $(document).ready(function(){
                 $("[data={{$active}}]").addClass("active");

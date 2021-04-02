@@ -28,7 +28,7 @@
                         <td>
                             <div class="accordion" id="accordionExample">
                                 <div class="card"  id="card{{$i}}-{{$j}}">
-                                    <div class="card-header" id="headingOne{{$i}}-{{$j}}" style="background">
+                                    <div class="card-header" id="headingOne{{$i}}-{{$j}}" style="padding: .75rem .75rem;">
                                         <h2 class="mb-0">
                                             <select class="form-control form-control-sm" id="sel{{$i}}-{{$j}}">
                                                 <option selected>
@@ -107,13 +107,18 @@
                                                 data:{
                                                     inputIn:inputInA,
                                                     inputOu:inputOuA,
-                                                    course:"{{$active}}",
+                                                    course:"{{$id_curso}}",
                                                     val: "1",
                                                     block:"{{$j}}",
                                                     day:"{{$i}}" 
                                                 },
                                                 success: function (data){
-                                                    $("#test").html(data);
+                                                    if(data == 200 ){
+                                                        $("#collapseOne{{$i}}-{{$j}}").removeClass("show");
+                                                        $("select.form-control").attr("disabled",false);
+                                                    }else{
+                                                        alert("Failed");
+                                                    }
                                                 }
                                             });
         
@@ -121,7 +126,6 @@
                                         $("#btnR{{$i}}-{{$j}}").click(function(){
                                             var inputInR = $("#inR{{$i}}-{{$j}}").val();
                                             var inputOuR = $("#ouR{{$i}}-{{$j}}").val();
-        
                                             alert(inputInR);
                                             alert(inputOuR);
                                             $.ajax({
@@ -130,7 +134,7 @@
                                                 data:{
                                                     inputIn:inputInR,
                                                     inputOu:inputOuR,
-                                                    course:"{{$active}}",
+                                                    course:"{{$id_curso}}",
                                                     val: "2",
                                                     block:"{{$j}}",
                                                     day:"{{$i}}" 
