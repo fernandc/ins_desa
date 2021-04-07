@@ -324,7 +324,7 @@
                                                         <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:4px;background-color:#FFFFFF;margin-bottom:5rem" width="100%" cellspacing="0" cellpadding="0" bgcolor="#ffffff" role="presentation">
                                                             <tr style="border-collapse:collapse">
                                                                 <td class="es-m-txt-l" bgcolor="#ffffff" align="center" style="Margin:0;padding-top:20px;padding-bottom:20px;padding-left:30px;padding-right:30px">
-                                                                    <h1 style="Margin:0;line-height:58px;mso-line-height-rule:exactly;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;font-size:48px;font-style:normal;font-weight:normal;color:#111111">{{$head}}</h1>
+                                                                    <h1 style="Margin:0;line-height:58px;mso-line-height-rule:exactly;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;font-size:38px;font-style:normal;font-weight:normal;color:#111111">{{$head}}</h1>
                                                                 </td>
                                                             </tr>
                                                             <tr style="border-collapse:collapse">

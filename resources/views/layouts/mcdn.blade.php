@@ -52,6 +52,18 @@ if(Session::has('period')){
         @yield("headex")
     </head>
     <body style="background-color: white">
+        @php
+            $privileges = array();
+            $array_privs = Session::get("privileges");
+            foreach ($array_privs as $row) {
+                array_push($privileges,$row["id_privilege"]);
+            }
+            if (Session::get('account')["is_admin"]=="YES") {
+                for ($i=0; $i < 20; $i++) { 
+                    array_push($privileges,$i);
+                }
+            }
+        @endphp
         <script>
             var pusher = new Pusher('8f461d406fd0f7053644', {
                 cluster: 'mt1'
@@ -77,15 +89,16 @@ if(Session::has('period')){
                     <li class="nav-item">
                         <a class="nav-link active" href="home">Inicio</a>
                     </li>
-                    @if(Session::get('account')["is_admin"]=="YES")
+                    @if (in_array(3,$privileges))
                     <li class="nav-item dropdown">
                         <a  class="nav-link active dropdown-toggle" href="#" id="navbarDropdownCorreo" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Correos</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownCorreo">
                             <a class="dropdown-item" href="mail_send_mail">Enviar Correo</a>
                             <a class="dropdown-item" href="mail_sent_and_tracing_mails">Correos Enviados y Seguimiento</a>
-                            <a class="dropdown-item" href="mail_groups">Grupos</a>
+                            <!--<a class="dropdown-item" href="mail_groups">Grupos</a> -->
                         </div>
                     </li>
+                    @endif
                     @if(Session::get('account')["is_admin"]=="YES")
                     <li class="nav-item active dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -96,14 +109,19 @@ if(Session::has('period')){
                         </div>
                     </li>
                     @endif
-                    @endif
+                    @if (in_array(1,$privileges) || in_array(2,$privileges))
                     <li class="nav-item dropdown">
                         <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownInformes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Información</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownInformes">
+                            @if (in_array(1,$privileges))
                             <a class="dropdown-item" href="inscriptions">Alumnos Inscritos y Pendientes</a>
+                            @endif
+                            @if (in_array(2,$privileges))
                             <a class="dropdown-item" href="proxys">Apoderados</a>
+                            @endif
                         </div>
                     </li>
+                    @endif
                     @if(Session::get('account')["is_admin"]=="YES")
 						<li class="nav-item active">
 							<a class="nav-link" href="noticias">Comunicaciones</a>

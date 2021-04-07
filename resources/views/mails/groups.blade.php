@@ -86,7 +86,7 @@ const Toast = Swal.mixin({
                                                                 })
                                                                 $.ajax({
                                                                     type: "GET",
-                                                                    url: "/modal_edit_group",
+                                                                    url: "modal_edit_group",
                                                                     data:{
                                                                         nombre:'{{$row["nombre"]}}',
                                                                         encargado:'{{$row["encargado"]}}',
@@ -158,7 +158,7 @@ const Toast = Swal.mixin({
       <div class="tab-pane fade" id="v-pills-create_group" role="tabpanel" aria-labelledby="v-pills-create_group-tab">
         <div class="card card-mt-3 ml-3 mr-3"  >
             <div class="card-body">      
-                <form  action="/create_group" method="GET">
+                <form  action="create_group" method="GET">
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <input type="text" class="form-control" name="nombre_grupo" minlength="4" placeholder="Nombre de Grupo" id="nombre_grupo" required="">

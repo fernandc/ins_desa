@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 class View_System extends Controller {
     public function main(request $request) {
         $privileges = $this->user_privileges(Session::get('account')['dni']);
+        session::put(['privileges' => $privileges]);
         $path = $request->path();
         $gets = $request->input();
         $message = null;
@@ -95,18 +96,28 @@ class View_System extends Controller {
                     //$destinatarios = $this->destinatarios_sent_mails($gets);->with("destinatarios",$destinatarios)
                     return view('mails/sent_and_tracing_mails')->with("info_mails",$info);                    
                 case "mail_send_mail":
-                    $list_to = $this->list_to();
-                    $excCourses = array();
-                    if(!$this->isAdmin()){
-                        $class = $this->list_checked(Session::get('account')['dni']);
-                        //dd($class);
-                        foreach($class as $row){
-                            array_push($excCourses,$row["id_curso_periodo"]);
+                    $has_priv = false;
+                    foreach ($privileges as $priv) {
+                        if ($priv["id_privilege"] == 3) {
+                            $has_priv = true;
                         }
                     }
-                    $excCourses= array_unique($excCourses);
-                    //dd($excCourses+$list_to);
-                    return view('mails/send_mail')->with("lista_para",$list_to)->with("cursos",$excCourses);    
+                    if($this->isAdmin() || $has_priv){
+                        $list_to = $this->list_to();
+                        $excCourses = array();
+                        if(!$this->isAdmin()){
+                            $class = $this->list_checked(Session::get('account')['dni']);
+                            //dd($class);
+                            foreach($class as $row){
+                                array_push($excCourses,$row["id_curso_periodo"]);
+                            }
+                        }
+                        $excCourses= array_unique($excCourses);
+                        //dd($excCourses+$list_to);
+                        return view('mails/send_mail')->with("lista_para",$list_to)->with("cursos",$excCourses);
+                    }else{
+                        return back();
+                    }
                 case "noticias":            
                     if($this->isAdmin()){
                         $noticias = $this->listar_noticias();

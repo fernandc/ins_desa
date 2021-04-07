@@ -39,7 +39,12 @@ Enviar correo
         </h2>
         <hr>
     </div>
-
+    @php
+        $acursos = array();
+        $aalumnos = array();
+        $aapersonal = array();
+        $agrupos = array();
+    @endphp
     <form class="row" id="formSendMails" >
         <div class="col-md-4">
             <div class="">
@@ -51,6 +56,13 @@ Enviar correo
                         //Filtro de cursos de usuario
                         { data: '0-PERSONAL-TODO PERSONAL', value: 'TODO PERSONAL' },
                         @foreach($lista_para as $row)
+                            @if($row["tipo"] == "CURSO")
+                                @php array_push($acursos, $row); @endphp
+                            @elseif($row["tipo"] == "PERSONAL")
+                                @php array_push($aapersonal, $row); @endphp
+                            @elseif($row["tipo"] == "GRUPO")
+                                @php array_push($agrupos, $row); @endphp
+                            @endif
                             @if(($row["tipo"] == "CURSO" && in_array($row["id"],$cursos)) || Session::get('account')['is_admin']=='YES')
                                 { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
                             @elseif($row["tipo"] == "ALUMNO" && in_array($row["id_curso"],$cursos))
@@ -68,29 +80,140 @@ Enviar correo
                         onSelect: function (suggestion) {
                             var dataget = suggestion.data;
                             var array = dataget.split("-");
-                            lista_to.push([array]);
+                            //lista_to.push([array]);
                             var id_item = array[0];
                             var tipo_item = array[1];
                             var nombre_item = array[2];
-                            var badge = "";
-                            if(tipo_item=="PERSONAL"){
-                                badge = "primary";
-                            }else if(tipo_item=="ALUMNO"){
-                                badge = "info";
-                            }else if(tipo_item=="GRUPO"){
-                                badge = "warning";
-                            }
-                            else if(tipo_item=="CURSO"){
-                                badge = "warning";
-                            }
-                            $('#autocomplete').val('');
-                            $("#destinatarios").append('<span id="'+tipo_item+id_item+'" class="badge badge-'+badge+' px-2 mr-2 destinatario" datatype="'+tipo_item+'" dataid="'+id_item+'" onclick="eliminarDes('+id_item+',\''+tipo_item+'\',\''+nombre_item+'\')" style="border-radius: 0px 40px 35px 35px;">'+nombre_item+' - '+tipo_item+'</span>')
+                            agregarDes(id_item,tipo_item,nombre_item);
                         }
                     });
                 </script>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-1">
+            <button class="btn btn-info" type="button" data-toggle="modal" data-target="#finder" style="width: 100%;"><i class="fas fa-search"></i></button>
+            <!-- Modal -->
+            <div class="modal fade" id="finder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3>Cursos</h3>
+                                <hr>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" autocomplete="off" id="todocurso">
+                                    <label class="custom-control-label text-primary" for="todocurso">Todos</label>
+                                </div>
+                                @foreach ($acursos as $rowc)
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input forlist is-curso" data="{{$rowc["id"]}}-{{$rowc["tipo"]}}-{{$rowc["nombre"]}}" autocomplete="off" id="check{{$rowc["tipo"]}}{{$rowc["id"]}}">
+                                        <label class="custom-control-label" for="check{{$rowc["tipo"]}}{{$rowc["id"]}}">{{$rowc["nombre"]}}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="col-md-4">
+                                <h3>Personal</h3>
+                                <hr>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" autocomplete="off" id="todopersonal">
+                                    <label class="custom-control-label text-primary" for="todopersonal">Todos</label>
+                                </div>
+                                @foreach ($aapersonal as $rowp)
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input forlist is-personal" data="{{$rowp["id"]}}-{{$rowp["tipo"]}}-{{$rowp["nombre"]}}" autocomplete="off" id="check{{$rowp["tipo"]}}{{$rowp["id"]}}">
+                                        <label class="custom-control-label" for="check{{$rowp["tipo"]}}{{$rowp["id"]}}">{{$rowp["nombre"]}}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="col-md-4">
+                                <h3>Grupos</h3>
+                                <hr>
+                                @foreach ($agrupos as $rowg)
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input forlist" data="{{$rowg["id"]}}-{{$rowg["tipo"]}}-{{$rowg["nombre"]}}" autocomplete="off" id="check{{$rowg["tipo"]}}{{$rowg["id"]}}">
+                                        <label class="custom-control-label" for="check{{$rowg["tipo"]}}{{$rowg["id"]}}">{{$rowg["nombre"]}}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <script>
+                                $('#todocurso').click(function(event) {   
+                                    if(this.checked) {
+                                        // Iterate each checkbox
+                                        $('.is-curso').each(function() {
+                                            var dataget = $(this).attr("data");
+                                            var array = dataget.split("-");
+                                            var id = array[0];
+                                            var tipo = array[1];
+                                            var nombre = array[2];
+                                            agregarDes(id,tipo,nombre);
+                                            this.checked = true;
+                                        });
+                                    } else {
+                                        $('.is-curso').each(function() {
+                                            var dataget = $(this).attr("data");
+                                            var array = dataget.split("-");
+                                            var id = array[0];
+                                            var tipo = array[1];
+                                            var nombre = array[2];
+                                            eliminarDes(id,tipo,nombre);
+                                            this.checked = false;
+                                        });
+                                    }
+                                });
+                                $('#todopersonal').click(function(event) {   
+                                    if(this.checked) {
+                                        // Iterate each checkbox
+                                        $('.is-personal').each(function() {
+                                            var dataget = $(this).attr("data");
+                                            var array = dataget.split("-");
+                                            var id = array[0];
+                                            var tipo = array[1];
+                                            var nombre = array[2];
+                                            agregarDes(id,tipo,nombre);
+                                            this.checked = true;
+                                        });
+                                    } else {
+                                        $('.is-personal').each(function() {
+                                            var dataget = $(this).attr("data");
+                                            var array = dataget.split("-");
+                                            var id = array[0];
+                                            var tipo = array[1];
+                                            var nombre = array[2];
+                                            eliminarDes(id,tipo,nombre);
+                                            this.checked = false;
+                                        });
+                                    }
+                                });
+                                $(".forlist").change(function(){
+                                    var dataget = $(this).attr("data");
+                                    var array = dataget.split("-");
+                                    var id = array[0];
+                                    var tipo = array[1];
+                                    var nombre = array[2];
+                                    if(this.checked) {
+                                        agregarDes(id,tipo,nombre);
+                                    }else{
+                                        eliminarDes(id,tipo,nombre);
+                                    }
+                                });
+                            </script>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
             <select class="custom-select " id="selectWhenSend" required="" autocomplete="off">
                 <option value="1">Enviar ahora</option>
                 <option value="2">Programar</option>
@@ -134,10 +257,37 @@ Enviar correo
                     if(lista_to){
                         for (var item = 0 ; item < lista_to.length ; item ++){                            
                             if(new_list[item][0][0] == id && new_list[item][0][1] == tipo && new_list[item][0][2] == nombre){
-                                new_list.splice(item,1)
+                                $("#check"+tipo+id).prop('checked', false);
+                                new_list.splice(item,1);
                             }
-                        lista_to = new_list;
+                            lista_to = new_list;
                         }
+                    }
+                }
+                function agregarDes(id_item,tipo_item,nombre_item){
+                    var array = [id_item,tipo_item,nombre_item];
+                    var flag = true;
+                    for (var item = 0 ; item < lista_to.length ; item ++){                            
+                        if(lista_to[item][0][0] == id_item && lista_to[item][0][1] == tipo_item && lista_to[item][0][2] == nombre_item){
+                            flag = false;
+                        }
+                    }
+                    if (flag) {
+                        lista_to.push([array]);
+                        var badge = "";
+                        if(tipo_item=="PERSONAL"){
+                            badge = "primary";
+                        }else if(tipo_item=="ALUMNO"){
+                            badge = "info";
+                        }else if(tipo_item=="GRUPO"){
+                            badge = "warning";
+                        }
+                        else if(tipo_item=="CURSO"){
+                            badge = "warning";
+                        }
+                        $("#check"+tipo_item+id_item).prop('checked', true);
+                        $('#autocomplete').val('');
+                        $("#destinatarios").append('<span id="'+tipo_item+id_item+'" class="badge badge-'+badge+' px-2 mr-2 destinatario" datatype="'+tipo_item+'" dataid="'+id_item+'" onclick="eliminarDes('+id_item+',\''+tipo_item+'\',\''+nombre_item+'\')" style="border-radius: 0px 40px 35px 35px;">'+nombre_item+' - '+tipo_item+'</span>');
                     }
                 }
             </script>
