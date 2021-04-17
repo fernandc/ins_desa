@@ -24,7 +24,7 @@ const Toast = Swal.mixin({
 
 @section("context")
 
-<div class="container">
+<div class="mx-2">
     <h2 style="text-align: center;" id="temp1">Administrar Estudiantes 
             @if(Session::has('period'))
                 {{Session::get('period')}}
@@ -112,6 +112,7 @@ const Toast = Swal.mixin({
                     <th scope="col">Sección</th>
                     <th scope="col"># Matrícula</th>
                     <th scope="col">Centro de Padres</th>
+                    <th scope="col">Ficha</th>
                     <th scope="col">Matriculado</th>
                 </tr>
             </thead>
@@ -291,6 +292,9 @@ const Toast = Swal.mixin({
                                 });
                             </script>
                         <td>
+                            <button class="btn btn-outline-primary btn-sm data-ficha" data="{{$row["id_stu"]}}" data2="{{$row["id_zmail"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Ficha</button>
+                        </td>
+                        <td>
                             @if($flag)
                                 <div class="custom-control custom-switch">
                                     @if($row["matricula"] == "si")
@@ -354,6 +358,38 @@ const Toast = Swal.mixin({
                 @endforeach                      
             </tbody>
         </table>
+        <script>
+            $(".data-ficha").click(function(){
+                var id_stu = $(this).attr('data');
+                var id_apo = $(this).attr('data2');
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Cargando',
+                    showConfirmButton: false,
+                })
+                $.ajax({
+                    type: "GET",
+                    url: "modal_ficha",
+                    data:{
+                        id_stu,id_apo
+                    },
+                    success: function (data)
+                    {
+                        $("#modalContent").html(data);
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Completado'
+                        })
+                    }
+                });
+            });
+        </script>
+        <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" >
+                <div class="modal-content" id="modalContent">
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         $(document).ready( function () {

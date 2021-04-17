@@ -62,6 +62,8 @@ Enviar correo
                                 @php array_push($aapersonal, $row); @endphp
                             @elseif($row["tipo"] == "GRUPO")
                                 @php array_push($agrupos, $row); @endphp
+                            @elseif($row["tipo"] == "ALUMNO")
+                                @php array_push($aalumnos, $row); @endphp
                             @endif
                             @if(($row["tipo"] == "CURSO" && in_array($row["id"],$cursos)) || Session::get('account')['is_admin']=='YES')
                                 { data: '{{$row["id"]}}-{{$row["tipo"]}}-{{$row["nombre"]}}', value: '{{$row["nombre"]}}' },
@@ -112,9 +114,26 @@ Enviar correo
                                     <label class="custom-control-label text-primary" for="todocurso">Todos</label>
                                 </div>
                                 @foreach ($acursos as $rowc)
-                                    <div class="custom-control custom-checkbox">
+                                    <div class="custom-control custom-checkbox" style="text-align-last: justify;">
                                         <input type="checkbox" class="custom-control-input forlist is-curso" data="{{$rowc["id"]}}-{{$rowc["tipo"]}}-{{$rowc["nombre"]}}" autocomplete="off" id="check{{$rowc["tipo"]}}{{$rowc["id"]}}">
                                         <label class="custom-control-label" for="check{{$rowc["tipo"]}}{{$rowc["id"]}}">{{$rowc["nombre"]}}</label>
+                                        <a href="#" class="badge badge-primary select-curso" data1="{{$rowc["nombre"]}}" data2="{{$rowc["id"]}}">Ver Alumnos</a>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="col-md-4">
+                                <h3 id="grupocurso">Curso no seleccionado</h3>
+                                <hr>
+                                @foreach ($acursos as $rowc)
+                                    <div id="base{{$rowc["id"]}}" class="base-cursos" style="display: none;">
+                                        @foreach ($aalumnos as $rowa)
+                                            @if ($rowa["id_curso"] == $rowc["id"])
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input forlist is-alumno" data="{{$rowa["id"]}}-{{$rowa["tipo"]}}-{{$rowa["nombre"]}}" autocomplete="off" id="check{{$rowa["tipo"]}}{{$rowa["id"]}}">
+                                                    <label class="custom-control-label" for="check{{$rowa["tipo"]}}{{$rowa["id"]}}">{{$rowa["nombre"]}}</label>
+                                                </div>
+                                            @endif
+                                        @endforeach
                                     </div>
                                 @endforeach
                             </div>
@@ -132,6 +151,7 @@ Enviar correo
                                     </div>
                                 @endforeach
                             </div>
+                            <!--GRUPOS
                             <div class="col-md-4">
                                 <h3>Grupos</h3>
                                 <hr>
@@ -142,7 +162,15 @@ Enviar correo
                                     </div>
                                 @endforeach
                             </div>
+                            -->
                             <script>
+                                $(".select-curso").click(function(){
+                                    var nombre = $(this).attr("data1");
+                                    var id = $(this).attr("data2");
+                                    $("#grupocurso").html(nombre);
+                                    $(".base-cursos").hide();
+                                    $("#base"+id).show();
+                                });
                                 $('#todocurso').click(function(event) {   
                                     if(this.checked) {
                                         // Iterate each checkbox

@@ -125,11 +125,6 @@ class View_System extends Controller {
                     }else{
                         return redirect('');
                     }
-                case "iframe_news":
-                    header('Access-Control-Allow-Origin: https://saintcharlescollege.cl/wp/comunicaciones-2021/');
-
-                    $noticias = $this->listar_noticias();
-                    return view('iframe_news')->with("news",$noticias)->with("message",$message);
                 case "inscriptions":
                     $has_priv = false;
                     foreach ($privileges as $priv) {
@@ -188,13 +183,29 @@ class View_System extends Controller {
                 return view('not_found')->with("path",$path);
             }
         }else{
-            if($path == "iframe_news"){
-                header('Access-Control-Allow-Origin: https://saintcharlescollege.cl/wp/comunicaciones-2021/'); 
-                $noticias = $this->listar_noticias();
-                return view('iframe_news')->with("news",$noticias)->with("message",$message);
-            }
             return redirect('/logout');
         }
+    }
+    public function modal_ficha(request $request){
+        $gets = $request->input();
+        $id_stu = $gets["id_stu"];
+        $id_apo = $gets["id_apo"];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'downloadPdf',
+            'data' => ["id" => $id_stu,
+                        "id_apo" => $id_apo
+                    ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://scc.cloupping.com/api-apoderado");
+        $data = json_decode($response->body(), true);
+        return view('includes/mdl_ficha')->with("data",$data);
+    }
+    public function iframe_news(){
+        //header('Access-Control-Allow-Origin: https://saintcharlescollege.cl/wp/comunicaciones-2021/'); 
+        $noticias = $this->listar_noticias();
+        return view('iframe_news')->with("news",$noticias);
     }
     private function myCourses(){
         $arr = array(

@@ -19,6 +19,7 @@ use App\Http\Controllers\MailController;
 
 
 Route::get('/', [Google_api::class, 'login']);
+Route::get('/g-response',[Google_api::class, 'user_data']);
 Route::get('/change_period', [App_Controller::class, 'change_period']);
 Route::get('/change_staff_status', [App_Controller::class, 'change_staff_status']);
 Route::get('/change_staff_admin', [App_Controller::class, 'change_staff_admin']);
@@ -45,14 +46,15 @@ Route::get('/del_group', [App_Controller::class, 'del_group']);
 Route::get('/eliminar_correo', [App_Controller::class, 'eliminar_correo']);
 Route::get('/logout', [App_Controller::class, 'logout']);
 Route::get('/new_new', [App_Controller::class, 'new_new']);
-Route::get('/g-response',[Google_api::class, 'user_data']);
+Route::get('/logo_ins', [App_Controller::class, 'logo_ins']);
 Route::get('/modal_asignatura', [View_System::class, 'modal_asignatura']);
 Route::get('/modal_privileges', [View_System::class, 'modal_privileges']);
 Route::get('/modal_apoderados', [View_System::class, 'modal_apoderados']);
+Route::get('/modal_ficha', [View_System::class, 'modal_ficha']);
 Route::get('/modal_bloqueHorario', [View_System::class, 'modal_bloqueHorario']);
 Route::get('/destinatarios_sent_mails', [View_System::class, 'destinatarios_sent_mails']);
 Route::get('/modal_edit_group', [View_System::class, 'modal_edit_group']);
 Route::get('/save_block', [View_System::class, 'save_block']);
 Route::get('/adm_schedule', [View_System::class, 'adm_schedule']);
-Route::get('/logo_ins', [App_Controller::class, 'logo_ins']);
+Route::get('/iframe_news', [View_System::class, 'iframe_news']);
 Route::get('/{param}',[View_System::class, 'main']);

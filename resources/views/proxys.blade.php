@@ -25,10 +25,10 @@ const Toast = Swal.mixin({
 @section("context")
 
 <div class="mx-2">
-    <h2 style="text-align: center;" id="temp1">Alumnos Inscritos y Pendientes
-            @if(Session::has('period'))
-                {{Session::get('period')}}
-            @endif            
+    <h2 style="text-align: center;" id="temp1">Apoderados
+        @if(Session::has('period'))
+            {{Session::get('period')}}
+        @endif
     </h2>
     @if(isset($message))
         <script>
@@ -113,6 +113,7 @@ const Toast = Swal.mixin({
                     <th scope="col">Telefono</th>
                     <th scope="col">Celular</th>
                     <th scope="col">Alumno</th>
+                    <th scope="col">Parentezco</th>
                     <th scope="col">Curso</th>
                 </tr>
             </thead>
@@ -125,6 +126,7 @@ const Toast = Swal.mixin({
                         <td>{{$row["phone"]}} </td>
                         <td>{{$row["cell_phone"]}} </td>
                         <td>{{$row["nombre_stu"]}} </td>
+                        <td>{{$row["apoderado"]}} </td>
                         <td>{{$row["curso"]}}</td>
                     </tr>             
                 @endforeach                      
