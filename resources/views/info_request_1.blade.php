@@ -151,7 +151,7 @@ function addSheet(xlsx, table, title, name, sheetId) {
 @section("context")
 
 <div class="mx-2">
-    <h2 style="text-align: center;" id="temp1">Apoderados
+    <h2 style="text-align: center;" id="temp1">Descarga Listado de Alumnos 
         @if(Session::has('period'))
             {{Session::get('period')}}
         @endif
