@@ -105,6 +105,9 @@ if(Session::has('period')){
                             @if (in_array(2,$privileges))
                             <a class="dropdown-item" href="proxys">Apoderados</a>
                             @endif
+                            @if (in_array(4,$privileges))
+                            <a class="dropdown-item" href="info_request_1">Información Solicitada por SIGE</a>
+                            @endif
                         </div>
                     </li>
                     @endif

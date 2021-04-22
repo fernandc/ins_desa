@@ -244,7 +244,7 @@
                   @foreach($data["circle"] as $row)
                   <tr>
                       <th>{{$row["full_name"]}}</th>
-                      <th>{{$row["kinship"]}} (Del Apoderado)</th>
+                      <th>{{$row["kinship"]}}</th>
                       <th>{{$row["same_ins"]}}</th>
                       <th>{{$row["years_old"]}}</th>
                       <th>{{$row["occupation"]}}</th>

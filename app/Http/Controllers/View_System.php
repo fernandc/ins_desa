@@ -179,8 +179,35 @@ class View_System extends Controller {
                     }
                     $students = $this->matriculas($curso);
                     return view('proxys')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv);
+                case "info_request_1":
+                    $has_priv = false;
+                    foreach ($privileges as $priv) {
+                        if ($priv["id_privilege"] == 4) {
+                            $has_priv = true;
+                        }
+                    }
+                    $curso = null;
+                    if($this->isAdmin() || $has_priv){
+                        $has_priv = true;
+                        $curso = 0;
+                        if(isset($gets['curso'])){
+                            $curso = $gets['curso'];
+                        }
+                    }else{
+                        $arr = $this->myCourses();
+                        if (count($arr)==1) {
+                            $curso = $arr[0]["id_grade"];
+                        }else{
+                            $curso = null;
+                        }
+                    }
+                    if ($curso === null) {
+                        return back();
+                    }
+                    $students = $this->matriculas($curso);
+                    return view('info_request_1')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv);
                 default:
-                return view('not_found')->with("path",$path);
+                    return view('not_found')->with("path",$path);
             }
         }else{
             return redirect('/logout');
