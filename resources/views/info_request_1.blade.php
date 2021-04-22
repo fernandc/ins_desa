@@ -187,6 +187,7 @@ function addSheet(xlsx, table, title, name, sheetId) {
                     <th scope="col">Rut Alumno</th>
                     <th scope="col">Nombre Apoderado</th>
                     <th scope="col">Rut Apoderado</th>
+                    <th scope="col">Dirección</th>
                     <th scope="col">Teléfono Apoderado</th>
                 </tr>
             </thead>
@@ -254,6 +255,7 @@ function addSheet(xlsx, table, title, name, sheetId) {
                         <th scope="col">Rut Alumno</th>
                         <th scope="col">Nombre Apoderado</th>
                         <th scope="col">Rut Apoderado</th>
+                        <th scope="col">Dirección</th>
                         <th scope="col">Teléfono Apoderado</th>
                     </tr>
                 </thead>
@@ -264,6 +266,7 @@ function addSheet(xlsx, table, title, name, sheetId) {
                             <td>{{$row["dni_stu"]}} </td>
                             <td>{{$row["nombre_apo"]}} </td>
                             <td> @php echo substr($row["dni"],0,-1)."-".substr($row["dni"],-1); @endphp </td>
+                            <td>{{$row["direccion"]}} </td> 
                             <td>{{$row["cell_phone"]}} </td>
                         </tr>            
                     @endforeach                      
