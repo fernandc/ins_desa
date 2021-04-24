@@ -1,15 +1,11 @@
 @php
     $course = $active;       
 @endphp
-<script>
-    function selected_square(col,row,inh,ouh,type) {
-        if(type == 1){
-            //Asignatura
-        }else{
-            //Receso
-        }
+<style>
+    .table tbody td{
+        padding-bottom: 0px;
     }
-</script>
+</style>
 <div>
     Curso {{$course}}
 </div>
@@ -34,25 +30,15 @@
                 <tr>
                     <th>{{$cont}}</th>
                     @for ($i = 1; $i <= 6; $i++)
-                        @if (isset($sched_course))
-                            @foreach ($sched_course as $rowSch)
-                                {{$colm}} = {{$rowSch["day"]}}
-                                {{$row}}  = {{$rowSch["bloq"]}}
-                                {{$hi}}   = {{$rowSch["hour_in"]}}
-                                {{$ho}}   = {{$rowSch["hour_out"]}}
-                                {{$t}}    = {{$rowSch["type"]}}                                                        
-                            @endforeach
-                        @else
-                            
-                        @endif
+                        
                         <td>
-                            <div class="accordion" id="accordionExample">
+                            <div class="accordion">
                                 <div class="card"  id="card{{$i}}-{{$j}}">
                                     <div class="card-header" id="headingOne{{$i}}-{{$j}}" style="padding: .75rem .75rem;">
                                         <h2 class="mb-0">
                                             <select class="form-control form-control-sm" id="sel{{$i}}-{{$j}}">
                                                 <option selected>
-                                                    SELECCIONE
+                                                    NINGUNO
                                                 </option>
                                                 <option value="1" id="opt2">
                                                     ASIGNATURA
@@ -169,6 +155,9 @@
                                     </script>
                                 </div>
                             </div>
+                            <div style="text-align: center;font-size: 0.9rem;">
+                                <span id="badgein{{$i}}-{{$j}}" class="badge badge-light"></span>-<span id="badgeou{{$i}}-{{$j}}" class="badge badge-light"></span>
+                            </div>
                         </td>
                     @endfor
                 </tr>                
@@ -176,3 +165,31 @@
         </tbody>          
     </table>
 </div>
+
+<script>
+    function selected_square(day,bloq,hin,hout,type) {
+            if(type == 1){
+                $("#headingOne"+day+"-"+bloq).css("background","#73c686");
+            }else{
+                $("#headingOne"+day+"-"+bloq).css("background","#6fc5d3");
+            }
+            $("#sel"+day+"-"+bloq+" option[value="+type+"]").prop('selected', true);
+            $("#inA"+day+"-"+bloq).val(hin);
+            $("#ouA"+day+"-"+bloq).val(hout);
+            $("#badgein"+day+"-"+bloq).html(hin);
+            $("#badgeou"+day+"-"+bloq).html(hout);
+        }
+    $( document ).ready(function() {
+        
+        @foreach ($sched_course as $row)
+            @php
+                $cday = $row["day"];
+                $cbloq = $row["bloq"];
+                $chour_in = $row["hour_in"];
+                $chour_out = $row["hour_out"];
+                $ctype = $row["type"];
+            @endphp
+            selected_square({{$cday}},{{$cbloq}},"{{$chour_in}}","{{$chour_out}}",{{$ctype}});
+        @endforeach
+    });
+</script>
