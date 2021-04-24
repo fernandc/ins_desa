@@ -419,52 +419,81 @@ class View_System extends Controller {
         $user_privileges = $this->user_privileges($dni);
         return view("includes/mdl_privileges")->with("all_privileges",$all_privileges)->with("user_privileges",$user_privileges)->with("dni",$dni);
     }
+    //schedule
     public function save_block(Request $request){
-        $gets = $request->input();
-        $course = $gets["course"];
+        if(Session::get('account')['is_admin']=='YES'){
+            $gets = $request->input();
+            $course = $gets["course"];
 
-        if(Session::has('account')){
-            $dni = Session::get('account')['dni'];
-            $arr = array(
-                'institution' => getenv("APP_NAME"),
-                'public_key' => getenv("APP_PUBLIC_KEY"),
-                'method' => 'save_block_course',
-                'data' => [
-                    'dni'=>$dni,
-                    'desde'=>$gets["inputIn"],
-                    'hasta'=>$gets["inputOu"],
-                    'type'=>$gets["val"],
-                    'block'=>$gets["block"],
-                    'day'=>$gets["day"],
-                    'course'=>$gets["course"]
-                ]
-            );
-            
-            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-            $status = $response->status();
-            //dd($status);
-            return $status;
-            
-            //return $data;
+            if(Session::has('account')){
+                $dni = Session::get('account')['dni'];
+                $arr = array(
+                    'institution' => getenv("APP_NAME"),
+                    'public_key' => getenv("APP_PUBLIC_KEY"),
+                    'method' => 'save_block_course',
+                    'data' => [
+                        'dni'=>$dni,
+                        'desde'=>$gets["inputIn"],
+                        'hasta'=>$gets["inputOu"],
+                        'type'=>$gets["val"],
+                        'block'=>$gets["block"],
+                        'day'=>$gets["day"],
+                        'course'=>$gets["course"]
+                    ]
+                );
+                
+                $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                $status = $response->status();
+                //dd($status);
+                return $status;
+                
+                //return $data;
+            }else{
+                return ('/');
+            }
         }
     }
     public function show_block(Request $request){
-        $gets = $request->input();
-        //dd($gets);
-        $id_curso = $gets["id_curso"];
-        $active = $gets["current_course"];
-        $arr = array(
-            'institution' => getenv("APP_NAME"),
-            'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => 'list_schedule_course',
-            'data' => ['id' => $id_curso,]
-        );
-        //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-        $data = json_decode($response->body(), true);
-        //dd($data);  
-        return view("/includes/schedule/sch_course")->with("active", $active)->with("id_curso",$id_curso)->with("sched_course",$data); 
+        if(Session::get('account')['is_admin']=='YES'){
+            $gets = $request->input();
+            //dd($gets);
+            $id_curso = $gets["id_curso"];
+            $active = $gets["current_course"];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'list_schedule_course',
+                'data' => ['id' => $id_curso,]
+            );
+            //dd($arr);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true);
+            //dd($data);  
+            return view("/includes/schedule/sch_course")->with("active", $active)->with("id_curso",$id_curso)->with("sched_course",$data); 
+        }else{
+            return ('/');
+        }
     }
+    public function list_teacher(Request $request){
+        if(Session::get('account')['is_admin']=='YES'){
+            $gets = $request->input();
+            $id_curso = $gets["id_curso"];
+            $active = $gets["current_course"];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'list_teachers_course',
+                'data' => [ "id_curso" => $id_curso ]
+            );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true);
+            //dd($data);
+            return view("/includes/schedule/sch_teachers")->with("active", $active)->with("id_curso",$id_curso)->with("teacherList",$data); 
+        }else{
+            return ('/');
+        }
+    }
+    //
     public function modal_apoderados(Request $request){
         $gets = $request->input();
         $dni = $gets["dni"];
