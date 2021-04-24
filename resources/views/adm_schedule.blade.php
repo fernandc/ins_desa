@@ -10,48 +10,48 @@ Horario de Clases
 
 @section("context")
 <div class="container">
-    <ul class="nav nav-tabs my-3 justify-content-center">
+    <ul class="nav nav-tabs my-3 justify-content-center courses-ul">
         <li class="nav-item">
-            <a class="nav-link" data="1" href="adm_horario?curso=1">PK</a>
+            <a class="nav-link" id="course1" href="adm_horario?curso=1">PK</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="2" href="adm_horario?curso=2">KI</a>
+            <a class="nav-link" id="course2" href="adm_horario?curso=2">KI</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="3" href="adm_horario?curso=3">1B</a>
+            <a class="nav-link" id="course3" href="adm_horario?curso=3">1B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="4" href="adm_horario?curso=4">2B</a>
+            <a class="nav-link" id="course4" href="adm_horario?curso=4">2B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="5" href="adm_horario?curso=5">3B</a>
+            <a class="nav-link" id="course5" href="adm_horario?curso=5">3B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="6" href="adm_horario?curso=6">4B</a>
+            <a class="nav-link" id="course6" href="adm_horario?curso=6">4B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="7" href="adm_horario?curso=7">5B</a>
+            <a class="nav-link" id="course7" href="adm_horario?curso=7">5B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="8" href="adm_horario?curso=8">6B</a>
+            <a class="nav-link" id="course8" href="adm_horario?curso=8">6B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="9" href="adm_horario?curso=9">7B</a>
+            <a class="nav-link" id="course9" href="adm_horario?curso=9">7B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="10" href="adm_horario?curso=10">8B</a>
+            <a class="nav-link" id="course10" href="adm_horario?curso=10">8B</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="11" href="adm_horario?curso=11">1M</a>
+            <a class="nav-link" id="course11" href="adm_horario?curso=11">1M</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="12" href="adm_horario?curso=12">2M</a>
+            <a class="nav-link" id="course12" href="adm_horario?curso=12">2M</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="13" href="adm_horario?curso=13">3M</a>
+            <a class="nav-link" id="course13" href="adm_horario?curso=13">3M</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data="14" href="adm_horario?curso=14">4M</a>
+            <a class="nav-link" id="course14" href="adm_horario?curso=14">4M</a>
         </li>
         @php
             $active = 1;
@@ -78,13 +78,13 @@ Horario de Clases
                     current_course:"{{$active}}"
                 },
                 success: function (data){
-                    //$("#test").html(data);
+                    $("#sch_course").html(data);
                 }
             });
         </script>
         <script>
             $(document).ready(function(){
-                $("[data={{$active}}]").addClass("active");
+                $("#course{{$active}}").addClass("active");
             });
         </script>
     </ul>
@@ -94,10 +94,10 @@ Horario de Clases
     </ul>
     <div class="tab-content" id="nav-content">
         <div class="tab-pane fade show active" id="sch_course" role="tabpanel" aria-labelledby="course-tab">
-            @include('includes/schedule/sch_course')
+            
         </div>
         <div class="tab-pane fade" id="sch_teacher" role="tabpanel" aria-labelledby="teacher-tab">        
-            @include('includes/schedule/sch_teachers')                            
+            
         </div>
     </div>
 </div>
