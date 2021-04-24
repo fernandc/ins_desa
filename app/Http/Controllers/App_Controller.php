@@ -619,7 +619,6 @@ class App_Controller extends Controller {
         $data = json_decode($response->body(), true);
         
     }
-
     public function change_privilege(Request $request){
         $gets = $request->input();
         $arr = array(

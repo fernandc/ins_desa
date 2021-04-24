@@ -1,6 +1,15 @@
 @php
-    $course = $active;
+    $course = $active;       
 @endphp
+<script>
+    function selected_square(col,row,inh,ouh,type) {
+        if(type == 1){
+            //Asignatura
+        }else{
+            //Receso
+        }
+    }
+</script>
 <div>
     Curso {{$course}}
 </div>
@@ -25,6 +34,17 @@
                 <tr>
                     <th>{{$cont}}</th>
                     @for ($i = 1; $i <= 6; $i++)
+                        @if (isset($sched_course))
+                            @foreach ($sched_course as $rowSch)
+                                {{$colm}} = {{$rowSch["day"]}}
+                                {{$row}}  = {{$rowSch["bloq"]}}
+                                {{$hi}}   = {{$rowSch["hour_in"]}}
+                                {{$ho}}   = {{$rowSch["hour_out"]}}
+                                {{$t}}    = {{$rowSch["type"]}}                                                        
+                            @endforeach
+                        @else
+                            
+                        @endif
                         <td>
                             <div class="accordion" id="accordionExample">
                                 <div class="card"  id="card{{$i}}-{{$j}}">
@@ -99,8 +119,6 @@
                                         $("#btnA{{$i}}-{{$j}}").click(function(){
                                             var inputInA = $("#inA{{$i}}-{{$j}}").val();
                                             var inputOuA = $("#ouA{{$i}}-{{$j}}").val();
-                                            alert(inputInA);
-                                            alert(inputOuA);
                                             $.ajax({
                                                 type: "GET",
                                                 url: "save_block",
@@ -113,6 +131,7 @@
                                                     day:"{{$i}}" 
                                                 },
                                                 success: function (data){
+                                                    //$("#test").html(data);
                                                     if(data == 200 ){
                                                         $("#collapseOne{{$i}}-{{$j}}").removeClass("show");
                                                         $("select.form-control").attr("disabled",false);
@@ -121,13 +140,10 @@
                                                     }
                                                 }
                                             });
-        
                                         })
                                         $("#btnR{{$i}}-{{$j}}").click(function(){
                                             var inputInR = $("#inR{{$i}}-{{$j}}").val();
                                             var inputOuR = $("#ouR{{$i}}-{{$j}}").val();
-                                            alert(inputInR);
-                                            alert(inputOuR);
                                             $.ajax({
                                                 type: "GET",
                                                 url: "save_block",
@@ -140,7 +156,13 @@
                                                     day:"{{$i}}" 
                                                 },
                                                 success: function (data){
-                                                    $("#test").html(data);
+                                                    //$("#test").html(data);
+                                                    if(data == 200 ){
+                                                        $("#collapseTwo{{$i}}-{{$j}}").removeClass("show");
+                                                        $("select.form-control").attr("disabled",false);
+                                                    }else{
+                                                        alert("Failed");
+                                                    }
                                                 }
                                             });
                                         })

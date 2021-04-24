@@ -70,6 +70,19 @@ Horario de Clases
             @endphp
         @endforeach
         <script>
+            $.ajax({
+                type: "GET",
+                url: "show_block",
+                data:{
+                    id_curso:"{{$id_curso}}",
+                    current_course:"{{$active}}"
+                },
+                success: function (data){
+                    //$("#test").html(data);
+                }
+            });
+        </script>
+        <script>
             $(document).ready(function(){
                 $("[data={{$active}}]").addClass("active");
             });

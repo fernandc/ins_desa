@@ -439,10 +439,31 @@ class View_System extends Controller {
                     'course'=>$gets["course"]
                 ]
             );
+            
             $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-            //$status = $response->json()['status'];
-            //return $status;
+            $status = $response->status();
+            //dd($status);
+            return $status;
+            
+            //return $data;
         }
+    }
+    public function show_block(Request $request){
+        $gets = $request->input();
+        //dd($gets);
+        $id_curso = $gets["id_curso"];
+        $active = $gets["current_course"];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'list_schedule_course',
+            'data' => ['id' => $id_curso,]
+        );
+        //dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);  
+        return view("/includes/schedule/sch_course")->with("active", $active)->with("id_curso",$id_curso)->with("sched_course",$data); 
     }
     public function modal_apoderados(Request $request){
         $gets = $request->input();
