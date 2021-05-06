@@ -83,17 +83,32 @@ Horario de Clases
             });
         </script>
         <script>
+           // $("#teacher-tab").click(function(){
+                $.ajax({
+                    type: "GET",
+                    url: "list_teacher",
+                    data:{
+                        id_curso:"{{$id_curso}}",
+                        current_course:"{{$active}}"
+                    },
+                    success: function (data){
+                        $("#sch_teacher").html(data);
+                    }
+                });
+           // });
+           $("#teacher-tab").click(function(){
             $.ajax({
-                type: "GET",
-                url: "list_teacher",
-                data:{
-                    id_curso:"{{$id_curso}}",
-                    current_course:"{{$active}}"
-                },
-                success: function (data){
-                    $("#sch_teacher").html(data);
-                }
-            });
+                    type: "GET",
+                    url: "list_teacher",
+                    data:{
+                        id_curso:"{{$id_curso}}",
+                        current_course:"{{$active}}"
+                    },
+                    success: function (data){
+                        $("#sch_teacher").html(data);
+                    }
+                });
+           });
         </script>
         <script>
             $(document).ready(function(){

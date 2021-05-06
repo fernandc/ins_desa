@@ -53,30 +53,27 @@
                                 <td>
                                     <div class="accordion" id="accordionExample" >
                                         <div class="card"  id="card{{$i}}-{{$j}}" disabled>
-                                            <div class="card-header" id="headingOne{{$i}}-{{$j}}" style="padding: .75rem .75rem;">
+                                            <div class="card-header" id="headingOneT{{$i}}-{{$j}}" style="padding: .75rem .75rem;">
                                                 <h2 class="mb-0">
-                                                    <select class="form-control form-control-sm" id="sel{{$i}}-{{$j}}">
+                                                    <select class="form-control form-control-sm" id="selT{{$i}}-{{$j}}">
                                                         <option selected>
                                                             SELECCIONE
                                                         </option>
-                                                        <option value="1" id="opt2">
-                                                            ASIGNATURA
-                                                        </option>
-                                                        <option value="2" id="opt2">
-                                                            RECESO
+                                                        <option value="1" id="opt2T">
+                                                            
                                                         </option>
                                                     </select>
-                                                    <button class="btn btn-link collapsed" id="optbtn1{{$i}}-{{$j}}" hidden  type="button" data-toggle="collapse" data-target="#collapseOne{{$i}}-{{$j}}" aria-expanded="true" aria-controls="collapseOne{{$i}}-{{$j}}">
+                                                    <button class="btn btn-link collapsed" id="optbtn1T{{$i}}-{{$j}}" hidden  type="button" data-toggle="collapse" data-target="#collapseOne{{$i}}-{{$j}}" aria-expanded="true" aria-controls="collapseOne{{$i}}-{{$j}}">
                                                         Bloque {{$cont}} 
                                                     </button>
                                                     <button class="btn btn-link collapsed" id="optbtn2{{$i}}-{{$j}}" hidden type="button" data-toggle="collapse" data-target="#collapseTwo{{$i}}-{{$j}}" aria-expanded="true" aria-controls="collapseTwo{{$i}}-{{$j}}">
                                                         Receso {{$cont}} 
                                                     </button>
                                                     <script>
-                                                        $("#sel{{$i}}-{{$j}}").change(function(){
+                                                        $("#selT{{$i}}-{{$j}}").change(function(){
                                                             var opt = $(this).val();
                                                             if(opt == 1){
-                                                                $("#optbtn1{{$i}}-{{$j}}").click(); 
+                                                                $("#optbtn1T{{$i}}-{{$j}}").click(); 
                                                                 $("#collapseTwo{{$i}}-{{$j}}").removeClass("show");
                                                                 $("#headingOne{{$i}}-{{$j}}").css("background","#73c686");
                                                                 $("select.form-control").attr("disabled",true);
@@ -91,22 +88,20 @@
                                                     </script>
                                                 </h2>
                                             </div>
-                                            <div id="collapseOne{{$i}}-{{$j}}" class="collapse" aria-labelledby="headingOne{{$i}}-{{$j}}" >
+                                            <div id="collapseOneT{{$i}}-{{$j}}" class="collapse" aria-labelledby="headingOne{{$i}}-{{$j}}" >
                                                 <div class="card-body text-white mb-3" style="background:#73c686">
                                                     <label for="">Desde</label>
-                                                    <input class="form-control" type="time" name="in1" id="inA{{$i}}-{{$j}}">
+                                                    <input class="form-control" type="time" name="in1" id="inAt{{$i}}-{{$j}}">
                                                     <br>
                                                     <label for="">Hasta</label>
-                                                    <input class="form-control" type="time" name="out1" id="ouA{{$i}}-{{$j}}">
-                                                    <button class="btn btn-success btn-sm mt-4 mb-2 float-right" id="btnA{{$i}}-{{$j}}"  > Guardar</button>
+                                                    <input class="form-control" type="time" name="out1" id="ouAt{{$i}}-{{$j}}">
                                                 </div>
                                             </div>
-                                            <div id="collapseTwo{{$i}}-{{$j}}" class="collapse" aria-labelledby="headingTwo{{$i}}-{{$j}}" >
-                                                <div class="card-body text-white mb-3" style="background:#6fc5d3">
-                                                    
-                                                </div>
-                                            </div>
+                        
                                         </div>
+                                    </div>
+                                    <div style="text-align: center;font-size: 0.9rem;">
+                                        <span id="badgeint{{$i}}-{{$j}}" class="badge badge-light"></span>-<span id="badgeout{{$i}}-{{$j}}" class="badge badge-light"></span>
                                     </div>
                                 </td>
                             @endfor
@@ -119,3 +114,29 @@
       </div>
     </div>
   </div>
+
+  <script>
+    function selected_squared(day,bloq,hin,hout,type) { 
+        if(type == 1){
+                $("#headingOneT"+day+"-"+bloq).css("background","#73c686");
+            }else{
+                $("#headingOneT"+day+"-"+bloq).css("background","#6fc5d3");
+            }
+            $("#selT"+day+"-"+bloq+" option[value="+type+"]").prop('selected', true);
+            $("#badgeint"+day+"-"+bloq).html(hin);
+            $("#badgeout"+day+"-"+bloq).html(hout);
+        }
+    $( document ).ready(function() {
+        @foreach ($sched_course_t as $row)
+            @php
+                $cday = $row["day"];
+                $cbloq = $row["bloq"];
+                $chour_in = $row["hour_in"];
+                $chour_out = $row["hour_out"];
+                $ctype = $row["type"];
+            @endphp
+            
+            selected_squared({{$cday}},{{$cbloq}},"{{$chour_in}}","{{$chour_out}}",{{$ctype}});
+        @endforeach
+    });
+</script>

@@ -161,7 +161,8 @@
 
 <script>
     function selected_square(day,bloq,hin,hout,type) {
-            if(type == 1){
+        //
+        if(type == 1){
                 $("#headingOne"+day+"-"+bloq).css("background","#73c686");
             }else{
                 $("#headingOne"+day+"-"+bloq).css("background","#6fc5d3");

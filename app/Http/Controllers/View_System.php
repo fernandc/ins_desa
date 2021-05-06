@@ -487,8 +487,17 @@ class View_System extends Controller {
             );
             $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
             $data = json_decode($response->body(), true);
+            $arr2 = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'list_schedule_course',
+                'data' => ['id' => $id_curso,]
+            );
+            //dd($arr);
+            $response2 = Http::withBody(json_encode($arr2), 'application/json')->post("https://cloupping.com/api-ins");
+            $data2 = json_decode($response2->body(), true);
             //dd($data);
-            return view("/includes/schedule/sch_teachers")->with("active", $active)->with("id_curso",$id_curso)->with("teacherList",$data); 
+            return view("/includes/schedule/sch_teachers")->with("active", $active)->with("id_curso",$id_curso)->with("teacherList",$data)->with("sched_course_t",$data2);
         }else{
             return ('/');
         }
