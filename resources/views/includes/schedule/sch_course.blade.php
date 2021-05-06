@@ -7,6 +7,7 @@
     }
 </style>
 <div>
+    
     Curso {{$course}}
 </div>
 <div class="table table-responsive table-bordered">
@@ -105,52 +106,44 @@
                                         $("#btnA{{$i}}-{{$j}}").click(function(){
                                             var inputInA = $("#inA{{$i}}-{{$j}}").val();
                                             var inputOuA = $("#ouA{{$i}}-{{$j}}").val();
-                                            $.ajax({
-                                                type: "GET",
-                                                url: "save_block",
-                                                data:{
-                                                    inputIn:inputInA,
-                                                    inputOu:inputOuA,
-                                                    course:"{{$id_curso}}",
-                                                    val: "1",
-                                                    block:"{{$j}}",
-                                                    day:"{{$i}}" 
-                                                },
-                                                success: function (data){
-                                                    //$("#test").html(data);
-                                                    if(data == 200 ){
-                                                        $("#collapseOne{{$i}}-{{$j}}").removeClass("show");
-                                                        $("select.form-control").attr("disabled",false);
-                                                    }else{
-                                                        alert("Failed");
-                                                    }
+                                            var type = $("#sel{{$i}}-{{$j}}").val();
+                                            if(inputInA != "" && inputOuA != ""){
+                                                if(inputOuA > inputInA){
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        url: "save_block",
+                                                        data:{
+                                                            inputIn:inputInA,
+                                                            inputOu:inputOuA,
+                                                            course:"{{$id_curso}}",
+                                                            val: type,
+                                                            block:"{{$j}}",
+                                                            day:"{{$i}}" 
+                                                        },
+                                                        success: function (data){
+                                                            //$("#test").html(data);
+                                                            if(data == 200 ){
+                                                                $("#collapseOne{{$i}}-{{$j}}").removeClass("show");
+                                                                $("select.form-control").attr("disabled",false);
+                                                            }else{
+                                                                alert("Failed");
+                                                            }
+                                                        }
+                                                    });
+                                                }else{
+                                                    Swal.fire({
+                                                        icon: 'error',
+                                                        title: 'Oops...',
+                                                        text: 'La hora final debe ser mayor a la hora inicio',
+                                                    });
                                                 }
-                                            });
-                                        })
-                                        $("#btnR{{$i}}-{{$j}}").click(function(){
-                                            var inputInR = $("#inR{{$i}}-{{$j}}").val();
-                                            var inputOuR = $("#ouR{{$i}}-{{$j}}").val();
-                                            $.ajax({
-                                                type: "GET",
-                                                url: "save_block",
-                                                data:{
-                                                    inputIn:inputInR,
-                                                    inputOu:inputOuR,
-                                                    course:"{{$id_curso}}",
-                                                    val: "2",
-                                                    block:"{{$j}}",
-                                                    day:"{{$i}}" 
-                                                },
-                                                success: function (data){
-                                                    //$("#test").html(data);
-                                                    if(data == 200 ){
-                                                        $("#collapseTwo{{$i}}-{{$j}}").removeClass("show");
-                                                        $("select.form-control").attr("disabled",false);
-                                                    }else{
-                                                        alert("Failed");
-                                                    }
-                                                }
-                                            });
+                                            }else{
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Oops...',
+                                                    text: 'No se ha completado los campos',
+                                                })
+                                            }
                                         })
                                     </script>
                                 </div>
