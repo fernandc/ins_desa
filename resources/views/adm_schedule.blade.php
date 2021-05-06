@@ -78,37 +78,12 @@ Horario de Clases
                     current_course:"{{$active}}"
                 },
                 success: function (data){
-                    $("#sch_course").html(data);
+                    $("#schedulecontent").html(data);
                 }
             });
         </script>
         <script>
-           // $("#teacher-tab").click(function(){
-                $.ajax({
-                    type: "GET",
-                    url: "list_teacher",
-                    data:{
-                        id_curso:"{{$id_curso}}",
-                        current_course:"{{$active}}"
-                    },
-                    success: function (data){
-                        $("#sch_teacher").html(data);
-                    }
-                });
-           // });
-           $("#teacher-tab").click(function(){
-            $.ajax({
-                    type: "GET",
-                    url: "list_teacher",
-                    data:{
-                        id_curso:"{{$id_curso}}",
-                        current_course:"{{$active}}"
-                    },
-                    success: function (data){
-                        $("#sch_teacher").html(data);
-                    }
-                });
-           });
+           
         </script>
         <script>
             $(document).ready(function(){
@@ -116,17 +91,8 @@ Horario de Clases
             });
         </script>
     </ul>
-    <ul class="nav nav-tabs my-3 justify-content-center" id="nav-tab">
-        <li class="nav-item" data="1"><a class="nav-link active" data="1" href="#sch_course" aria-controls="sch_course" id="course-tab" data-toggle="tab">Bloques de Horario</a></li>
-        <li class="nav-item" data="2"><a class="nav-link" data="2" href="#sch_teacher" aria-controls="sch_teachers" id="teacher-tab" data-toggle="tab">Profesores</a></li>
-    </ul>
-    <div class="tab-content" id="nav-content">
-        <div class="tab-pane fade show active" id="sch_course" role="tabpanel" aria-labelledby="course-tab">
-            
-        </div>
-        <div class="tab-pane fade" id="sch_teacher" role="tabpanel" aria-labelledby="teacher-tab">        
-            
-        </div>
+    <div id="schedulecontent">
+
     </div>
 </div>
 @endsection

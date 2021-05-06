@@ -6,21 +6,41 @@
         padding-bottom: 0px;
     }
 </style>
-<div>
-    
-    Curso {{$course}}
-</div>
 <div class="table table-responsive table-bordered">
     <table class="table" id="test">
         <thead>
-            <tr>
-                <th scope="col">Bloque</th>
-                <th scope="col">Lunes</th>
-                <th scope="col">Martes</th>
-                <th scope="col">Miércoles</th>
-                <th scope="col">Jueves</th>
-                <th scope="col">Viernes</th>
-                <th scope="col">Sábado</th>
+            <tr style="text-align: center;">
+                <th scope="col" style="vertical-align: middle;">Bloque</th>
+                <th scope="col">
+                    Lunes
+                    <br>
+                    <a href="#" class="badge badge-primary mdl-new" data="1" data-toggle="modal" data-target="#mdladd">Agregar Bloque</a>
+                </th>
+                <th scope="col">
+                    Martes
+                    <br>
+                    <a href="#" class="badge badge-primary mdl-new" data="2" data-toggle="modal" data-target="#mdladd">Agregar Bloque</a>
+                </th>
+                <th scope="col">
+                    Miércoles
+                    <br>
+                    <a href="#" class="badge badge-primary mdl-new" data="3" data-toggle="modal" data-target="#mdladd">Agregar Bloque</a>
+                </th>
+                <th scope="col">
+                    Jueves
+                    <br>
+                    <a href="#" class="badge badge-primary mdl-new" data="4" data-toggle="modal" data-target="#mdladd">Agregar Bloque</a>
+                </th>
+                <th scope="col">
+                    Viernes
+                    <br>
+                    <a href="#" class="badge badge-primary mdl-new" data="5" data-toggle="modal" data-target="#mdladd">Agregar Bloque</a>
+                </th>
+                <th scope="col">
+                    Sábado
+                    <br>
+                    <a href="#" class="badge badge-primary mdl-new" data="6" data-toggle="modal" data-target="#mdladd">Agregar Bloque</a>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -157,6 +177,44 @@
             @endfor
         </tbody>          
     </table>
+    <div id="mdladd" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mdltitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button id="saveBloq" type="button" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var cday = 0;
+        $(".mdl-new").click(function(){
+            var day = $(this).attr("data");
+            cday = day;
+            var title = "";
+            if(day == 1){title = "Bloque para día Lunes"}
+            if(day == 2){title = "Bloque para día Martes"}
+            if(day == 3){title = "Bloque para día Miercoles"}
+            if(day == 4){title = "Bloque para día Jueves"}
+            if(day == 5){title = "Bloque para día Vuernes"}
+            if(day == 6){title = "Bloque para día Sábado"}
+            $("#mdltitle").html(title);
+        })
+        $("#saveBloq").click(function(){
+            alert(cday);
+            //ajax
+        })
+    </script>
 </div>
 
 <script>
