@@ -423,8 +423,6 @@ class View_System extends Controller {
     public function save_block(Request $request){
         if(Session::get('account')['is_admin']=='YES'){
             $gets = $request->input();
-            $course = $gets["course"];
-
             if(Session::has('account')){
                 $dni = Session::get('account')['dni'];
                 $arr = array(
@@ -433,15 +431,14 @@ class View_System extends Controller {
                     'method' => 'save_block_course',
                     'data' => [
                         'dni'=>$dni,
-                        'desde'=>$gets["inputIn"],
-                        'hasta'=>$gets["inputOu"],
-                        'type'=>$gets["val"],
-                        'block'=>$gets["block"],
+                        'desde'=>$gets["hour_in"],
+                        'hasta'=>$gets["hour_out"],
                         'day'=>$gets["day"],
-                        'course'=>$gets["course"]
+                        'asignatura'=>$gets["asignatura"],
+                        'profesor'=>$gets["profesor"]
                     ]
                 );
-                
+                return $arr;
                 $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
                 $status = $response->status();
                 //dd($status);
