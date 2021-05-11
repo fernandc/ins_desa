@@ -57,7 +57,61 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    @php
+                        dd($clase_curso);
+                    @endphp
+                    <form>
+                        <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputAS">Asignatura</label>
+                            <select id="inputAS" class="form-control">
+                                <option selected>Seleccionar</option>
+                                @php
+                                    $materias = array();
+                                    $profesores = array();
+                                @endphp  
+                                @foreach ($clase_curso as $item)
+                                    @php
+                                        array_push($materias,$item["materia"]);
+                                        array_push($profesores,$item["nombre_personal"]);
+                                    @endphp    
+                                @endforeach
+                                @php
+                                    $materias = array_unique($materias);
+                                    $profesores = array_unique($profesores);
+                                @endphp
+                                @foreach ($materias as $row)
+                                    <option>
+                                        {{$row}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputPR">Profesor</label>
+                            <select id="inputPR" class="form-control">
+                            <option selected>Seleccionar</option>
+                            @foreach ($profesores as $item)
+                                <option>
+                                    {{$item}}
+                                </option>
+                            @endforeach
+                            </select>
+                        </div>
+                        </div>
+                        <br>
+                        <h5 style="text-align: center">Horario</h5>
+                        <div class="form-row">
+                            <div class="form-group col-md-6" >
+                                <label for="">Desde</label>
+                                <input class="form-control" type="time" name="in" id="in">
+                            </div>
+                            <div class="form-group col-md-6" >
+                                <label for="">Hasta</label>
+                                <input class="form-control" type="time" name="out" id="out">
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
