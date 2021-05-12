@@ -268,15 +268,18 @@
             if(day == 6){title = "Bloque para día Sábado"}
             $("#mdltitle").html(title);
         })
-
-            
-
         $("#saveBloq").click(function(){
             var hin = $("#hourIn").val();
             var hou = $("#hourOut").val();
             var asig = $("#inputAS").val();
             var prof = $("#inputPR").val();
+            var id_class = "";
             if(hin != "" && hou != "" && asig != "" && prof != ""){
+                parse.forEach(element => {
+                    if(element["nombre_personal"] == prof && element["materia"] == asig){
+                        id_class = element["id_clase"];
+                    }
+                });
                 $.ajax({
                 type: "GET",
                 url: "save_block",
@@ -285,10 +288,19 @@
                     hour_out:hou,
                     asignatura:asig,
                     profesor:prof,
-                    day:cday
+                    day:cday,
+                    id_clase:id_class
                 },
                 success: function (data){
-                    console.log(data);
+                    //console.log(data);
+                    if(data == 200){
+                        Swal.fire({
+                        icon: 'success',
+                        title: 'Completado!',
+                        text: 'El bloque se ha guardado con éxito.'
+                        })
+                        location.reload();
+                    }
                 }
             });
             }else{

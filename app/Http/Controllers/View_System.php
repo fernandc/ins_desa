@@ -435,10 +435,10 @@ class View_System extends Controller {
                         'hasta'=>$gets["hour_out"],
                         'day'=>$gets["day"],
                         'asignatura'=>$gets["asignatura"],
-                        'profesor'=>$gets["profesor"]
+                        'profesor'=>$gets["profesor"],
+                        'id_clase'=>$gets["id_clase"]
                     ]
                 );
-                return $arr;
                 $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
                 $status = $response->status();
                 //dd($status);
