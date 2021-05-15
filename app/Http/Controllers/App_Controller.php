@@ -129,6 +129,19 @@ class App_Controller extends Controller {
             return redirect('/');
         }
     }
+    public function rmv_block(Request $request){
+        if($this->isAdmin()){
+            $gets = $request->input();
+            $id = $gets["schid"];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'del_block_course',
+                'data' => ['id' => $id]
+            );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        }
+    }
     public function add_user(Request $request){
         if($this->isAdmin()){
             $gets = $request->input();

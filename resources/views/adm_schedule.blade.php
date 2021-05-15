@@ -9,7 +9,7 @@ Horario de Clases
 @endsection
 
 @section("context")
-<div class="container">
+<div class="mx-2">
     <ul class="nav nav-tabs my-3 justify-content-center courses-ul">
         <li class="nav-item">
             <a class="nav-link" id="course1" href="adm_horario?curso=1">PK</a>

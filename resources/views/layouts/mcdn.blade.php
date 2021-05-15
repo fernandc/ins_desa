@@ -122,13 +122,15 @@ if(Session::has('period')){
                             Administrar
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="adm_periods">Periodos</a>
-                            <a class="dropdown-item" href="adm_users">Usuarios</a>
-                            <a class="dropdown-item {{$periodenable}}"  href="adm_courses">Cursos</a>
-                            <a class="dropdown-item {{$periodenable}}" href="adm_subject">Asignaturas</a>
-                            <a class="dropdown-item {{$periodenable}}" href="adm_teachers">Profesores</a>
-                            <a class="dropdown-item {{$periodenable}}" href="adm_horario">Horario de clases</a>
-                            <a class="dropdown-item" href="adm_students">Estudiantes</a>
+                            <a class="dropdown-item" href="adm_periods"><i class="far fa-calendar-alt" style="min-width: 28px"></i> Periodos</a>
+                            <a class="dropdown-item" href="adm_users"><i class="fas fa-users" style="min-width: 28px"></i> Usuarios</a>
+                            <a class="dropdown-item {{$periodenable}}"  href="adm_courses"><i class="fas fa-book" style="min-width: 28px"></i> Cursos</a>
+                            <a class="dropdown-item {{$periodenable}}" href="adm_subject"><i class="fas fa-chalkboard" style="min-width: 28px"></i> Asignaturas</a>
+                            <a class="dropdown-item {{$periodenable}}" href="adm_teachers"><i class="fas fa-chalkboard-teacher" style="min-width: 28px"></i> Profesores</a>
+                            <a class="dropdown-item {{$periodenable}}" href="adm_horario"><i class="fas fa-th" style="min-width: 28px"></i> Horario de clases</a>
+                            <a class="dropdown-item" href="adm_students"><i class="fas fa-user-graduate" style="min-width: 28px"></i> Estudiantes</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="https://saintcharlescollege.cl/apoderados/admin" target="_blank"><i class="far fa-address-book" style="min-width: 28px"></i> Sistema Matriculas</a>
                         </div>
                     </li>
                     @endif

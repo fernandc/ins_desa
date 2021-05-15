@@ -423,6 +423,8 @@ class View_System extends Controller {
     public function save_block(Request $request){
         if(Session::get('account')['is_admin']=='YES'){
             $gets = $request->input();
+            $in = $gets["hour_in"].":00";
+            $out = $gets["hour_out"].":00";
             if(Session::has('account')){
                 $dni = Session::get('account')['dni'];
                 $arr = array(
@@ -431,8 +433,8 @@ class View_System extends Controller {
                     'method' => 'save_block_course',
                     'data' => [
                         'dni'=>$dni,
-                        'desde'=>$gets["hour_in"],
-                        'hasta'=>$gets["hour_out"],
+                        'desde'=>$in,
+                        'hasta'=>$out,
                         'day'=>$gets["day"],
                         'asignatura'=>$gets["asignatura"],
                         'profesor'=>$gets["profesor"],

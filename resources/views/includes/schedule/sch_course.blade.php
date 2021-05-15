@@ -15,6 +15,9 @@
     .table tbody td{
         padding-bottom: 0px;
     }
+    tbody th:first-child {
+        font-weight: normal;
+    }
 </style>
 <div class="table table-responsive table-bordered">
     <table class="table" id="test">
@@ -55,12 +58,12 @@
         </thead>
         <tbody>
             @php
-                $dia1 = array();        
-                $dia2 = array();        
-                $dia3 = array();        
-                $dia4 = array();        
-                $dia5 = array();        
-                $dia6 = array();            
+                $dia1 = array();
+                $dia2 = array();
+                $dia3 = array();
+                $dia4 = array();
+                $dia5 = array();
+                $dia6 = array();
             @endphp
             @foreach ($sched_course as $item)
                 @php
@@ -87,78 +90,108 @@
             <tr>
                 <th>
                     @foreach ($dia1 as $item)
-                        <div class="card text-center mb-2">
-                            <div class="card-header">
-                                {{$item["nombre_personal"]}}
+                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
+                            <div class="card-header row">
+                                <div class="col-md-8" style="text-align: left;">
+                                    {{$item["nombre_personal"]}}
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
+                                </div>
                             </div>
                             <div class="card-body" style="padding: 0.75rem;">
                                 <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{$item["hora_inicio"]}} - {{$item["hora_fin"]}}</p>
+                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
                             </div>
                         </div>
                     @endforeach
                 </th>
                 <td>
                     @foreach ($dia2 as $item)
-                        <div class="card text-center mb-2">
-                            <div class="card-header">
-                                {{$item["nombre_personal"]}}
+                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
+                            <div class="card-header row">
+                                <div class="col-md-8" style="text-align: left;">
+                                    {{$item["nombre_personal"]}}
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
+                                </div>
                             </div>
                             <div class="card-body" style="padding: 0.75rem;">
                                 <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{$item["hora_inicio"]}} - {{$item["hora_fin"]}}</p>
+                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
                             </div>
                         </div>
                     @endforeach
                 </td>
                 <td>
                     @foreach ($dia3 as $item)
-                        <div class="card text-center mb-2">
-                            <div class="card-header">
-                                {{$item["nombre_personal"]}}
+                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
+                            <div class="card-header row">
+                                <div class="col-md-8" style="text-align: left;">
+                                    {{$item["nombre_personal"]}}
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
+                                </div>
                             </div>
                             <div class="card-body" style="padding: 0.75rem;">
                                 <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{$item["hora_inicio"]}} - {{$item["hora_fin"]}}</p>
+                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
                             </div>
                         </div>
                     @endforeach
                 </td>
                 <td>
                     @foreach ($dia4 as $item)
-                        <div class="card text-center mb-2">
-                            <div class="card-header">
-                                {{$item["nombre_personal"]}}
+                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
+                            <div class="card-header row">
+                                <div class="col-md-8" style="text-align: left;">
+                                    {{$item["nombre_personal"]}}
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
+                                </div>
                             </div>
                             <div class="card-body" style="padding: 0.75rem;">
                                 <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{$item["hora_inicio"]}} - {{$item["hora_fin"]}}</p>
+                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
                             </div>
                         </div>
                     @endforeach
                 </td>
                 <td>
                     @foreach ($dia5 as $item)
-                        <div class="card text-center mb-2">
-                            <div class="card-header">
-                                {{$item["nombre_personal"]}}
+                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
+                            <div class="card-header row">
+                                <div class="col-md-8" style="text-align: left;">
+                                    {{$item["nombre_personal"]}}
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
+                                </div>
                             </div>
                             <div class="card-body" style="padding: 0.75rem;">
                                 <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{$item["hora_inicio"]}} - {{$item["hora_fin"]}}</p>
+                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
                             </div>
                         </div>
                     @endforeach
                 </td>
                 <td>
                     @foreach ($dia6 as $item)
-                        <div class="card text-center mb-2">
-                            <div class="card-header">
-                                {{$item["nombre_personal"]}}
+                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
+                            <div class="card-header row">
+                                <div class="col-md-8" style="text-align: left;">
+                                    {{$item["nombre_personal"]}}
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
+                                </div>
                             </div>
                             <div class="card-body" style="padding: 0.75rem;">
                                 <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{$item["hora_inicio"]}} - {{$item["hora_fin"]}}</p>
+                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
                             </div>
                         </div>
                     @endforeach
@@ -255,6 +288,41 @@
         </div>
     </div>
     <script>
+        $(".btn-del-sch").click(function(){
+            var schid = $(this).attr('data');
+            Swal.fire({
+            title: '¿Eliminar esta clase?',
+            text: "Se puede volver a crear",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#sch"+schid).remove();
+                    $.ajax({
+                        type: "GET",
+                        url: "rmv_block",
+                        data:{
+                            schid,
+                        },
+                        success: function (data){
+                            //console.log(data);
+                            if(data == 200){
+                                Swal.fire(
+                                'Eliminado!',
+                                'La clase ha sido eliminada',
+                                'success'
+                                );
+                            }
+                        }
+                    });
+                    
+                }
+            });
+        });
         var cday = 0;
         $(".mdl-new").click(function(){
             var day = $(this).attr("data");
@@ -264,7 +332,7 @@
             if(day == 2){title = "Bloque para día Martes"}
             if(day == 3){title = "Bloque para día Miercoles"}
             if(day == 4){title = "Bloque para día Jueves"}
-            if(day == 5){title = "Bloque para día Vuernes"}
+            if(day == 5){title = "Bloque para día Viernes"}
             if(day == 6){title = "Bloque para día Sábado"}
             $("#mdltitle").html(title);
         })
@@ -281,28 +349,28 @@
                     }
                 });
                 $.ajax({
-                type: "GET",
-                url: "save_block",
-                data:{
-                    hour_in:hin,
-                    hour_out:hou,
-                    asignatura:asig,
-                    profesor:prof,
-                    day:cday,
-                    id_clase:id_class
-                },
-                success: function (data){
-                    //console.log(data);
-                    if(data == 200){
-                        Swal.fire({
-                        icon: 'success',
-                        title: 'Completado!',
-                        text: 'El bloque se ha guardado con éxito.'
-                        })
-                        location.reload();
+                    type: "GET",
+                    url: "save_block",
+                    data:{
+                        hour_in:hin,
+                        hour_out:hou,
+                        asignatura:asig,
+                        profesor:prof,
+                        day:cday,
+                        id_clase:id_class
+                    },
+                    success: function (data){
+                        //console.log(data);
+                        if(data == 200){
+                            Swal.fire({
+                            icon: 'success',
+                            title: 'Completado!',
+                            text: 'El bloque se ha guardado con éxito.'
+                            })
+                            location.reload();
+                        }
                     }
-                }
-            });
+                });
             }else{
                 Swal.fire({
                 icon: 'error',
@@ -310,7 +378,6 @@
                 text: 'Se debe fijar un horario.'
                 })
             }
-            //ajax
         })
     </script>
 

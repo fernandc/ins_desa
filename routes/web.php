@@ -55,6 +55,7 @@ Route::get('/modal_bloqueHorario', [View_System::class, 'modal_bloqueHorario']);
 Route::get('/destinatarios_sent_mails', [View_System::class, 'destinatarios_sent_mails']);
 Route::get('/modal_edit_group', [View_System::class, 'modal_edit_group']);
 Route::get('/save_block', [View_System::class, 'save_block']);
+Route::get('/rmv_block',[App_Controller::class, 'rmv_block']);
 Route::get('/show_block', [View_System::class, 'show_block']);
 Route::get('/list_teacher', [View_System::class, 'list_teacher']);
 Route::get('/adm_schedule', [View_System::class, 'adm_schedule']);
