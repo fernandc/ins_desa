@@ -57,144 +57,18 @@
             </tr>
         </thead>
         <tbody>
-            @php
-                $dia1 = array();
-                $dia2 = array();
-                $dia3 = array();
-                $dia4 = array();
-                $dia5 = array();
-                $dia6 = array();
-            @endphp
-            @foreach ($sched_course as $item)
-                @php
-                    if($item["dia"]==1){
-                        array_push($dia1,$item);
-                    }
-                    if($item["dia"]==2){
-                        array_push($dia2,$item);
-                    }
-                    if($item["dia"]==3){
-                        array_push($dia3,$item);
-                    }
-                    if($item["dia"]==4){
-                        array_push($dia4,$item);
-                    }
-                    if($item["dia"]==5){
-                        array_push($dia5,$item);
-                    }
-                    if($item["dia"]==6){
-                        array_push($dia6,$item);
-                    }
-                @endphp
-            @endforeach
             <tr>
-                <th>
-                    @foreach ($dia1 as $item)
-                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
-                            <div class="card-header row">
-                                <div class="col-md-8" style="text-align: left;">
-                                    {{$item["nombre_personal"]}}
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
-                                </div>
-                            </div>
-                            <div class="card-body" style="padding: 0.75rem;">
-                                <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
-                            </div>
-                        </div>
-                    @endforeach
+                <th id="d1">
                 </th>
-                <td>
-                    @foreach ($dia2 as $item)
-                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
-                            <div class="card-header row">
-                                <div class="col-md-8" style="text-align: left;">
-                                    {{$item["nombre_personal"]}}
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
-                                </div>
-                            </div>
-                            <div class="card-body" style="padding: 0.75rem;">
-                                <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
-                            </div>
-                        </div>
-                    @endforeach
+                <td id="d2">
                 </td>
-                <td>
-                    @foreach ($dia3 as $item)
-                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
-                            <div class="card-header row">
-                                <div class="col-md-8" style="text-align: left;">
-                                    {{$item["nombre_personal"]}}
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
-                                </div>
-                            </div>
-                            <div class="card-body" style="padding: 0.75rem;">
-                                <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
-                            </div>
-                        </div>
-                    @endforeach
+                <td id="d3">
                 </td>
-                <td>
-                    @foreach ($dia4 as $item)
-                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
-                            <div class="card-header row">
-                                <div class="col-md-8" style="text-align: left;">
-                                    {{$item["nombre_personal"]}}
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
-                                </div>
-                            </div>
-                            <div class="card-body" style="padding: 0.75rem;">
-                                <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
-                            </div>
-                        </div>
-                    @endforeach
+                <td id="d4">
                 </td>
-                <td>
-                    @foreach ($dia5 as $item)
-                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
-                            <div class="card-header row">
-                                <div class="col-md-8" style="text-align: left;">
-                                    {{$item["nombre_personal"]}}
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
-                                </div>
-                            </div>
-                            <div class="card-body" style="padding: 0.75rem;">
-                                <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
-                            </div>
-                        </div>
-                    @endforeach
+                <td id="d5">
                 </td>
-                <td>
-                    @foreach ($dia6 as $item)
-                        <div id="sch{{$item["id"]}}" class="card text-center mb-2" style="min-width: 300px;">
-                            <div class="card-header row">
-                                <div class="col-md-8" style="text-align: left;">
-                                    {{$item["nombre_personal"]}}
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-outline-danger btn-sm btn-del-sch" data="{{$item["id"]}}" style="float: right;"><i class="far fa-trash-alt"></i></button>    
-                                </div>
-                            </div>
-                            <div class="card-body" style="padding: 0.75rem;">
-                                <h6 class="card-title">{{$item["nombre_materia"]}}</h6>
-                                <p class="card-text">{{substr($item["hora_inicio"],0,5)}} - {{substr($item["hora_fin"],0,5)}}</p>
-                            </div>
-                        </div>
-                    @endforeach
+                <td id="d6">
                 </td>
               </tr>
         </tbody>               
@@ -288,8 +162,36 @@
         </div>
     </div>
     <script>
-        $(".btn-del-sch").click(function(){
-            var schid = $(this).attr('data');
+        function newBloq(id,dia,personal,materia,hini,hfin){
+            var line1 = '<div id="sch'+id+'" class="card text-center mb-2" style="min-width: 300px;"><div class="card-header row m-0">';
+            var line2 = '<div class="col-md-8" style="text-align: left;">'+personal+'</div>';
+            var line3 = '<div class="col-md-4"><button class="btn btn-outline-danger btn-sm btn-del-sch" data="'+id+'" onclick="delSch('+id+')" style="float: right;"><i class="far fa-trash-alt"></i></button></div>';
+            var line4 = '</div><div class="card-body" style="padding: 0.75rem;"><h6 class="card-title">'+materia+'</h6>';
+            var line5 = '<p class="card-text d'+dia+'">'+hini+' - '+hfin+'</p></div></div>';
+            if($("#d"+dia).text().trim().length > 0){
+                var cid = "";
+                $(".d"+dia).each(function(){
+                    var ctime = $(this).text().substr(0,5).replaceAll(':', '');
+                    var gtime = hini.replaceAll(':', '');
+                    //alert(ctime+" "+gtime);
+                    if(ctime <= gtime){
+                        cid =  $(this).parent().parent().attr('id');
+                    }
+                });
+                if(cid == ""){
+                    $("#d"+dia).prepend(line1+line2+line3+line4+line5);
+                }else{
+                    $("#"+cid).after(line1+line2+line3+line4+line5);
+                }
+            }else{
+                $("#d"+dia).append(line1+line2+line3+line4+line5);
+            }
+            //return line1+line2+line3+line4+line5;
+        }
+        @foreach ($sched_course as $item)
+            newBloq('{{$item["id"]}}','{{$item["dia"]}}','{{$item["nombre_personal"]}}','{{$item["nombre_materia"]}}','{{substr($item["hora_inicio"],0,5)}}','{{substr($item["hora_fin"],0,5)}}');
+        @endforeach
+        function delSch(schid){
             Swal.fire({
             title: '¿Eliminar esta clase?',
             text: "Se puede volver a crear",
@@ -322,7 +224,8 @@
                     
                 }
             });
-        });
+        }
+
         var cday = 0;
         $(".mdl-new").click(function(){
             var day = $(this).attr("data");
@@ -360,14 +263,14 @@
                         id_clase:id_class
                     },
                     success: function (data){
-                        //console.log(data);
-                        if(data == 200){
+                        if(data != ""){
+                            newBloq(data,cday,prof,asig,hin,hou);
+                            $("form").trigger("reset");
                             Swal.fire({
                             icon: 'success',
                             title: 'Completado!',
                             text: 'El bloque se ha guardado con éxito.'
                             })
-                            location.reload();
                         }
                     }
                 });

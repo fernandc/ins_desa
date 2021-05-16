@@ -420,38 +420,7 @@ class View_System extends Controller {
         return view("includes/mdl_privileges")->with("all_privileges",$all_privileges)->with("user_privileges",$user_privileges)->with("dni",$dni);
     }
     //schedule
-    public function save_block(Request $request){
-        if(Session::get('account')['is_admin']=='YES'){
-            $gets = $request->input();
-            $in = $gets["hour_in"].":00";
-            $out = $gets["hour_out"].":00";
-            if(Session::has('account')){
-                $dni = Session::get('account')['dni'];
-                $arr = array(
-                    'institution' => getenv("APP_NAME"),
-                    'public_key' => getenv("APP_PUBLIC_KEY"),
-                    'method' => 'save_block_course',
-                    'data' => [
-                        'dni'=>$dni,
-                        'desde'=>$in,
-                        'hasta'=>$out,
-                        'day'=>$gets["day"],
-                        'asignatura'=>$gets["asignatura"],
-                        'profesor'=>$gets["profesor"],
-                        'id_clase'=>$gets["id_clase"]
-                    ]
-                );
-                $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-                $status = $response->status();
-                //dd($status);
-                return $status;
-                
-                //return $data;
-            }else{
-                return ('/');
-            }
-        }
-    }
+    
     public function show_block(Request $request){
         if(Session::get('account')['is_admin']=='YES'){
             $gets = $request->input();
