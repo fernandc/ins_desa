@@ -57,6 +57,7 @@ Inicio
 <!DOCTYPE html>
 <script>
     @php
+        $cantidades = 20;
         $colorEnviados = "rgb(25, 128, 209 )";
         $colorLeidos = "rgb(121, 223, 73)";
     @endphp
@@ -72,6 +73,7 @@ Inicio
     var tipo = "";
     //Last
     var last_12_names = [];
+    var last_12_date = [];
     var last_12_total_send = [];
     var last_12_total_sended = [];
     var last_12_total_read = [];
@@ -124,7 +126,8 @@ Inicio
 					}
 				@else
 					enviados = "{{$datos["fecha_emision"]}}";
-                    if({{$contador}} <= 4){
+                    if({{$contador}} <= {{$cantidades}}){
+                        last_12_date.push("{{$datos["fecha_emision"]}}");
                         last_12_names.push("{{$datos["titulo"]}}");
                         last_12_total_send.push("{{$datos["destinatarios"]}}");
                         last_12_total_sended.push("{{$datos["enviados"]}}");
@@ -180,14 +183,15 @@ Inicio
     enviados_Y_M.push(env_month);
 </script>
 
+
 <div class="container">
     <div class="row">
         
         <div class="col-md-12">
             <hr>
-            <h5>Últimos 4 correos Enviados</h5> 
+            <h5>Últimos {{$cantidades}} correos Enviados</h5> 
         </div>
-        @for ($i = 0; $i < 4; $i++)
+        @for ($i = 0; $i < $cantidades; $i++)
             <div class="col-md-3" style="height: 100%;">
                 <canvas id="chart{{$i}}" width="auto" height="280"></canvas>
                 <hr>
@@ -228,7 +232,7 @@ Inicio
                         },
                         title: {
                             display: true,
-                            text: last_12_names[{{$i}}],
+                            text: [last_12_names[{{$i}}],last_12_date[{{$i}}]],
                             fontSize: 12,
                             position: 'top',
                         },

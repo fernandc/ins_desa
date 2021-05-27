@@ -91,7 +91,7 @@ if(Session::has('period')){
                             Libro de clases
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Asistencia</a>
+                            <a class="dropdown-item" href="#">Asistencia [En desarrollo]</a>
                         </div>
                     </li>
                     @endif
@@ -100,10 +100,14 @@ if(Session::has('period')){
                         <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownInformes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Información</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownInformes">
                             @if (in_array(1,$privileges))
-                            <a class="dropdown-item" href="inscriptions">Alumnos Inscritos y Pendientes</a>
+                            <a class="dropdown-item" href="students">Alumnos</a>
                             @endif
                             @if (in_array(2,$privileges))
                             <a class="dropdown-item" href="proxys">Apoderados</a>
+                            <div class="dropdown-divider"></div>
+                            @endif
+                            @if (in_array(1,$privileges))
+                            <a class="dropdown-item" href="inscriptions">Alumnos Inscritos y Pendientes</a>
                             @endif
                             @if (in_array(4,$privileges))
                             <a class="dropdown-item" href="info_request_1">Descarga Listado de Alumnos</a>

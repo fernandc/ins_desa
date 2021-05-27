@@ -152,6 +152,33 @@ class View_System extends Controller {
                     }
                     $students = $this->inscriptions($curso);
                     return view('inscriptions')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv);
+                case "students":
+                        $has_priv = false;
+                        foreach ($privileges as $priv) {
+                            if ($priv["id_privilege"] == 1) {
+                                $has_priv = true;
+                            }
+                        }
+                        $curso = null;
+                        if($this->isAdmin() || $has_priv){
+                            $has_priv = true;
+                            $curso = 0;
+                            if(isset($gets['curso'])){
+                                $curso = $gets['curso'];
+                            }
+                        }else{
+                            $arr = $this->myCourses();
+                            if (count($arr)==1) {
+                                $curso = $arr[0]["id_grade"];
+                            }else{
+                                $curso = null;
+                            }
+                        }
+                        if ($curso === null) {
+                            return back();
+                        }
+                        $students = $this->matriculas($curso);
+                        return view('info_students')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv);
                 case "proxys":
                     $has_priv = false;
                     foreach ($privileges as $priv) {
