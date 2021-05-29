@@ -46,13 +46,13 @@ class MailStructure extends Mailable
      */
     public function build()
     {
-        $email = $this->view('Plantilla_Mail.mail')->with("body",$this->msg)->with("head",$this->subject)->with("color",$this->color)->with("params",$this->params);
+        $this->view('Plantilla_Mail.mail')->with("body",$this->msg)->with("head",$this->subject)->with("color",$this->color)->with("params",$this->params);
         if (isset($this->archivos)) {
             foreach ($this->archivos as $path_to) {
                 $path = Storage::path($path_to["path"]);
                 $email->attach($path);
             }
         }
-        return $email;
+        return $this;
     }
 }

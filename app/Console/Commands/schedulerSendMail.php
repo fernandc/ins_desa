@@ -110,6 +110,8 @@ class schedulerSendMail extends Command
                                 $color = "#28a745";
                             }elseif($tipo == 4){
                                 $color = "#dc3545";
+                            }elseif($tipo == 5){
+                                $color = "5";
                             }
                             //hash
                             $hashed = Hash::make($to["id"].$to["email"]);

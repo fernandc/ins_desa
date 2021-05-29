@@ -7,10 +7,10 @@
 </div>
 <div class="modal-body">
     <div class="table-responsive table-bordered">
-        <table class="table table-sm" style="text-align: center;" id="">
+        <table class="table table-sm" style="text-align: center;" id="tableclass">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col"  style="width: 30px"></th>
+                    <th scope="col"  style="width: 30px">Asignatura</th>
                     @foreach($cursos as $curso)
                         <th scope="col" style="width: 30px">{{$curso["abreviado"]}}</th>
                     @endforeach
@@ -19,7 +19,7 @@
             <tbody>
                 @foreach($asignaturas as $asignatura)
                 <tr>
-                    <td>{{$asignatura["materia"]}}</td>
+                    <td style="font-size: 0.9rem;">{{$asignatura["materia"]}}</td>
                     @foreach($cursos as $curso)
                         <?php $checked = ""; ?>
                         @foreach($activos as $active)
@@ -45,6 +45,29 @@
 </div>
 
 <script>
+    $('#tableclass').DataTable({
+        order: [],
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Filas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Filas",
+            "infoFiltered": "(Filtrado de MAX total Filas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Filas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+                }
+        },
+    });
 $(".input-trigger").click(function(){
     Swal.fire({
         icon: 'info',

@@ -89,7 +89,6 @@
                             <label for="inputAS">Asignatura</label>
                             <select id="inputAS" class="form-control">
                                 <option selected>Seleccionar</option>
-                                
                                 @foreach ($materias as $row)                                   
                                     <option>
                                         {{$row}}
@@ -163,7 +162,7 @@
     </div>
     <script>
         function newBloq(id,dia,personal,materia,hini,hfin){
-            var line1 = '<div id="sch'+id+'" class="card text-center mb-2" style="min-width: 300px;"><div class="card-header row m-0">';
+            var line1 = '<div id="sch'+id+'" class="card text-center mb-2" ><div class="card-header row m-0" style="padding: 3px;font-size: larger;">';
             var line2 = '<div class="col-md-8" style="text-align: left;">'+personal+'</div>';
             var line3 = '<div class="col-md-4"><button class="btn btn-outline-danger btn-sm btn-del-sch" data="'+id+'" onclick="delSch('+id+')" style="float: right;"><i class="far fa-trash-alt"></i></button></div>';
             var line4 = '</div><div class="card-body" style="padding: 0.75rem;"><h6 class="card-title">'+materia+'</h6>';

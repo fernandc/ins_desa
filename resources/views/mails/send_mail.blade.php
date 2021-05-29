@@ -49,7 +49,7 @@ Enviar correo
         <div class="col-md-4">
             <div class="">
                 <input type="text" hidden="" id="idMateria" name="idMateria">
-                <input type="text" class="form-control"  placeholder="Buscar destinatario(s)..." id="autocomplete">
+                <input type="text" class="form-control"  placeholder="Buscar destinatario(s)..." id="autocomplete" autocomplete="off">
                 <script>            
                     var lista_to = new Array();
                     var countries = [ 
@@ -151,18 +151,6 @@ Enviar correo
                                     </div>
                                 @endforeach
                             </div>
-                            <!--GRUPOS
-                            <div class="col-md-4">
-                                <h3>Grupos</h3>
-                                <hr>
-                                @foreach ($agrupos as $rowg)
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input forlist" data="{{$rowg["id"]}}-{{$rowg["tipo"]}}-{{$rowg["nombre"]}}" autocomplete="off" id="check{{$rowg["tipo"]}}{{$rowg["id"]}}">
-                                        <label class="custom-control-label" for="check{{$rowg["tipo"]}}{{$rowg["id"]}}">{{$rowg["nombre"]}}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            -->
                             <script>
                                 $(".select-curso").click(function(){
                                     var nombre = $(this).attr("data1");
@@ -278,47 +266,6 @@ Enviar correo
             <br>
             <div id="destinatarios">              
             </div>
-            <script>
-                function eliminarDes(id,tipo,nombre){
-                    var new_list = lista_to;
-                    $("#"+tipo+id).remove();
-                    if(lista_to){
-                        for (var item = 0 ; item < lista_to.length ; item ++){                            
-                            if(new_list[item][0][0] == id && new_list[item][0][1] == tipo && new_list[item][0][2] == nombre){
-                                $("#check"+tipo+id).prop('checked', false);
-                                new_list.splice(item,1);
-                            }
-                            lista_to = new_list;
-                        }
-                    }
-                }
-                function agregarDes(id_item,tipo_item,nombre_item){
-                    var array = [id_item,tipo_item,nombre_item];
-                    var flag = true;
-                    for (var item = 0 ; item < lista_to.length ; item ++){                            
-                        if(lista_to[item][0][0] == id_item && lista_to[item][0][1] == tipo_item && lista_to[item][0][2] == nombre_item){
-                            flag = false;
-                        }
-                    }
-                    if (flag) {
-                        lista_to.push([array]);
-                        var badge = "";
-                        if(tipo_item=="PERSONAL"){
-                            badge = "primary";
-                        }else if(tipo_item=="ALUMNO"){
-                            badge = "info";
-                        }else if(tipo_item=="GRUPO"){
-                            badge = "warning";
-                        }
-                        else if(tipo_item=="CURSO"){
-                            badge = "warning";
-                        }
-                        $("#check"+tipo_item+id_item).prop('checked', true);
-                        $('#autocomplete').val('');
-                        $("#destinatarios").append('<span id="'+tipo_item+id_item+'" class="badge badge-'+badge+' px-2 mr-2 destinatario" datatype="'+tipo_item+'" dataid="'+id_item+'" onclick="eliminarDes('+id_item+',\''+tipo_item+'\',\''+nombre_item+'\')" style="border-radius: 0px 40px 35px 35px;">'+nombre_item+' - '+tipo_item+'</span>');
-                    }
-                }
-            </script>
         </div>
         <div class="col-md-6">
             <div class="mb-1">
@@ -326,21 +273,48 @@ Enviar correo
                 <div class="input-group-prepend">
                   <div class="input-group-text">Tipo de Correo</div>
                 </div>
-                <select class="custom-select " id="inlineFormCustomSelect">
+                <select class="custom-select " id="emailtype" autocomplete="off">
                     <option value="1">General</option>
                     <option value="2">Informativo</option>
                     <option value="3">Buenas Noticias</option>
                     <option value="4">Malas Noticias</option>
+                    <option value="5" style="color: #0040ff;background-color: yellow;">[P] INFORMATIVO SEMANAL</option>
                 </select>
               </div>
             </div>
             <div class="card">
               <div class="card-header">
-                 <input id="title" class="form-control" placeholder="Asunto del Correo">
+                 <input id="title" class="form-control" placeholder="Asunto del Correo" autocomplete="off">
               </div>
               <div class="card-body">
                 <p class="card-text">
-                    <textarea class="form-control" id="context" rows="10" placeholder="Mensaje"></textarea>
+                    <textarea class="form-control" id="context" rows="10" placeholder="Mensaje" autocomplete="off"></textarea>
+                    <div id="context2" class="mb-5" style="display: none;">
+                        <div class="form-group">
+                            <label for="formGroupExampleInput">Fecha Inicio</label>
+                            <input id="p5semin" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: Lunes 3">
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2">Fecha Fin</label>
+                            <input id="p5semout" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: Viernes 7">
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2">Mes referenciado</label>
+                            <input id="p5mes" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: Mayo">
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2">Horas de Inasistencias</label>
+                            <input id="p5faltas" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: 3">
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2">Atrasos</label>
+                            <input id="p5atrasos" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: 4">
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2">Retiros</label>
+                            <input id="p5retiros" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: 1">
+                        </div>
+                    </div>
                 </p>
                 <div class="input-group form-control-sm ">
                     <div class="custom-file">
@@ -439,10 +413,40 @@ Enviar correo
         var meet = '';
         var mensajeT = '';
         var mensaje;
-        $("#addStu").keyup(function(){
-            
-        });
-        $("#inlineFormCustomSelect").change(function(){
+        //P5
+        var p5alumno = '<span class="text-danger">Pendiente</span>';
+        var p5curso = '<span class="text-danger">Pendiente</span>';
+        var p5semanain = '<span class="text-danger">Pendiente</span>';
+        var p5semanaout = '<span class="text-danger">Pendiente</span>';
+        var p5mes = '<span class="text-danger">Pendiente</span>';
+        var p5faltas = '<span class="text-danger">Pendiente</span>';
+        var p5atrasos = '<span class="text-danger">Pendiente</span>';
+        var p5retiros = '<span class="text-danger">Pendiente</span>';
+        $("#p5semin").on("keyup change", function(e) {
+            p5semanain = $(this).val();
+            bodyP5();
+        })
+        $("#p5semout").on("keyup change", function(e) {
+            p5semanaout = $(this).val();
+            bodyP5();
+        })
+        $("#p5mes").on("keyup change", function(e) {
+            p5mes = $(this).val();
+            bodyP5();
+        })
+        $("#p5faltas").on("keyup change", function(e) {
+            p5faltas = $(this).val();
+            bodyP5();
+        })
+        $("#p5atrasos").on("keyup change", function(e) {
+            p5atrasos = $(this).val();
+            bodyP5();
+        })
+        $("#p5retiros").on("keyup change", function(e) {
+            p5retiros = $(this).val();
+            bodyP5();
+        })
+        $("#emailtype").change(function(){
             $("#bgmail").removeClass('bg-primary');
             $("#bgmail").removeClass('bg-info');
             $("#bgmail").removeClass('bg-success');
@@ -452,10 +456,113 @@ Enviar correo
             if(type == 2){$("#bgmail").addClass('bg-info');}
             if(type == 3){$("#bgmail").addClass('bg-success');}
             if(type == 4){$("#bgmail").addClass('bg-danger');}
-        })
+            if(type == 5){
+                $("#bgmail").addClass('bg-danger');
+                $("#context").hide();
+                $("#context2").show();
+                selAlumP5();
+            }else{
+                $("#context2").hide();
+                $("#context").show();
+                $("#viewContent").html('');
+            }
+        });
+        function selAlumP5(){
+            if(lista_to.length == 1){
+                if(lista_to[0][0][1]=="ALUMNO"){
+                    p5alumno = lista_to[0][0][2];
+                    p5curso = obtenerCursoPorId(lista_to[0][0][0]);
+                    if(type == 5){
+                        $("#title").val("Informativo Inasistencia, atrasos y retiros - "+lista_to[0][0][2]);
+                        $("#bgmail").html("Informativo Inasistencia, atrasos y retiros - "+lista_to[0][0][2]);
+                    }
+                }else{
+                    p5alumno = '<span class="text-danger">Debe seleccionar 1 Alumno</span>';
+                }
+            }else if(lista_to.length > 1){
+                p5alumno = '<span class="text-danger">Debe seleccionar 1 Alumno</span>';
+            }else if(lista_to.length < 1){
+                p5alumno = '<span class="text-danger">Pendiente</span>';
+                p5curso = '<span class="text-danger">Pendiente</span>';
+            }
+            bodyP5();
+        }
+        function bodyP5(){
+            if(type == 5){
+                $("#viewContent").html(`Sr. Apoderado de: <strong>`+p5alumno+`</strong>
+                    Curso: <strong>`+p5curso+`</strong>
+                    Semana de <strong>`+p5semanain+`</strong> al <strong>`+p5semanaout+`</strong> del mes de <strong>`+p5mes+`</strong>
+                    Me dirijo a usted para entregar informe semanal de los datos que se detallan a continuación:
+
+                    <strong>`+p5faltas+`</strong> Horas de inasistencias 
+                    <strong>`+p5atrasos+`</strong> Atrasos
+                    <strong>`+p5retiros+`</strong> Retiro de Clases
+
+                    <strong>Cabe señalar que los datos entregados son por asistencia a cada asignaturas que ingresa diariamente el alumno(a), los que suman o restan  el porcentaje de asistencia mensual.</strong>
+
+                    Recordamos a usted que los justificativos deben ser enviados por el apoderado al correo: justificacioninasistencia@saintcharlescollege.cl, indicando nombre y curso del estudiante, explicando las razones de las inasistencias y/o adjuntando certificados médicos en el caso de tenerlos.
+                    Cualquier duda en relación a la información entregada, debe dirigirse al Profesor Jefe, quien le puede entregar con mayor exactitud las fechas y horarios de inasistencia.
+                `);
+            }else{
+                $("#viewContent").html(mensaje);
+            }
+        }
+        function obtenerCursoPorId(idstu){
+            var cursostu = "";
+            var curnombre = "";
+            @foreach ($aalumnos as $rowa)
+                if(<?php echo $rowa['id']; ?> == idstu){ cursostu = <?php echo $rowa["id_curso"]; ?>; }
+            @endforeach
+
+            @foreach ($acursos as $rowc)
+                if(<?php echo $rowc["id"]; ?> == cursostu) { return "<?php echo $rowc["nombre"]; ?>" }
+            @endforeach
+        }
+        function eliminarDes(id,tipo,nombre){
+            var new_list = lista_to;
+            $("#"+tipo+id).remove();
+            if(lista_to){
+                for (var item = 0 ; item < lista_to.length ; item ++){                            
+                    if(new_list[item][0][0] == id && new_list[item][0][1] == tipo && new_list[item][0][2] == nombre){
+                        $("#check"+tipo+id).prop('checked', false);
+                        new_list.splice(item,1);
+                    }
+                    lista_to = new_list;
+                }
+            }
+            selAlumP5();
+        }
+        function agregarDes(id_item,tipo_item,nombre_item){
+            var array = [id_item,tipo_item,nombre_item];
+            var flag = true;
+            for (var item = 0 ; item < lista_to.length ; item ++){                            
+                if(lista_to[item][0][0] == id_item && lista_to[item][0][1] == tipo_item && lista_to[item][0][2] == nombre_item){
+                    flag = false;
+                }
+            }
+            if (flag) {
+                lista_to.push([array]);
+                var badge = "";
+                if(tipo_item=="PERSONAL"){
+                    badge = "primary";
+                }else if(tipo_item=="ALUMNO"){
+                    badge = "info";
+                }else if(tipo_item=="GRUPO"){
+                    badge = "warning";
+                }
+                else if(tipo_item=="CURSO"){
+                    badge = "warning";
+                }
+                $("#check"+tipo_item+id_item).prop('checked', true);
+                $('#autocomplete').val('');
+                $("#destinatarios").append('<span id="'+tipo_item+id_item+'" class="badge badge-'+badge+' px-2 mr-2 destinatario" datatype="'+tipo_item+'" dataid="'+id_item+'" onclick="eliminarDes('+id_item+',\''+tipo_item+'\',\''+nombre_item+'\')" style="border-radius: 0px 40px 35px 35px;">'+nombre_item+' - '+tipo_item+'</span>');
+                selAlumP5();
+            }
+        }
+        //
         $("#selectWhenSend").change(function(){
             selected = $(this).val();
-        })
+        });
         $("#meeting-time").change(function(){
             meet = $(this).datetimepicker('getValue');
             var d = meet
@@ -489,83 +596,155 @@ Enviar correo
            $("#viewContent").html(mensaje);
         });
         $("#SendMailBtn").click(function(){
-            
             var temp = $("#context").val();
-            if(lista_to.length < 1){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ingrese destinatario.'
-                })
-            }
-            else if(meet == '' && selected == 2 ){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Fecha y hora'
-
-                })
-            }
-            else if(mensajeT == ""){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ingrese asunto del correo'
-                })
-            }
-            else if(temp == ""){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ingrese mensaje'
-                })
-            }
-            else{
-                if(lista_to.length > 0 && mensajeT != "" && temp != ""){
-                    $("#SendMailBtn").attr('disabled',true);
-                    var files = $("#inputGroupFile04")[0].files;
-                    var formData = new FormData();
-                    for(var i = 0; i < files.length; i++) {
-                        formData.append('files[]', files[i]);
-                    }
-                    formData.append('lista_destinatarios',lista_to);
-                    formData.append('send_when',selected);
-                    formData.append('meet',meet);
-                    formData.append('title',mensajeT);
-                    formData.append('body',temp);
-                    formData.append('type',type);
-                    $.ajax({
-                        type: "POST",
-                        url: "send_mail_info",
-                        processData: false,
-                        contentType: false,
-                        data: formData,
-                        success: function (data){
-                            $("#result").html(data);
-                            $('#SendMailBtn').attr('disabled',false);
-                            $("#reset").click();
-                            $("#bgmail").html("Asunto del correo");
-                            $("#viewContent").html("Cuerpo");
-                            $(".file-names").html("");
-                            $("#destinatarios").html("");
-                            $("#meeting-time").hide();
-                            $("#bgmail").removeClass('bg-primary');
-                            $("#bgmail").removeClass('bg-info');
-                            $("#bgmail").removeClass('bg-success');
-                            $("#bgmail").removeClass('bg-danger');
-                            $("#bgmail").addClass('bg-primary');
-
-                            selected = 1;
-                            type = 1;
-                            meet = '';
-                            mensajeT = '';
-                            mensaje = '';
-                            temp = '';
-                            lista_to = [];
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'Enviado'
-                            })
+            if(type == 5){
+                var p5si = $("#p5semin").val().trim();
+                var p5so = $("#p5semout").val().trim();
+                var p5mr = $("#p5mes").val().trim();
+                var p5hi = $("#p5faltas").val().trim();
+                var p5at = $("#p5atrasos").val().trim();
+                var p5re = $("#p5retiros").val().trim();
+                if(p5si.length > 0 && p5so.length > 0 && p5mr.length > 0 && p5hi.length > 0 && p5at.length > 0 && p5re.length > 0){
+                    //if(true){
+                    if(lista_to.length == 1 && lista_to[0][0][1]=="ALUMNO"){
+                        $("#SendMailBtn").attr('disabled',true);
+                        var files = $("#inputGroupFile04")[0].files;
+                        var formData = new FormData();
+                        for(var i = 0; i < files.length; i++) {
+                            formData.append('files[]', files[i]);
                         }
+                        formData.append('lista_destinatarios',lista_to);
+                        formData.append('send_when',selected);
+                        formData.append('meet',meet);
+                        formData.append('title',$("#bgmail").html());
+                        formData.append('body',$("#viewContent").html());
+                        formData.append('type',type);
+                        $.ajax({
+                            type: "POST",
+                            url: "send_mail_info",
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function (data){
+                                $("#result").html(data);
+                                $('#SendMailBtn').attr('disabled',false);
+                                $("#reset").click();
+                                $("#bgmail").html("Asunto del correo");
+                                $("#viewContent").html("Cuerpo");
+                                $(".file-names").html("");
+                                $("#destinatarios").html("");
+                                $("#meeting-time").hide();
+                                $("#bgmail").removeClass('bg-primary');
+                                $("#bgmail").removeClass('bg-info');
+                                $("#bgmail").removeClass('bg-success');
+                                $("#bgmail").removeClass('bg-danger');
+                                $("#bgmail").addClass('bg-primary');
+                                selected = 1;
+                                type = 1;
+                                meet = '';
+                                mensajeT = '';
+                                mensaje = '';
+                                temp = '';
+                                lista_to = [];
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Enviado'
+                                })
+                            }
+                        })
+                    }
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Los campos no están completos',
+                        footer: `Fecha inicio: <strong>`+p5si+`</strong> <br>
+                        Fecha Fin: <strong>`+p5so+`</strong> <br>
+                        Mes referenciado: <strong>`+p5mr+`</strong> <br>
+                        Horas de Inasistencias: <strong>`+p5hi+`</strong> <br>
+                        Atrasos: <strong>`+p5at+`</strong> <br>
+                        Retiros: <strong>`+p5re+`</strong>`
                     })
                 }
+                
+                
+            }else{
+                if(lista_to.length < 1){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ingrese destinatario.'
+                    })
+                }
+                else if(meet == '' && selected == 2 ){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Fecha y hora'
+
+                    })
+                }
+                else if(mensajeT == ""){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ingrese asunto del correo'
+                    })
+                }
+                else if(temp == ""){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ingrese mensaje'
+                    })
+                }
+                else{
+                    if(lista_to.length > 0 && mensajeT != "" && temp != ""){
+                        $("#SendMailBtn").attr('disabled',true);
+                        var files = $("#inputGroupFile04")[0].files;
+                        var formData = new FormData();
+                        for(var i = 0; i < files.length; i++) {
+                            formData.append('files[]', files[i]);
+                        }
+                        formData.append('lista_destinatarios',lista_to);
+                        formData.append('send_when',selected);
+                        formData.append('meet',meet);
+                        formData.append('title',mensajeT);
+                        formData.append('body',temp);
+                        formData.append('type',type);
+                        $.ajax({
+                            type: "POST",
+                            url: "send_mail_info",
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function (data){
+                                $("#result").html(data);
+                                $('#SendMailBtn').attr('disabled',false);
+                                $("#reset").click();
+                                $("#bgmail").html("Asunto del correo");
+                                $("#viewContent").html("Cuerpo");
+                                $(".file-names").html("");
+                                $("#destinatarios").html("");
+                                $("#meeting-time").hide();
+                                $("#bgmail").removeClass('bg-primary');
+                                $("#bgmail").removeClass('bg-info');
+                                $("#bgmail").removeClass('bg-success');
+                                $("#bgmail").removeClass('bg-danger');
+                                $("#bgmail").addClass('bg-primary');
+
+                                selected = 1;
+                                type = 1;
+                                meet = '';
+                                mensajeT = '';
+                                mensaje = '';
+                                temp = '';
+                                lista_to = [];
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Enviado'
+                                })
+                            }
+                        })
+                    }
+                }
             }
+            
             
         })
     </script>

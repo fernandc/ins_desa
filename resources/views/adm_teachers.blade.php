@@ -123,9 +123,9 @@ const Toast = Swal.mixin({
                             </script>
                         </td>
                     </tr>               
-                @endforeach   
+                @endforeach
                 <div class="modal fade bd-example-modal-xl" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl" >
+                    <div class="modal-dialog modal-xl" style="max-width: 90%;">
                         <div class="modal-content" id="modalContent">
                         </div>
                     </div>
@@ -136,7 +136,7 @@ const Toast = Swal.mixin({
     <script>
         $(document).ready( function () {
             $('#list_teachers').DataTable({
-                    order: [],
+                    order: [1],
                     language: {
                         "decimal": "",
                         "emptyTable": "No hay información",

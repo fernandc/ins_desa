@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Session;
 
 class View_System extends Controller {
     public function main(request $request) {
+        if (Session::get('account') == null) {
+            return redirect('/logout');
+        }
         $privileges = $this->user_privileges(Session::get('account')['dni']);
         session::put(['privileges' => $privileges]);
         $path = $request->path();

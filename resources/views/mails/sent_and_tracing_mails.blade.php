@@ -46,7 +46,9 @@ Seguimiento
                             @elseif($row["tipo_mail"] == 3)  
                               <a href="" data-toggle="modal" data-target="#modalCorreo{{$row["id_mail"]}}"><i class="far fa-envelope mr-2" ></i> <span class="text-succes">{{$row["titulo"]}}</span> <i class="fas fa-info-circle text-succes"></i></a>
                             @elseif($row["tipo_mail"] == 4)  
-                              <a href="" data-toggle="modal" data-target="#modalCorreo{{$row["id_mail"]}}" ><i class="far fa-envelope mr-2" ></i> <span class="text-danger">{{$row["titulo"]}}</span> <i class="fas fa-exclamation-circle text-danger"></i></a>             
+                              <a href="" data-toggle="modal" data-target="#modalCorreo{{$row["id_mail"]}}" ><i class="far fa-envelope mr-2" ></i> <span class="text-primary">{{$row["titulo"]}}</span> <i class="fas fa-exclamation-circle text-danger"></i></a>
+                              @elseif($row["tipo_mail"] == 5)  
+                              <a href="" data-toggle="modal" data-target="#modalCorreo{{$row["id_mail"]}}" ><i class="far fa-envelope mr-2" ></i> <span class="text-primary">{{$row["titulo"]}}</span> <i class="fas fa-exclamation-circle text-danger"></i></a>
                             @endif                            
                             <div class="modal fade" id="modalCorreo{{$row["id_mail"]}}" tabindex="-1" role="dialog" aria-labelledby="modalCorreoTitle" aria-hidden="true">
                               <div class="modal-dialog modal-lg" role="document">
@@ -77,7 +79,7 @@ Seguimiento
                                         </div> 
                                         @endif
                                         <div class="card-body">
-                                          <span style="white-space: pre-line;">{{$row["mensaje"]}}</span>                   
+                                          <span style="white-space: pre-line;">{!! $row["mensaje"] !!}</span>                   
                                         </div>
                                       </div>
                                     </div>

@@ -40,8 +40,6 @@ const Toast = Swal.mixin({
         </script>
     @endif
     <hr>
-    <!-- <button class="btn btn-primary btn-sm ">Administrador de Matrículas</button> -->
-    <a target="_blank" href="/apoderados/admin" class="btn btn-primary btn-sm">Proceso de Matrículas</a>
     <ul class="nav nav-tabs my-3 justify-content-center">
         <li class="nav-item">
             <a class="nav-link" data="0" href="adm_students">Todos</a>
@@ -106,11 +104,12 @@ const Toast = Swal.mixin({
         <table class="table table-sm" style="text-align: center;" id="list_students">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col" >Nombre</th>
+                    <th scope="col">Nombre</th>
                     <th scope="col">Rut</th>
                     <th scope="col">Curso</th>
                     <th scope="col">Sección</th>
                     <th scope="col"># Matrícula</th>
+                    <th scope="col"><i class="far fa-id-badge"></i></th>
                     <th scope="col">Centro de Padres</th>
                     <th scope="col">Ficha</th>
                     <th scope="col">Matriculado</th>
@@ -230,6 +229,13 @@ const Toast = Swal.mixin({
                                     }
                                 });
                             </script>
+                        </td>
+                        <td>
+                            @if ($row["numero_matricula"]==0)
+                                <i class="fas fa-times text-danger">-</i>
+                            @else
+                                <i class="fas fa-check text-success">+</i>
+                            @endif
                         </td>
                         <td>
                             
