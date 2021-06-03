@@ -113,6 +113,7 @@ const Toast = Swal.mixin({
                     <th scope="col">Curso</th>
                     <th scope="col">Celular</th>
                     <th scope="col">Apoderado</th>
+                    <th scope="col">Ficha del Alumno</th>
                 </tr>
             </thead>
             <tbody>
@@ -130,6 +131,7 @@ const Toast = Swal.mixin({
                         <td>{{$row["curso"]}}</td>
                         <td>{{$row["cellphone_stu"]}} </td>
                         <td><button class="btn btn-outline-secondary btn-sm data-apo" data="{{$row["dni_stu"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Apoderado</button></td>
+                        <td><button class="btn btn-outline-primary btn-sm data-ficha" data="{{$row["id_stu"]}}" data2="{{$row["id_zmail"]}}" data-toggle="modal" data-target="#ficha">Ver Ficha de Alumno</button></td>
                     </tr>             
                 @endforeach                      
             </tbody>
@@ -159,10 +161,40 @@ const Toast = Swal.mixin({
                 }
             });
         });
+        $(".data-ficha").click(function(){
+                var id_stu = $(this).attr('data');
+                var id_apo = $(this).attr('data2');
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Cargando',
+                    showConfirmButton: false,
+                })
+                $.ajax({
+                    type: "GET",
+                    url: "modal_ficha",
+                    data:{
+                        id_stu,id_apo
+                    },
+                    success: function (data)
+                    {
+                        $("#modalContentFicha").html(data);
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Completado'
+                        })
+                    }
+                });
+            });
     </script>
     <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" >
             <div class="modal-content" id="modalContent">
+            </div>
+        </div>
+    </div>
+    <div id="ficha" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" >
+            <div class="modal-content" id="modalContentFicha">
             </div>
         </div>
     </div>

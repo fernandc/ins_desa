@@ -26,8 +26,8 @@
               </div>
 
               <div class="my-3">
-                <p class="font-weight-bold" style="font-size: 10pt;">N° de matrícula:  ____________________________________________</p>
-                <p class="font-weight-bold" style="font-size: 10pt;">Centro de padres: __________________________________________</p>
+                <p class="font-weight-bold" style="font-size: 10pt;">N° de matrícula: &nbsp;&nbsp;<span style="text-decoration: underline;white-space: break-spaces;"><?php echo str_pad($data["inscription"]["numero_matricula"], 20, " ", STR_PAD_BOTH); ?></span></p>
+                <p class="font-weight-bold" style="font-size: 10pt;">Centro de padres: <span style="text-decoration: underline;white-space: break-spaces;"><?php echo str_pad($data["inscription"]["centro_padres"], 20, " ", STR_PAD_BOTH); ?></span></p>
                 <p class="font-weight-bold" style="font-size: 10pt;">Curso al que postula {{Session::get('period')}}: {{$data["inscription"]["curso"]}} </p>
                 <p class="font-weight-bold" style="font-size: 10pt;">RUT Estudiante: {{$data["student"]["dni"]}}</p>
               </div>

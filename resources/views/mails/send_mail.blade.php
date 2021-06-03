@@ -34,7 +34,7 @@ Enviar correo
 
 <div class="container">
     <div>
-        <h2 style="text-align: center;" id="result">
+        <h2 style="text-align: center;" >
             Enviar Correos
         </h2>
         <hr>
@@ -626,7 +626,6 @@ Enviar correo
                             contentType: false,
                             data: formData,
                             success: function (data){
-                                $("#result").html(data);
                                 $('#SendMailBtn').attr('disabled',false);
                                 $("#reset").click();
                                 $("#bgmail").html("Asunto del correo");
@@ -714,31 +713,37 @@ Enviar correo
                             contentType: false,
                             data: formData,
                             success: function (data){
-                                $("#result").html(data);
-                                $('#SendMailBtn').attr('disabled',false);
-                                $("#reset").click();
-                                $("#bgmail").html("Asunto del correo");
-                                $("#viewContent").html("Cuerpo");
-                                $(".file-names").html("");
-                                $("#destinatarios").html("");
-                                $("#meeting-time").hide();
-                                $("#bgmail").removeClass('bg-primary');
-                                $("#bgmail").removeClass('bg-info');
-                                $("#bgmail").removeClass('bg-success');
-                                $("#bgmail").removeClass('bg-danger');
-                                $("#bgmail").addClass('bg-primary');
+                                if(data == "DONE"){
+                                    $('#SendMailBtn').attr('disabled',false);
+                                    $("#reset").click();
+                                    $("#bgmail").html("Asunto del correo");
+                                    $("#viewContent").html("Cuerpo");
+                                    $(".file-names").html("");
+                                    $("#destinatarios").html("");
+                                    $("#meeting-time").hide();
+                                    $("#bgmail").removeClass('bg-primary');
+                                    $("#bgmail").removeClass('bg-info');
+                                    $("#bgmail").removeClass('bg-success');
+                                    $("#bgmail").removeClass('bg-danger');
+                                    $("#bgmail").addClass('bg-primary');
 
-                                selected = 1;
-                                type = 1;
-                                meet = '';
-                                mensajeT = '';
-                                mensaje = '';
-                                temp = '';
-                                lista_to = [];
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'Enviado'
-                                })
+                                    selected = 1;
+                                    type = 1;
+                                    meet = '';
+                                    mensajeT = '';
+                                    mensaje = '';
+                                    temp = '';
+                                    lista_to = [];
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: 'Enviado'
+                                    })
+                                }else if(data == "MISS"){
+                                    Toast.fire({
+                                        icon: 'warning',
+                                        title: 'ha ocurrido un error'
+                                    })
+                                }
                             }
                         })
                     }

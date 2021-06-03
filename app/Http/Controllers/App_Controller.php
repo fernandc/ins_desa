@@ -610,46 +610,49 @@ class App_Controller extends Controller {
         $destinatarios = array();
         $cont = 0;
         $valores = null;
-        foreach($new as $row){
-            $cont++;
-            if($cont==1){
-                $valores["id"] = $row;
-            }
-            if($cont==2){
-                $valores["tipo"] = $row;
-            }
-            if($cont==3){
-                $valores["nombre"] = $row;
-                array_push($destinatarios,$valores);
-                $cont=0;
-            }
-        }
-        $filearray= array();
-        $cont=0;
-        if(isset($files)){
-            foreach ($files as $file) {
+        if(count($new) > 0){
+            foreach($new as $row){
                 $cont++;
-                $extension = $file->extension();
-                $name = "documento_$cont.$extension";
-                $date = date('Ymd_His');
-                $path = $file->storeAs("correos_enviados/$mail/$date", $name);
-                array_push($filearray,$path);
+                if($cont==1){
+                    $valores["id"] = $row;
+                }
+                if($cont==2){
+                    $valores["tipo"] = $row;
+                }
+                if($cont==3){
+                    $valores["nombre"] = $row;
+                    array_push($destinatarios,$valores);
+                    $cont=0;
+                }
             }
+            $filearray= array();
+            $cont=0;
+            if(isset($files)){
+                foreach ($files as $file) {
+                    $cont++;
+                    $extension = $file->extension();
+                    $name = "documento_$cont.$extension";
+                    $date = date('Ymd_His');
+                    $path = $file->storeAs("correos_enviados/$mail/$date", $name);
+                    array_push($filearray,$path);
+                }
+            }
+            //dd($gets['meet']);
+            $dni = Session::get('account')['dni'];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'send_mails',
+                'data' => ['dni' =>$dni,'lista_destinatarios' => $destinatarios, 'send_when' => $gets["send_when"], 'meet' => $gets["meet"], 'type' => $gets["type"] , 'title'=>$gets["title"], 'body' => $gets["body"], 'files' => $filearray]
+            );
+            //dd($arr);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true); 
+            //dd($data);
+            return "DONE";
+        }else{
+            return "MISS";
         }
-        //dd($gets['meet']);
-        $dni = Session::get('account')['dni'];
-        $arr = array(
-            'institution' => getenv("APP_NAME"),
-            'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => 'send_mails',
-            'data' => ['dni' =>$dni,'lista_destinatarios' => $destinatarios, 'send_when' => $gets["send_when"], 'meet' => $gets["meet"], 'type' => $gets["type"] , 'title'=>$gets["title"], 'body' => $gets["body"], 'files' => $filearray]
-        );
-        //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-        $data = json_decode($response->body(), true); 
-        //dd($data);
-        return $response->body();
-        
     }
     public function eliminar_correo(Request $request){
         $gets = $request->input();
