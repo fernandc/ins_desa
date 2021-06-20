@@ -59,7 +59,7 @@ if(Session::has('period')){
                 array_push($privileges,$row["id_privilege"]);
             }
             if (Session::get('account')["is_admin"]=="YES") {
-                for ($i=0; $i < 20; $i++) { 
+                for ($i=0; $i < 100; $i++) { 
                     array_push($privileges,$i);
                 }
             }
@@ -85,17 +85,17 @@ if(Session::has('period')){
                         </div>
                     </li>
                     @endif
-                    @if(Session::get('account')["is_admin"]=="YES")
+                    @if(Session::get('account')["is_admin"]=="YES" || (in_array(5,$privileges)))
                     <li class="nav-item active dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Libro de clases
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Asistencia [En desarrollo]</a>
+                            <a class="dropdown-item" href="checks_points">Asistencia [En desarrollo]</a>
                         </div>
                     </li>
                     @endif
-                    @if (in_array(1,$privileges) || in_array(2,$privileges))
+                    @if (in_array(1,$privileges) || in_array(2,$privileges) || in_array(4,$privileges) || in_array(6,$privileges))
                     <li class="nav-item dropdown">
                         <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownInformes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Información</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownInformes">
@@ -104,8 +104,11 @@ if(Session::has('period')){
                             @endif
                             @if (in_array(2,$privileges))
                             <a class="dropdown-item" href="proxys">Apoderados</a>
-                            <div class="dropdown-divider"></div>
                             @endif
+                            @if (in_array(6,$privileges))
+                            <a class="dropdown-item" href="timetable">Horario de Clases</a>
+                            @endif
+                            <div class="dropdown-divider"></div>
                             @if (in_array(1,$privileges))
                             <a class="dropdown-item" href="inscriptions">Alumnos Inscritos y Pendientes</a>
                             @endif

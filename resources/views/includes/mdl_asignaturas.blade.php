@@ -45,64 +45,66 @@
 </div>
 
 <script>
-    $('#tableclass').DataTable({
-        order: [],
-        language: {
-            "decimal": "",
-            "emptyTable": "No hay información",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ Filas",
-            "infoEmpty": "Mostrando 0 to 0 of 0 Filas",
-            "infoFiltered": "(Filtrado de MAX total Filas)",
-            "infoPostFix": "",
-            "thousands": ",",
-            "lengthMenu": "Mostrar _MENU_ Filas",
-            "loadingRecords": "Cargando...",
-            "processing": "Procesando...",
-            "search": "Buscar:",
-            "zeroRecords": "Sin resultados encontrados",
-            "paginate": {
-                "first": "Primero",
-                "last": "Ultimo",
-                "next": "Siguiente",
-                "previous": "Anterior"
+    $(document).ready(function() {
+        $('#tableclass').DataTable({
+            order: [],
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Filas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Filas",
+                "infoFiltered": "(Filtrado de MAX total Filas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Filas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                    }
+            },
+        });
+        $('#tableclass tbody').on('click', '.input-trigger',function(){
+            Swal.fire({
+                icon: 'info',
+                title: 'Cargando',
+                showConfirmButton: false,
+                timer: 3000,
+            });
+            var id_curso = $(this).attr('datac');
+            var id_materia = $(this).attr('datam');
+            var metodo = null
+            if($(this).is(":checked")){
+                metodo = "add";
+            }
+            else{
+                metodo = "del";
+            }
+            //alert(metodo);
+            $.ajax({
+                type: "GET",
+                url: "set_asignatura",
+                data:{
+                    dni: '{{$dni}}',
+                    idCurso: id_curso,
+                    idMateria: id_materia,
+                    method: metodo,
+                },
+                success: function (data)
+                {
+                    //$("#result").html(data);
+                
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Completado'
+                    })
                 }
-        },
-    });
-$(".input-trigger").click(function(){
-    Swal.fire({
-        icon: 'info',
-        title: 'Cargando',
-        showConfirmButton: false,
-        timer: 3000,
-    });
-    var id_curso = $(this).attr('datac');
-    var id_materia = $(this).attr('datam');
-    var metodo = null
-    if($(this).is(":checked")){
-        metodo = "add";
-    }
-    else{
-        metodo = "del";
-    }
-    //alert(metodo);
-    $.ajax({
-        type: "GET",
-        url: "set_asignatura",
-        data:{
-            dni: '{{$dni}}',
-            idCurso: id_curso,
-            idMateria: id_materia,
-            method: metodo,
-        },
-        success: function (data)
-        {
-            //$("#result").html(data);
-           
-            Toast.fire({
-                icon: 'success',
-                title: 'Completado'
-            })
-        }
-    });
-});
+            });
+        });
+    })
 </script>

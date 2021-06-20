@@ -236,6 +236,52 @@ class View_System extends Controller {
                     }
                     $students = $this->matriculas($curso);
                     return view('info_request_1')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv);
+                case "timetable":
+                    $has_priv = false;
+                    foreach ($privileges as $priv) {
+                        if ($priv["id_privilege"] == 6) {
+                            $has_priv = true;
+                        }
+                    }
+                    if($this->isAdmin() || $has_priv){
+                        $cursos = $this->grades();
+                        $arr = array(
+                            'institution' => getenv("APP_NAME"),
+                            'public_key' => getenv("APP_PUBLIC_KEY"),
+                            'method' => 'list_schedule_course',
+                            'data' => ['id' => 0]
+                        );
+                        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                        $data = json_decode($response->body(), true);
+                        return view("info_horario_clases")->with("cursos",$cursos)->with("horarios",$data);
+                    }
+                    return redirect('/home');
+                case "checks_points":
+                    $has_priv = false;
+                    foreach ($privileges as $priv) {
+                        if ($priv["id_privilege"] == 5) {
+                            $has_priv = true;
+                        }
+                    }
+                    if($this->isAdmin() || $has_priv){
+                        $class = [];
+                        if($has_priv){
+                            $class = $this->list_checked(Session::get('account')['dni']);
+                        }else{
+                            $class = $this->list_checked("all");
+                        }
+                        $curso = 0;
+                        $alumnos = [];
+                        if(isset($gets['curso'])){
+                            $curso = $gets['curso'];
+                            if(isset($gets['materia'])){
+                                $id_materia = $gets['materia'];
+                                $alumnos = $this->matriculas($curso);
+                            }
+                        }
+                        return view('ldc/asistencia')->with("clases",$class)->with("alumnos",$alumnos);
+                    }
+                    return redirect('/home');
                 default:
                     return view('not_found')->with("path",$path);
             }
