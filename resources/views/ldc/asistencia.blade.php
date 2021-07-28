@@ -328,7 +328,7 @@ Asistencias
                                                         @endforeach
                                                         <th style="text-align: center;">
                                                             <input id="input-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" class="form-control form-control-sm refdate-all refdate-bloq{{$horario["id"]}}-{{$year}}-{{$month}}-{{$day}}" stu="{{$alumno["id_stu"]}}" data="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" type="text" style="width: 30px;font-size: 0.8rem;text-transform:uppercase;font-weight: bold;display: inline;" maxlength="1" {{$inputenabled}}  placeholder="">
-                                                            <div id="just-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="opacity: 1;position: absolute;margin-left: -356px;margin-top: -44px;" hidden="">
+                                                            <div id="just-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="opacity: 1;position: sticky;margin-left: -356px;margin-top: -44px;" hidden="">
                                                                 <div class="toast-body" style="padding: 0.5rem;">
                                                                     <div class="input-group mb-2" style="margin-bottom: 0px !important;">
                                                                         <div class="input-group-prepend">

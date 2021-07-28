@@ -85,13 +85,13 @@ if(Session::has('period')){
                         </div>
                     </li>
                     @endif
-                    @if(in_array(5,$privileges))
+                    @if(in_array(5,$privileges) || in_array(9,$privileges))
                     <li class="nav-item active dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Libro de clases
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @if (in_array(5,$privileges))
+                            @if (in_array(5,$privileges) || in_array(9,$privileges))
                                 <a class="dropdown-item" href="checks_points"><i class="far fa-check-square"></i> Asistencias</a>
                             @endif
                         </div>

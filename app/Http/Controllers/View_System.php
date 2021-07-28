@@ -258,13 +258,13 @@ class View_System extends Controller {
                 case "checks_points":
                     $has_priv = false;
                     foreach ($privileges as $priv) {
-                        if ($priv["id_privilege"] == 5) {
+                        if ($priv["id_privilege"] == 5 || $priv["id_privilege"] == 9) {
                             $has_priv = true;
                         }
                     }
                     if($this->isAdmin() || $has_priv){
                         $class = [];
-                        if($this->isAdmin()){
+                        if($this->isAdmin() || $priv["id_privilege"] == 9){
                             $class = $this->list_checked("all");
                         }else{
                             $class = $this->list_checked(Session::get('account')['dni']);
