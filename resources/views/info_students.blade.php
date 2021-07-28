@@ -8,6 +8,9 @@ Admin Cursos
 
 @section("headex")
 <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -111,6 +114,7 @@ const Toast = Swal.mixin({
                     <th scope="col">Rut</th>
                     <th scope="col">Nombre Completo</th>
                     <th scope="col">Curso</th>
+                    <th scope="col">Etiquetas</th>
                     <th scope="col">Celular</th>
                     <th scope="col">Apoderado</th>
                     <th scope="col">Ficha del Alumno</th>
@@ -129,6 +133,14 @@ const Toast = Swal.mixin({
                         <td>{{$row["dni_stu"]}} </td>
                         <td>{{$row["nombre_stu"]}} </td>
                         <td>{{$row["curso"]}}</td>
+                        <td>
+                            @if ($row["es_nuevo"] == "si")
+                                <span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="Nuevo">N</span>
+                            @endif
+                            @if ($row["es_repitente"] == "si")
+                                <span class="badge badge-danger"  data-toggle="tooltip" data-placement="top" title="Repitente">R</span>
+                            @endif
+                        </td>
                         <td>{{$row["cellphone_stu"]}} </td>
                         <td><button class="btn btn-outline-secondary btn-sm data-apo" data="{{$row["dni_stu"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Apoderado</button></td>
                         <td><button class="btn btn-outline-primary btn-sm data-ficha" data="{{$row["id_stu"]}}" data2="{{$row["id_zmail"]}}" data-toggle="modal" data-target="#ficha">Ver Ficha de Alumno</button></td>

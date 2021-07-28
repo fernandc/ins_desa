@@ -26,9 +26,8 @@ class View_System extends Controller {
             $this->periods();
             switch ($path) {
                 case "home":
-                    $info = $this->info_sent_mails();
-                    //dd($info);
-                    return view('home')->with("info_mails",$info);
+                    $scheduler_by_user = $this->list_class_scheduler_by_user();
+                    return view('home')->with("scheduler_by_user",$scheduler_by_user);
                     break;
                 case "adm_periods":
                     if($this->isAdmin()){
@@ -265,21 +264,32 @@ class View_System extends Controller {
                     }
                     if($this->isAdmin() || $has_priv){
                         $class = [];
-                        if($has_priv){
-                            $class = $this->list_checked(Session::get('account')['dni']);
-                        }else{
+                        if($this->isAdmin()){
                             $class = $this->list_checked("all");
+                        }else{
+                            $class = $this->list_checked(Session::get('account')['dni']);
                         }
                         $curso = 0;
                         $alumnos = [];
-                        if(isset($gets['curso'])){
-                            $curso = $gets['curso'];
-                            if(isset($gets['materia'])){
+                        $enabled_days = [];
+                        $assistance_data = [];
+                        $horarios = [];
+                        if(isset($_GET['curso'])){
+                            
+                            $curso = $_GET['curso'];
+                            if(isset($_GET['materia'])){
                                 $id_materia = $gets['materia'];
                                 $alumnos = $this->matriculas($curso);
+                                foreach ($class as $row) {
+                                    if($row["id_curso"] == $curso && $row["id_materia"] == $id_materia){
+                                        $enabled_days = $this->list_class_enabled_days($row["id_clase"]);
+                                        $assistance_data = $this->list_assistance_class($row["id_clase"]);
+                                        $horarios = $this->list_class_scheduler($row["id_curso_periodo"]);
+                                    }
+                                }
                             }
                         }
-                        return view('ldc/asistencia')->with("clases",$class)->with("alumnos",$alumnos);
+                        return view('ldc/asistencia')->with("clases",$class)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("assistance_data",$assistance_data)->with("horarios",$horarios);
                     }
                     return redirect('/home');
                 default:
@@ -734,7 +744,56 @@ class View_System extends Controller {
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
         //dd($data);
-        return $data;       
+        return $data;
+    }
+    private function list_class_enabled_days($id_class){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'assistance_date',
+            'data' => [ "id_class" => $id_class ]
+        );
+        //dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return $data;
+    }
+    private function list_assistance_class($id_class){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'list_assistance_class',
+            'data' => [ "id_class" => $id_class ]
+        );
+        //dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return $data;
+    }
+    private function list_class_scheduler($id_curso_periodo){
+        //0 PARA TODOS LOS CURSOS
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'list_schedule_course',
+            'data' => ['id' => $id_curso_periodo]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return $data;
+    }
+    private function list_class_scheduler_by_user(){
+        //0 PARA TODOS LOS CURSOS
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'list_schedule_course_by_user',
+            'data' => ['dni' => Session::get('account')['dni']]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return $data;
     }
 }
-

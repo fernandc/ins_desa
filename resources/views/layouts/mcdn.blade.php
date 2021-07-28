@@ -85,13 +85,15 @@ if(Session::has('period')){
                         </div>
                     </li>
                     @endif
-                    @if(Session::get('account')["is_admin"]=="YES" || (in_array(5,$privileges)))
+                    @if(in_array(5,$privileges))
                     <li class="nav-item active dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Libro de clases
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="checks_points">Asistencia [En desarrollo]</a>
+                            @if (in_array(5,$privileges))
+                                <a class="dropdown-item" href="checks_points"><i class="far fa-check-square"></i> Asistencias</a>
+                            @endif
                         </div>
                     </li>
                     @endif
@@ -108,6 +110,9 @@ if(Session::has('period')){
                             @if (in_array(6,$privileges))
                             <a class="dropdown-item" href="timetable">Horario de Clases</a>
                             @endif
+                            @if (in_array(8,$privileges))
+                            <a class="dropdown-item" href="timetable">Resumen de Asistencias</a>
+                            @endif
                             <div class="dropdown-divider"></div>
                             @if (in_array(1,$privileges))
                             <a class="dropdown-item" href="inscriptions">Alumnos Inscritos y Pendientes</a>
@@ -123,6 +128,11 @@ if(Session::has('period')){
 							<a class="nav-link" href="noticias">Comunicaciones</a>
 						</li>
 					@endif
+                    @if (in_array(7,$privileges))
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">PIE</a>
+                        </li>
+                    @endif
                     @if(Session::get('account')["is_admin"]=="YES")
                     <li class="nav-item active dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

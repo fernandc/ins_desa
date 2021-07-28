@@ -393,6 +393,46 @@ class App_Controller extends Controller {
             return ('/');
         }
     }
+    public function student_is_repeater(Request $request){
+        if($this->isAdmin()){
+            $gets = $request->input();
+            //dd($gets);
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'student_is_repeater',
+                'data' => ['id' => $gets["id_stu"], 'id_matricula' => $gets["id_matricula"] ]
+            );
+            //dd($arr);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true); 
+            //dd($data);
+            return back();
+        }
+        else{
+            return ('/');
+        }
+    }
+    public function student_is_new(Request $request){
+        if($this->isAdmin()){
+            $gets = $request->input();
+            //dd($gets);
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'student_is_new',
+                'data' => ['id' => $gets["id_stu"], 'id_matricula' => $gets["id_matricula"] ]
+            );
+            //dd($arr);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true); 
+            //dd($data);
+            return back();
+        }
+        else{
+            return ('/');
+        }
+    }
     public function set_jefatura(Request $request){
         if($this->isAdmin()){
             $gets = $request->input();
@@ -602,6 +642,74 @@ class App_Controller extends Controller {
             return false;
         }
     }
+    public function enable_date(Request $request){
+        if(isset(Session::get('account')['dni'])){
+            $gets = $request->input();
+            $id_class =  $gets["id_class"];
+            $date =  $gets["date"];
+            $bloq =  $gets["bloq"];
+            $enabled =  $gets["enabled"];
+            if($enabled == 1){
+                $this->activity_log("Asistencia","Activar o Desactivar Dia","","","Habilita día $date en bloq $bloq de la clase $id_class");
+            }else{
+                $this->activity_log("Asistencia","Activar o Desactivar Dia","","","Deshabilita día $date en bloq $bloq de la clase $id_class");
+            }
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'enable_assistance_date',
+                'data' => ['id_class' => $id_class, 'date' => $date, 'bloq' => $bloq , 'enable' => $enabled]);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            return "DONE";
+        }else{
+            return "SESSION EXPIRED";
+        }
+    }
+    public function full_assistance(Request $request){
+        if(isset(Session::get('account')['dni'])){
+            $gets = $request->input();
+            $id_class =  $gets["id_class"];
+            $date =  $gets["date"];
+            $bloq =  $gets["bloq"];
+            $enabled =  $gets["enabled"];
+            if($enabled == 1){
+                $this->activity_log("Asistencia","Activar o Desactivar Asistencia Completa","","","Habilita Asistencia Completa en día $date en bloq $bloq de la clase $id_class");
+            }else{
+                $this->activity_log("Asistencia","Activar o Desactivar Asistencia Completa","","","Deshabilita Asistencia Completa en día $date en bloq $bloq de la clase $id_class");
+            }
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'full_asistance',
+                'data' => ['id_class' => $id_class, 'date' => $date, 'bloq' => $bloq , 'enable' => $enabled]);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            return "DONE";
+        }else{
+            return "SESSION EXPIRED";
+        }
+    }
+    public function save_assistance(Request $request){
+        if(isset(Session::get('account')['dni'])){
+            $gets = $request->input();
+            $dni_staff = Session::get('account')['dni'];
+            $id_student = $gets["id_stu"];
+            $id_class =  $gets["id_class"];
+            $type_a = $gets["type_a"];
+            $bloq = $gets["bloq"];
+            $assistance = $gets["assistance"];
+            $justify = $gets["justify"];
+            $this->activity_log("Asistencia","Clase $id_class","Estudiante $id_student","Fecha $assistance","Registra o Edita \'$type_a\' Comentario: $justify");
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'save_assistance',
+                'data' => ['dni_staff' => $dni_staff, 'id_student' => $id_student, 'id_class' => $id_class, 'type_a' => $type_a, 'assistance' => $assistance,'bloq' => $bloq , 'justify' => $justify]);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            return "DONE";
+        }else{
+            return "SESSION EXPIRED";
+        }
+    }
     public function send_mail_info(Request $request){
         $gets = $request->input();
         $files = $request->file('files');
@@ -679,5 +787,19 @@ class App_Controller extends Controller {
         //dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
+    }
+    private function activity_log($sec,$sub,$opA,$opB,$desc){
+        if(isset(Session::get('account')['dni'])){
+            $dni = Session::get('account')['dni'];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'activity_log',
+                'data' => ['dni' => $dni, 'section' => $sec, 'subsec' => $sub,  'op_a' => $opA,  'op_b' => $opB,  'desc' => $desc]
+            );
+            //dd($arr);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true);
+        }
     }
 }

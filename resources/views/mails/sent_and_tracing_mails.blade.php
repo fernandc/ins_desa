@@ -9,7 +9,7 @@ Seguimiento
 @endsection
 
 @section("context")
-<div class="container">
+<div class="mx-5">
     <h3 id="result">Correos Enviados y Seguimiento</h3>
     <hr>
     <div class="table-responsive">
@@ -18,8 +18,9 @@ Seguimiento
               <tr>
                 <th scope="col">Fecha</th>
                 <th scope="col">Asunto</th>
-                <th scope="col"><i class="fas fa-paper-plane tooltip-info" data-toggle="tooltip" data-placement="top" title="Cantidad de destinatarios"></i></th>
-                <th scope="col"><i class="fas fa-glasses tooltip-info" data-toggle="tooltip" data-placement="top" title="Cantidad de correos leídos"></i></th>
+                <th scope="col"><i class="fas fa-envelope tooltip-info" data-toggle="tooltip" data-placement="top" title="Cantidad de destinatarios"></i></th>
+                <th scope="col"><i class="fas fa-paper-plane tooltip-info" data-toggle="tooltip" data-placement="top" title="Cantidad de correos enviados"></i></th>
+                <th scope="col"><i class="fas fa-envelope-open tooltip-info" data-toggle="tooltip" data-placement="top" title="Cantidad de correos leídos"></i></th>
                 <th scope="col">Seguimiento</th>
               </tr>
           </thead>
@@ -161,6 +162,7 @@ Seguimiento
                             </div>
                           </td>
                           <td>{{$row["destinatarios"]}}</td>
+                          <td>{{$row["enviados"]}}</td>
                           <td>{{$row["leidos"]}}</td>      
                           <td>
                             <!-- Button trigger modal -->

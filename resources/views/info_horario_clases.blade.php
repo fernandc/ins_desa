@@ -3,7 +3,7 @@
 @extends("layouts.mcdn")
 
 @section("title")
-Pagina
+Horarios de Clase
 @endsection
 
 @section("headex")

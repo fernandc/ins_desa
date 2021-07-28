@@ -7,6 +7,53 @@ Admin Cursos
 @endsection
 
 @section("headex")
+<style>
+    .sw-danger:focus~.custom-control-label::before {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 47, 69, 0.25) !important;
+    }
+
+    .sw-danger:checked~.custom-control-label::before {
+        border-color: #dc3545 !important;
+        background-color: #dc3545 !important;
+    }
+
+    .sw-danger:active~.custom-control-label::before {
+        background-color: #dc3545 !important;
+        border-color: #dc3545 !important;
+    }
+
+    .sw-danger:focus:not(:checked)~.custom-control-label::before {
+        border-color: #dc3545 !important;
+    }
+
+    .sw-danger:not(:disabled):active~.custom-control-label::before {
+        background-color: #dc3545 !important;
+        border-color: #dc3545 !important;
+    }
+    .sw-success:focus~.custom-control-label::before {
+        border-color: #28a745 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 47, 69, 0.25) !important;
+    }
+
+    .sw-success:checked~.custom-control-label::before {
+        border-color: #28a745 !important;
+        background-color: #28a745 !important;
+    }
+
+    .sw-success:active~.custom-control-label::before {
+        background-color: #28a745 !important;
+        border-color: #28a745 !important;
+    }
+
+    .sw-success:focus:not(:checked)~.custom-control-label::before {
+        border-color: #28a745 !important;
+    }
+    .sw-success:not(:disabled):active~.custom-control-label::before {
+        background-color: #28a745 !important;
+        border-color: #28a745 !important;
+    }
+</style>
 <script>
 const Toast = Swal.mixin({
     toast: true,
@@ -111,8 +158,10 @@ const Toast = Swal.mixin({
                     <th scope="col"># Matrícula</th>
                     <th scope="col"><i class="far fa-id-badge"></i></th>
                     <th scope="col">Centro de Padres</th>
-                    <th scope="col">Ficha</th>
                     <th scope="col">Matriculado</th>
+                    <th scope="col">Repitente</th>
+                    <th scope="col">Nuevo</th>
+                    <th scope="col">Ficha</th>
                 </tr>
             </thead>
             <tbody>
@@ -297,17 +346,15 @@ const Toast = Swal.mixin({
                                     }
                                 });
                             </script>
-                        <td>
-                            <button class="btn btn-outline-primary btn-sm data-ficha" data="{{$row["id_stu"]}}" data2="{{$row["id_zmail"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Ficha</button>
                         </td>
                         <td>
                             @if($flag)
                                 <div class="custom-control custom-switch">
                                     @if($row["matricula"] == "si")
-                                        <input type="checkbox" class="custom-control-input" id="customSwitch{{$row["id_stu"]}}" checked="">
+                                        <input type="checkbox" class="custom-control-input sw-success" id="customSwitch{{$row["id_stu"]}}" checked="">
                                         <label class="custom-control-label text-success" for="customSwitch{{$row["id_stu"]}}" style="width:112px" id="labelMatricula{{$row["id_stu"]}}">Matriculado</label>
                                     @else
-                                        <input type="checkbox" class="custom-control-input" id="customSwitch{{$row["id_stu"]}}" >
+                                        <input type="checkbox" class="custom-control-input sw-success" id="customSwitch{{$row["id_stu"]}}" >
                                         <label class="custom-control-label text-danger" for="customSwitch{{$row["id_stu"]}}" style="width:112px" id="labelMatricula{{$row["id_stu"]}}">No Matriculado</label>
                                     @endif
                                 </div>
@@ -359,6 +406,79 @@ const Toast = Swal.mixin({
                             @else
                                 <a href="adm_courses?add_course" class="badge badge-primary">Agregar curso</a>
                             @endif
+                        </td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                @if($row["es_repitente"] == "si")
+                                    <input type="checkbox" class="custom-control-input sw-danger" id="repitente{{$row["id_stu"]}}" checked="">
+                                    <label class="custom-control-label text-success" for="repitente{{$row["id_stu"]}}" ></label>
+                                @else
+                                    <input type="checkbox" class="custom-control-input sw-danger" id="repitente{{$row["id_stu"]}}" >
+                                    <label class="custom-control-label text-danger" for="repitente{{$row["id_stu"]}}" ></label>
+                                @endif
+                            </div>
+                            <script>
+                                $("#repitente{{$row["id_stu"]}}").click(function (){
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Cargando',
+                                        showConfirmButton: false,
+                                    })
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "student_is_repeater",
+                                        data:{
+                                            id_stu: '{{$row["id_stu"]}}',
+                                            id_matricula: '{{$row["id_matricula"]}}'  
+                                        },
+                                        success: function (data)
+                                        {
+                                            Toast.fire({
+                                                icon: 'success', 
+                                                title: 'Completado'
+                                            })
+                                        }
+                                    });
+                                });
+                            </script>
+                        </td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                @if($row["es_nuevo"] == "si")
+                                    <input type="checkbox" class="custom-control-input" id="nuevo{{$row["id_stu"]}}" checked="">
+                                    <label class="custom-control-label text-success" for="nuevo{{$row["id_stu"]}}" ></label>
+                                @else
+                                    <input type="checkbox" class="custom-control-input" id="nuevo{{$row["id_stu"]}}" >
+                                    <label class="custom-control-label text-danger" for="nuevo{{$row["id_stu"]}}" ></label>
+                                @endif
+                            </div>
+                            <script>
+                                $("#nuevo{{$row["id_stu"]}}").click(function (){
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Cargando',
+                                        showConfirmButton: false,
+                                    })
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "student_is_new",
+                                        data:{
+                                            id_stu: '{{$row["id_stu"]}}',
+                                            id_matricula: '{{$row["id_matricula"]}}'  
+                                        },
+                                        success: function (data)
+                                        {
+                                            Toast.fire({
+                                                icon: 'success', 
+                                                title: 'Completado'
+                                            })
+                                        }
+                                    });
+                                });
+                            </script>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-primary btn-sm data-ficha" data="{{$row["id_stu"]}}" data2="{{$row["id_zmail"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Ficha</button>
                         </td>
                     </tr>             
                 @endforeach                      
