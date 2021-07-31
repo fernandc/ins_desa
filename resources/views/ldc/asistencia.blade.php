@@ -215,6 +215,8 @@ Asistencias
                                             <br>
                                             <b style="color: #ea00ea">J</b> = Justificación de inasistencia
                                             <br>
+                                            <b style="color: red">S</b> = Sin Cámara
+                                            <br>
                                             Estas serán guardadas automaticamente.
                                             <hr>
                                             <b class="text-primary">Para justificar </b> Se debe ingresar en la casilla la letra <b style="color: #ea00ea">J</b>, <b style="color: darkorange">R</b> o <b style="color: #0058ff">A</b> ,
@@ -362,6 +364,8 @@ Asistencias
                                     $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","red");
                                 @elseif($row["type_a"] == "R")
                                     $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","darkorange");
+                                @elseif($row["type_a"] == "S")
+                                    $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","red");
                                 @endif
                                 //justify
                                 //id_staff
@@ -481,7 +485,7 @@ Asistencias
                                 var id_stu = $(this).attr("stu");
                                 var bloq = $(this).attr("bloq");
                                 var justify = $("#descj-stu"+id_stu+"-class{{$id_clase}}-bloq"+bloq+"-date"+data).val();
-                                if(value == "1" || value == "R" || value == "A" || value == "J" || value == ""){
+                                if(value == "1" || value == "R" || value == "A" || value == "J" || value == "S" || value == ""){
                                     $(this).css("color","gray");
                                     $.ajax({
                                         type: "GET",
@@ -502,6 +506,9 @@ Asistencias
                                         }
                                     });
                                     if(value == "1"){
+                                        $(this).css("color","red");
+                                    }
+                                    if(value == "S"){
                                         $(this).css("color","red");
                                     }
                                     if(value == "R"){
