@@ -120,6 +120,31 @@ class View_System extends Controller {
                     }else{
                         return back();
                     }
+                case "info_assistance":
+                    $has_priv = false;
+                    foreach ($privileges as $priv) {
+                        if ($priv["id_privilege"] == 8) {
+                            $has_priv = true;
+                        }
+                    }
+                    if($this->isAdmin() || $has_priv){
+                        $class = $this->list_checked("all");
+                        $curso = 0;
+                        $alumnos = [];
+                        $enabled_days = [];
+                        $assistance_data = [];
+                        $horarios = [];
+                        if(isset($_GET['curso'])){
+                            $curso = $_GET['curso'];
+                            $alumnos = $this->matriculas($curso);
+                            $enabled_days = $this->list_class_enabled_days(null,$curso);
+                            $assistance_data = $this->list_assistance_class(null,$curso);
+                            
+                        }
+                        return view('info_asistencia')->with("clases",$class)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("assistance_data",$assistance_data)->with("horarios",$horarios);
+                    }else{
+                        return back();
+                    }
                 case "noticias":            
                     if($this->isAdmin()){
                         $noticias = $this->listar_noticias();
@@ -282,8 +307,8 @@ class View_System extends Controller {
                                 $alumnos = $this->matriculas($curso);
                                 foreach ($class as $row) {
                                     if($row["id_curso"] == $curso && $row["id_materia"] == $id_materia){
-                                        $enabled_days = $this->list_class_enabled_days($row["id_clase"]);
-                                        $assistance_data = $this->list_assistance_class($row["id_clase"]);
+                                        $enabled_days = $this->list_class_enabled_days($row["id_clase"],null);
+                                        $assistance_data = $this->list_assistance_class($row["id_clase"],null);
                                         $horarios = $this->list_class_scheduler($row["id_curso_periodo"]);
                                     }
                                 }
@@ -746,12 +771,12 @@ class View_System extends Controller {
         //dd($data);
         return $data;
     }
-    private function list_class_enabled_days($id_class){
+    private function list_class_enabled_days($id_class,$id_grade){
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'assistance_date',
-            'data' => [ "id_class" => $id_class ]
+            'data' => [ "id_class" => $id_class , "id_grade" => $id_grade ]
         );
         //dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
@@ -759,12 +784,12 @@ class View_System extends Controller {
         //dd($data);
         return $data;
     }
-    private function list_assistance_class($id_class){
+    private function list_assistance_class($id_class,$id_grade){
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'list_assistance_class',
-            'data' => [ "id_class" => $id_class ]
+            'data' => [ "id_class" => $id_class , "id_grade" => $id_grade ]
         );
         //dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");

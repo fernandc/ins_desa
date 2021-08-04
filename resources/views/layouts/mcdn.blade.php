@@ -111,7 +111,7 @@ if(Session::has('period')){
                             <a class="dropdown-item" href="timetable">Horario de Clases</a>
                             @endif
                             @if (in_array(8,$privileges))
-                            <a class="dropdown-item" href="timetable">Resumen de Asistencias</a>
+                            <a class="dropdown-item" href="info_assistance">Resumen de Asistencias</a>
                             @endif
                             <div class="dropdown-divider"></div>
                             @if (in_array(1,$privileges))
