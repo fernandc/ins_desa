@@ -217,6 +217,8 @@ Asistencias
                                             <br>
                                             <b style="color: red">S</b> = Sin Cámara
                                             <br>
+                                            <b>E</b> = Eximido
+                                            <br>
                                             Estas serán guardadas automaticamente.
                                             <hr>
                                             <b class="text-primary">Para justificar </b> Se debe ingresar en la casilla la letra <b style="color: #ea00ea">J</b>, <b style="color: darkorange">R</b> o <b style="color: #0058ff">A</b> ,
@@ -360,12 +362,12 @@ Asistencias
                                     $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","#ea00ea");
                                 @elseif($row["type_a"] == "A")
                                     $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","#0058ff");
-                                @elseif($row["type_a"] == "1")
+                                @elseif($row["type_a"] == "1" || $row["type_a"] == "S")
                                     $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","red");
                                 @elseif($row["type_a"] == "R")
                                     $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","darkorange");
-                                @elseif($row["type_a"] == "S")
-                                    $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","red");
+                                @elseif($row["type_a"] == "E")
+                                    $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","black");
                                 @endif
                                 //justify
                                 //id_staff
@@ -485,7 +487,7 @@ Asistencias
                                 var id_stu = $(this).attr("stu");
                                 var bloq = $(this).attr("bloq");
                                 var justify = $("#descj-stu"+id_stu+"-class{{$id_clase}}-bloq"+bloq+"-date"+data).val();
-                                if(value == "1" || value == "R" || value == "A" || value == "J" || value == "S" || value == ""){
+                                if(value == "1" || value == "R" || value == "A" || value == "J" || value == "S" || value == "E" || value == ""){
                                     $(this).css("color","gray");
                                     $.ajax({
                                         type: "GET",
@@ -519,6 +521,9 @@ Asistencias
                                     }
                                     if(value == "J"){
                                         $(this).css("color","#ea00ea");
+                                    }
+                                    if(value == "E"){
+                                        $(this).css("color","black");
                                     }
                                 }else{
                                     $(this).val("");

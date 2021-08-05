@@ -218,10 +218,12 @@ Asistencias
                                 $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","#ea00ea");
                             @elseif($row["type_a"] == "A")
                                 $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","#0058ff");
-                            @elseif($row["type_a"] == "1")
+                            @elseif($row["type_a"] == "1" || $row["type_a"] == "S")
                                 $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","red");
                             @elseif($row["type_a"] == "R")
                                 $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","darkorange");
+                            @elseif($row["type_a"] == "E")
+                                $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","black");
                             @endif
                             $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").val("{{$row["type_a"]}}");
                             //justify
@@ -229,6 +231,16 @@ Asistencias
                                 $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-toggle","tooltip");
                                 $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-placement","top");
                                 $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("title","{{$row["justify"]}}");
+                            @endif
+                            @if($row["type_a"] == "S" )
+                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-toggle","tooltip");
+                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-placement","top");
+                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("title","Sin Camara");
+                            @endif
+                            @if($row["type_a"] == "E" )
+                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-toggle","tooltip");
+                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-placement","top");
+                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("title","Eximido");
                             @endif
                         @endforeach
                         $(function () {
