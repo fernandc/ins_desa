@@ -118,7 +118,7 @@ Asistencias
         $month = $_GET["mes"];
         $lastd = date("t",strtotime("$year-$month"));
     }
-    $contador = 0;
+    $dtda = 0;
     $curso = "";
     $id_clase = "";
     $materias = [];
@@ -154,8 +154,19 @@ Asistencias
                           <tr>
                             <th scope="col" style="text-align: center;">#</th>
                             <th scope="col" style="min-width: 260px">Alumnos</th>
+                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Presente">Total<br>[ <span class="text-success">P</span> ]</th>
+                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Atrasado">Total<br><span style="color: #0058ff;">A</span></th>
+                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Retirado">Total<br><span style="color: darkorange;">R</span></th>
+                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Sin Camara">Total<br><span style="color: red;">S</span></th>
+                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Eximido">Total<br>E</th>
+                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Ausente">Total<br><span style="color: red;">1</span></th>
+                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Justificado">Total<br><span style="color: #ea00ea;">J</span></th>
+                            <th scope="col" style="text-align: center;min-width: 80px">Total<br>Asistencia</th>
+                            <th scope="col" style="text-align: center;">Total<br>Inasistencia</th>
+                            <th scope="col" style="text-align: center;">% Asistido</th>
                                 @foreach ($dias_activos as $horario)
                                     @php
+                                        $dtda++;
                                         $type = "";
                                         $idc = $horario["id_materia"];
                                         if($idc == "20009" || $idc == "14" || $idc == "9200" || $idc == "20000" || $idc == "20001" || $idc == "11224" || $idc == "4487" || $idc == "27"){$type = '<a href="#" class="badge badge-danger" style="background-color: red;">LEN </a>';}
@@ -193,9 +204,68 @@ Asistencias
                                 $nrolista = 1;
                             @endphp
                             @foreach ($alumnos as $alumno)
+                                @php
+                                    $atr = 0;
+                                    $ret = 0;
+                                    $sca = 0;
+                                    $exi = 0;
+                                    $ina = 0;
+                                    $jus = 0;
+                                    //Results
+                                    $tin = 0;
+                                    $tas = 0;
+                                    $por = 0;
+                                    $pre = 0;
+                                @endphp
+                                @foreach ($assistance_data as $row)
+                                    @if ($row["id_student"]==$alumno["id_stu"])
+                                        @php if($row["type_a"] == "1"){$ina++;} @endphp
+                                        @php if($row["type_a"] == "J"){$jus++;} @endphp
+                                        @php if($row["type_a"] == "E"){$exi++;} @endphp
+                                        @php if($row["type_a"] == "S"){$sca++;} @endphp
+                                        @php if($row["type_a"] == "R"){$ret++;} @endphp
+                                        @php if($row["type_a"] == "A"){$atr++;} @endphp
+                                    @endif
+                                @endforeach
+                                @php
+                                    $tin = $ina+$jus; 
+                                    $tas = $dtda-$tin;
+                                    $por = round((($dtda-$tin)*100)/$dtda,2);
+                                    $pre = $dtda-$atr-$ret-$sca-$exi-$ina-$jus;
+                                @endphp
                                 <tr>
                                     <th scope="row" style="text-align: center;">{{$nrolista++}}</th>
                                     <th>{{$alumno["nombre_stu"]}}</th>
+                                    <th style="text-align: center;">
+                                        <span class="badge @if($pre==0) badge-light @else badge-info @endif">{{$pre}}</span>
+                                    </th>
+                                    <th style="text-align: center;">
+                                        <span class="badge @if($atr==0) badge-light @else badge-info @endif">{{$atr}}</span>
+                                    </th>
+                                    <th style="text-align: center;">
+                                        <span class="badge @if($ret==0) badge-light @else badge-info @endif">{{$ret}}</span>
+                                    </th>
+                                    <th style="text-align: center;">
+                                        <span class="badge @if($sca==0) badge-light @else badge-info @endif">{{$sca}}</span>
+                                    </th>
+                                    <th style="text-align: center;">
+                                        <span class="badge @if($exi==0) badge-light @else badge-info @endif">{{$exi}}</span>
+                                    </th>
+                                    <th style="text-align: center;">
+                                        <span class="badge @if($ina==0) badge-light @else badge-warning @endif">{{$ina}}</span>
+                                    </th>
+                                    <th style="text-align: center;">
+                                        <span class="badge @if($jus==0) badge-light @else badge-warning @endif">{{$jus}}</span>
+                                    </th>
+                                    <th style="text-align: center;">
+                                        <span class="badge badge-success">{{$tas}}</span> de <span class="badge badge-light">{{$dtda}}</span>
+                                    </th>
+                                    <th style="text-align: center;">
+                                        <span class="badge @if($tin==0) badge-light @else badge-danger @endif">{{$tin}}</span>
+                                    </th>
+                                    <th style="text-align: center;" >
+                                        <span class="@if($por==100) badge badge-primary @elseif($por>90) text-primary @elseif($por>81) text-warning @else text-danger @endif" @if($por==100) style="font-size: 1rem;" @endif>{{$por}}%</span>
+                                    </th>
                                     @foreach ($dias_activos as $horario)
                                         <th style="text-align: center;">
                                             <div id="tooltip{{$alumno["id_stu"]}}-class{{$horario["id_class"]}}-bloq{{$horario["id_bloq"]}}-date{{$horario["date_day"]}}">
