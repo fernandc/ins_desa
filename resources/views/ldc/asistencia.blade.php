@@ -257,6 +257,8 @@ Asistencias
                                                     </div>
                                                     @php
                                                         $checked = "";
+                                                        $inputenabled = 'disabled=""';
+                                                        $inputchecked = '';
                                                         $day = $i;
                                                         if($i < 10){
                                                             $day = "0$i";
@@ -267,21 +269,6 @@ Asistencias
                                                             @if ($dia_activo["date_day"] == "$year-$month-$day" && $dia_activo["id_bloq"] == $horario["id"])
                                                                 @php
                                                                     $checked = 'checked=""';
-                                                                @endphp
-                                                            @endif
-                                                        @endforeach
-                                                        <input type="checkbox" class="custom-control-input enable-date" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="enablecourse{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" {{$checked}}>
-                                                        <label class="custom-control-label" for="enablecourse{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}"></label>
-                                                    </div>
-                                                    <hr style="margin: 0px 0px 3px 0px;">
-                                                    <div class="custom-control custom-checkbox">
-                                                        @php
-                                                            $inputenabled = 'disabled=""';
-                                                            $inputchecked = '';
-                                                        @endphp
-                                                        @foreach ($dias_activos as $dia_activo)
-                                                            @if ($dia_activo["date_day"] == "$year-$month-$day" && $dia_activo["id_bloq"] == $horario["id"])
-                                                                @php
                                                                     $inputenabled = '';
                                                                 @endphp
                                                                 @if ($dia_activo["full_assistance"] == 1)
@@ -291,9 +278,21 @@ Asistencias
                                                                 @endif
                                                             @endif
                                                         @endforeach
+                                                        <input type="checkbox" class="custom-control-input enable-date" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="enablecourse{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" {{$checked}}>
+                                                        <label class="custom-control-label" for="enablecourse{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}"></label>
+                                                    </div>
+                                                    <hr style="margin: 0px 0px 3px 0px;">
+                                                    <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input full-asistance" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="ac{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" {{$inputenabled}} {{$inputchecked}}>
                                                         <label class="custom-control-label" for="ac{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" data-toggle="tooltip" data-placement="top" title="Asistencia Completa">A/C</label>
                                                     </div>
+                                                    @if($anr)
+                                                        <hr style="margin: 0px 0px 3px 0px;">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input non-assistance" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" {{$inputenabled}} {{$inputchecked}}>
+                                                            <label class="custom-control-label" for="anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" data-toggle="tooltip" data-placement="top" title="Asistencia No Realizada">N/R</label>
+                                                        </div>
+                                                    @endif
                                                 </th>
                                             @endif
                                         @endforeach
@@ -406,15 +405,22 @@ Asistencias
                                             if(enabled == 1){
                                                 $(".refdate-bloq"+bloq+"-"+date).attr("disabled",false);
                                                 $("#ac{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq"+bloq+"date"+date+"").attr("disabled",false);
+                                                $("#anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq"+bloq+"date"+date+"").attr("disabled",false);
                                             }else{
                                                 $(".refdate-bloq"+bloq+"-"+date).attr("disabled",true);
                                                 $("#ac{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq"+bloq+"date"+date+"").attr("disabled",true);
+                                                $("#anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq"+bloq+"date"+date+"").attr("disabled",true);
                                             }
                                         }
                                     }
                                 });
                             });
                             //Full Asistance
+                            @if($anr)
+                            $(".non-assistance").change(function(){
+
+                            });
+                            @endif
                             $(".full-asistance").change(function(){
                                 var id_class = $(this).attr("data");
                                 var date = $(this).attr("date");

@@ -282,17 +282,28 @@ class View_System extends Controller {
                     return redirect('/home');
                 case "checks_points":
                     $has_priv = false;
+                    $check_all = false;
+                    $can_anr = false;
                     foreach ($privileges as $priv) {
-                        if ($priv["id_privilege"] == 5 || $priv["id_privilege"] == 9) {
+                        if ($priv["id_privilege"] == 5) {
                             $has_priv = true;
+                        }
+                        if($priv["id_privilege"] == 9){
+                            $check_all = true;
+                        }
+                        if($priv["id_privilege"] == 10){
+                            $can_anr = true;
                         }
                     }
                     if($this->isAdmin() || $has_priv){
                         $class = [];
-                        if($this->isAdmin() || $priv["id_privilege"] == 9){
+                        if($this->isAdmin() || $check_all){
                             $class = $this->list_checked("all");
                         }else{
                             $class = $this->list_checked(Session::get('account')['dni']);
+                        }
+                        if($this->isAdmin()){
+                            $can_anr = true;
                         }
                         $curso = 0;
                         $alumnos = [];
@@ -300,7 +311,6 @@ class View_System extends Controller {
                         $assistance_data = [];
                         $horarios = [];
                         if(isset($_GET['curso'])){
-                            
                             $curso = $_GET['curso'];
                             if(isset($_GET['materia'])){
                                 $id_materia = $gets['materia'];
@@ -314,7 +324,7 @@ class View_System extends Controller {
                                 }
                             }
                         }
-                        return view('ldc/asistencia')->with("clases",$class)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("assistance_data",$assistance_data)->with("horarios",$horarios);
+                        return view('ldc/asistencia')->with("clases",$class)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("assistance_data",$assistance_data)->with("horarios",$horarios)->with("anr",$can_anr);
                     }
                     return redirect('/home');
                 default:

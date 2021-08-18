@@ -11,6 +11,9 @@ Asistencias
         
     </script>
     <style>
+        .text-warning {
+            color: #ff8300 !important;
+        }
         .card-body nav a.nav-link:hover{
             color: #ff8300 !important
         }
@@ -143,7 +146,7 @@ Asistencias
     @if (isset($_GET["curso"]))
         <div id="contentlist" class="col-md-12">
             <div class="card">
-                <div class="card-header scroll1" style="overflow-x: auto;">
+                <div class="card-header scroll1" style="overflow-x: auto;position: sticky;top: 0;z-index: 1;background-color: white;">
                     <div id="scrollw">
                         Asistencia de <span class='text-primary'>{{$curso}}</span>
                     </div>
@@ -161,7 +164,7 @@ Asistencias
                             <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Eximido">Total<br>E</th>
                             <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Ausente">Total<br><span style="color: red;">1</span></th>
                             <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Justificado">Total<br><span style="color: #ea00ea;">J</span></th>
-                            <th scope="col" style="text-align: center;min-width: 80px">Total<br>Asistencia</th>
+                            <th scope="col" style="text-align: center;min-width: 120px">Total<br>Asistencia</th>
                             <th scope="col" style="text-align: center;">Total<br>Inasistencia</th>
                             <th scope="col" style="text-align: center;">% Asistido</th>
                                 @foreach ($dias_activos as $horario)
@@ -264,7 +267,7 @@ Asistencias
                                         <span class="badge @if($tin==0) badge-light @else badge-danger @endif">{{$tin}}</span>
                                     </th>
                                     <th style="text-align: center;" >
-                                        <span class="@if($por==100) badge badge-primary @elseif($por>90) text-primary @elseif($por>81) text-warning @else text-danger @endif" @if($por==100) style="font-size: 1rem;" @endif>{{$por}}%</span>
+                                        <span class="@if($por==100) badge badge-primary @elseif($por>=90) text-primary @elseif($por>=85) text-warning @else text-danger @endif" @if($por==100) style="font-size: 1rem;" @endif>{{$por}}%</span>
                                     </th>
                                     @foreach ($dias_activos as $horario)
                                         <th style="text-align: center;">
