@@ -51,6 +51,7 @@ Route::get('/save_block', [App_Controller::class, 'save_block']);
 Route::get('/rmv_block',[App_Controller::class, 'rmv_block']);
 Route::get('/enable_date',[App_Controller::class, 'enable_date']);
 Route::get('/full_assistance',[App_Controller::class, 'full_assistance']);
+Route::get('/non_assistance',[App_Controller::class, 'non_assistance']);
 Route::get('/save_assistance',[App_Controller::class, 'save_assistance']);
 Route::get('/student_is_repeater',[App_Controller::class, 'student_is_repeater']);
 Route::get('/student_is_new',[App_Controller::class, 'student_is_new']);

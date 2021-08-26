@@ -688,6 +688,29 @@ class App_Controller extends Controller {
             return "SESSION EXPIRED";
         }
     }
+    public function non_assistance(Request $request){
+        if(isset(Session::get('account')['dni'])){
+            $gets = $request->input();
+            $id_class =  $gets["id_class"];
+            $date =  $gets["date"];
+            $bloq =  $gets["bloq"];
+            $enabled =  $gets["enabled"];
+            if($enabled == 1){
+                $this->activity_log("Asistencia","Activar o Desactivar No pasó asistencia","","","Habilita No pasó asistencia en día $date en bloq $bloq de la clase $id_class");
+            }else{
+                $this->activity_log("Asistencia","Activar o Desactivar No pasó asistencia","","","Deshabilita No pasó asistencia en día $date en bloq $bloq de la clase $id_class");
+            }
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'non_assistance',
+                'data' => ['id_class' => $id_class, 'date' => $date, 'bloq' => $bloq , 'enable' => $enabled]);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            return "DONE";
+        }else{
+            return "SESSION EXPIRED";
+        }
+    }
     public function save_assistance(Request $request){
         if(isset(Session::get('account')['dni'])){
             $gets = $request->input();

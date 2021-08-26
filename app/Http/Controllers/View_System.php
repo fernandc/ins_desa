@@ -290,9 +290,11 @@ class View_System extends Controller {
                         }
                         if($priv["id_privilege"] == 9){
                             $check_all = true;
+                            $has_priv = true;
                         }
                         if($priv["id_privilege"] == 10){
                             $can_anr = true;
+                            $has_priv = true;
                         }
                     }
                     if($this->isAdmin() || $has_priv){

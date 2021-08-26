@@ -29,6 +29,19 @@ Asistencias
             background-clip: padding-box;
             
         }
+        .custom-checkbox-red .custom-control-input:checked~.custom-control-label::before{
+            background-color:red;
+            border-color: red;
+        }
+        .custom-checkbox-red .custom-control-input:checked:disabled~.custom-control-label::before{
+            background-color:red;
+            border-color: red;
+        }
+    
+        /** focus shadow pinkish **/
+        .custom-checkbox-red .custom-control-input:focus~.custom-control-label::before{
+            box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(255, 0, 0, 0.555); 
+        }
     </style>
 @endsection
 
@@ -258,7 +271,8 @@ Asistencias
                                                     @php
                                                         $checked = "";
                                                         $inputenabled = 'disabled=""';
-                                                        $inputchecked = '';
+                                                        $inputcheckedA = '';
+                                                        $inputcheckedB = '';
                                                         $day = $i;
                                                         if($i < 10){
                                                             $day = "0$i";
@@ -273,7 +287,12 @@ Asistencias
                                                                 @endphp
                                                                 @if ($dia_activo["full_assistance"] == 1)
                                                                     @php
-                                                                        $inputchecked = 'checked=""';
+                                                                        $inputcheckedA = 'checked=""';
+                                                                    @endphp
+                                                                @endif
+                                                                @if ($dia_activo["non_assistance"] == 1)
+                                                                    @php
+                                                                        $inputcheckedB = 'checked=""';
                                                                     @endphp
                                                                 @endif
                                                             @endif
@@ -283,16 +302,14 @@ Asistencias
                                                     </div>
                                                     <hr style="margin: 0px 0px 3px 0px;">
                                                     <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input full-asistance" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="ac{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" {{$inputenabled}} {{$inputchecked}}>
+                                                        <input type="checkbox" class="custom-control-input full-asistance" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="ac{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" {{$inputenabled}} {{$inputcheckedA}}>
                                                         <label class="custom-control-label" for="ac{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" data-toggle="tooltip" data-placement="top" title="Asistencia Completa">A/C</label>
                                                     </div>
-                                                    @if($anr)
                                                         <hr style="margin: 0px 0px 3px 0px;">
-                                                        <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input non-assistance" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" {{$inputenabled}} {{$inputchecked}}>
+                                                        <div class="custom-control custom-checkbox custom-checkbox-red">
+                                                            <input type="checkbox" class="custom-control-input non-assistance" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" @if($anr) {{$inputenabled}} @else disabled="" @endif {{$inputcheckedB}}>
                                                             <label class="custom-control-label" for="anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" data-toggle="tooltip" data-placement="top" title="Asistencia No Realizada">N/R</label>
                                                         </div>
-                                                    @endif
                                                 </th>
                                             @endif
                                         @endforeach
@@ -418,7 +435,29 @@ Asistencias
                             //Full Asistance
                             @if($anr)
                             $(".non-assistance").change(function(){
-
+                                var id_class = $(this).attr("data");
+                                var date = $(this).attr("date");
+                                var bloq = $(this).attr("bloq");
+                                var enabled = 0;
+                                if($(this).is(":checked")){
+                                    enabled = 1;
+                                }
+                                $.ajax({
+                                    type: "GET",
+                                    url: "non_assistance",
+                                    data:{
+                                        id_class,
+                                        date,
+                                        bloq,
+                                        enabled
+                                    },
+                                    success: function (data)
+                                    {
+                                        if(data != "DONE"){
+                                            location.reload();
+                                        }
+                                    }
+                                });
                             });
                             @endif
                             $(".full-asistance").change(function(){
