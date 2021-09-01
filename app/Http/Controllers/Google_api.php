@@ -13,7 +13,17 @@ class Google_api extends Controller {
     public function login() {
         if (Session::has('account')) {
             return redirect('home');
-        } else {
+        }elseif(getenv("BYPASS") == "true"){
+            $data["dni"] = getenv("BYPASS_DNI");
+            $data["full_name"] = getenv("BYPASS_FULL_NAME");
+            $data["birth_date"] = getenv("BYPASS_BIRTH_DATE");
+            $data["email"] = getenv("BYPASS_EMAIL");
+            $data["is_admin"] = getenv("BYPASS_IS_ADMIN");
+            $data["token"] = getenv("BYPASS_TOKEN");
+            $data["url_img"] = getenv("BYPASS_URL_IMG"); 
+            session::put(['account' => $data]);
+            return redirect('home');
+        }else {
             $scope = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile';
             $redirect_uri = "https://" . getenv("APP_URL") . 'g-response';
             $auth_url = "https://accounts.google.com/o/oauth2/v2/auth";

@@ -135,7 +135,6 @@ Asistencias
         }
         $contador = 0;
         $curso = "";
-        $id_clase = "";
         $materias = [];
     @endphp
     @foreach ($clases as $clase)
@@ -144,12 +143,6 @@ Asistencias
                 if($clase["id_curso"] == $_GET['curso']){
                     $materias[$clase["id_materia"]] = $clase["materia"];
                     $curso = $clase["curso"];
-                    if(isset($_GET['materia'])){
-                        if($clase["id_materia"] == $_GET['materia']){
-                            //dd($clase);
-                            $id_clase = $clase["id_clase"];
-                        }
-                    }
                 }
             }
         @endphp

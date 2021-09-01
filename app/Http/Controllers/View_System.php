@@ -312,21 +312,31 @@ class View_System extends Controller {
                         $enabled_days = [];
                         $assistance_data = [];
                         $horarios = [];
+                        $teacher = null;
+                        $id_clase = null;
                         if(isset($_GET['curso'])){
                             $curso = $_GET['curso'];
                             if(isset($_GET['materia'])){
                                 $id_materia = $gets['materia'];
                                 $alumnos = $this->matriculas($curso);
+                                if(isset($_GET['profesor'])){
+                                    $teacher = $_GET['profesor'];
+                                }
                                 foreach ($class as $row) {
                                     if($row["id_curso"] == $curso && $row["id_materia"] == $id_materia){
+                                        $horarios = $this->list_class_scheduler($row["id_curso_periodo"]);
+                                    }
+                                }
+                                foreach($horarios as $row){
+                                    if($row["id_materia"] == $id_materia){
                                         $enabled_days = $this->list_class_enabled_days($row["id_clase"],null);
                                         $assistance_data = $this->list_assistance_class($row["id_clase"],null);
-                                        $horarios = $this->list_class_scheduler($row["id_curso_periodo"]);
+                                        $id_clase = $row["id_clase"];
                                     }
                                 }
                             }
                         }
-                        return view('ldc/asistencia')->with("clases",$class)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("assistance_data",$assistance_data)->with("horarios",$horarios)->with("anr",$can_anr);
+                        return view('ldc/asistencia')->with("clases",$class)->with("id_clase",$id_clase)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("assistance_data",$assistance_data)->with("horarios",$horarios)->with("anr",$can_anr);
                     }
                     return redirect('/home');
                 default:
