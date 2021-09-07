@@ -17,19 +17,6 @@ Asistencias
         .card-body nav a.nav-link:hover{
             color: #ff8300 !important
         }
-        table tbody th:nth-child(1) {
-            position: sticky;
-            left: 0px;
-            background-color: white;
-            background-clip: padding-box;
-        }
-        table tbody th:nth-child(2) {
-            position: sticky;
-            left: 27px;
-            background-color: white;
-            background-clip: padding-box;
-            
-        }
     </style>
 @endsection
 
@@ -146,12 +133,12 @@ Asistencias
     @if (isset($_GET["curso"]))
         <div id="contentlist" class="col-md-12">
             <div class="card">
-                <div class="card-header scroll1" style="overflow-x: auto;position: sticky;top: 0;z-index: 1;background-color: white;">
+                <div class="card-header">
                     <div id="scrollw">
                         Asistencia de <span class='text-primary'>{{$curso}}</span>
                     </div>
                 </div>
-                <div class="card-body table-responsive scroll2" style="padding: 0px;">
+                <div class="card-body table-responsive" style="padding: 0px;">
                     <table id="listtable" class="table table-hover table-bordered table-sm" style="font-size: 0.9rem;">
                         <thead>
                           <tr>
@@ -160,7 +147,7 @@ Asistencias
                             <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Presente">Total<br>[ <span class="text-success">P</span> ]</th>
                             <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Atrasado">Total<br><span style="color: #0058ff;">A</span></th>
                             <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Retirado">Total<br><span style="color: darkorange;">R</span></th>
-                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Sin Camara">Total<br><span style="color: red;">S</span></th>
+                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Sin Camara">Total<br><span style="color: #0058ff;">S</span></th>
                             <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Eximido">Total<br>E</th>
                             <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Ausente">Total<br><span style="color: red;">1</span></th>
                             <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Justificado">Total<br><span style="color: #ea00ea;">J</span></th>
@@ -289,9 +276,9 @@ Asistencias
                         @foreach ($assistance_data as $row)
                             @if($row["type_a"] == "J")
                                 $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","#ea00ea");
-                            @elseif($row["type_a"] == "A")
+                            @elseif($row["type_a"] == "A" || $row["type_a"] == "S")
                                 $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","#0058ff");
-                            @elseif($row["type_a"] == "1" || $row["type_a"] == "S")
+                            @elseif($row["type_a"] == "1")
                                 $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","red");
                             @elseif($row["type_a"] == "R")
                                 $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","darkorange");
@@ -319,37 +306,9 @@ Asistencias
                         $(function () {
                             $('[data-toggle="tooltip"]').tooltip()
                         })
-                    });
-                    $("#expand").click(function(){
-                        $("#expand").removeClass("btn-secondary");
-                        $("#expand").removeClass("btn-warning");
-                        if($("#contentlist").hasClass("col-md-10")){
-                            $("#contentmat").hide();
-                            $("#contentmonths").hide();
-                            $("#contentcourses").hide();
-                            $("#contentlist").removeClass("col-md-10");
-                            $("#contentlist").addClass("col-md-12");
-                            $("#expand").addClass("btn-warning");
-                        }else{
-                            $("#contentlist").removeClass("col-md-12");
-                            $("#contentlist").addClass("col-md-10");
-                            $("#contentmat").show();
-                            $("#contentmonths").show();
-                            $("#contentcourses").show();
-                            $("#expand").addClass("btn-secondary");
-                        }
-                    });
-                    var scroll2 = $('#listtable').get(0).scrollWidth;
-                    //scroll2 = scroll2;
-                    $("#scrollw").css("width",scroll2);
-                    $(function(){
-                        $(".scroll1").scroll(function(){
-                            $(".scroll2")
-                                .scrollLeft($(".scroll1").scrollLeft());
-                        });
-                        $(".scroll2").scroll(function(){
-                            $(".scroll1")
-                                .scrollLeft($(".scroll2").scrollLeft());
+                        $('.table-responsive').height(function(index, height) {
+                            let rest = window.innerHeight - $(this).offset().top;
+                            return rest -1 ;
                         });
                     });
                 </script>
