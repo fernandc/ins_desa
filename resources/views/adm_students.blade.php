@@ -55,17 +55,25 @@ Admin Cursos
     }
 </style>
 <script>
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    onOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    function isValidDate(dateString) {
+        var regEx = /^\d{4}-\d{2}-\d{2}$/;
+        if(!dateString.match(regEx)) return false;  // Invalid format
+        var d = new Date(dateString);
+        var dNum = d.getTime();
+        if(!dNum && dNum !== 0) return false; // NaN value, Invalid date
+        return d.toISOString().slice(0,10) === dateString;
     }
-})
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        onOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
 </script>
 @endsection
 
@@ -161,6 +169,7 @@ const Toast = Swal.mixin({
                     <th scope="col">Matriculado</th>
                     <th scope="col">Repitente</th>
                     <th scope="col">Nuevo</th>
+                    <th scope="col">Fecha de Retiro</th>
                     <th scope="col">Ficha</th>
                 </tr>
             </thead>
@@ -478,6 +487,54 @@ const Toast = Swal.mixin({
                             </script>
                         </td>
                         <td>
+                            <input class="form-control @if($row["fecha_retiro"] != null) border-warning @endif" type="date" value="{{$row["fecha_retiro"]}}" id="inputFR{{$row["id_stu"]}}">
+                            <script>
+                                $("#inputFR{{$row["id_stu"]}}").focus(function(){
+                                    Toast.fire({
+                                        icon: 'warning', 
+                                        title: 'Esta entrada tiene Autoguardado.'
+                                    })
+                                });
+                                $("#inputFR{{$row["id_stu"]}}").on("keyup change", function(e) {
+                                    var flag = false;
+                                    var input = $(this).val();
+                                    if(isValidDate($(this).val())){
+                                        $("#inputFR{{$row["id_stu"]}}").addClass('border-warning');
+                                        flag=true;
+                                    }else if($(this).val() == ""){
+                                        $("#inputFR{{$row["id_stu"]}}").removeClass('border-warning');
+                                        flag=true;
+                                    }
+                                    if(flag){
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "change_student_FR",
+                                            data:{
+                                                id_stu: '{{$row["id_stu"]}}',
+                                                id_curso:'{{$row["id_curso"]}}',
+                                                id_matricula:'{{$row["id_matricula"]}}',
+                                                inNM: input
+                                            },
+                                            success: function (data)
+                                            {
+                                                if(data == ""){
+                                                    Toast.fire({
+                                                        icon: 'success', 
+                                                        title: 'Actualizado'
+                                                    });
+                                                }else{
+                                                    Toast.fire({
+                                                        icon: 'error', 
+                                                        title: data
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                })
+                            </script>
+                        </td>
+                        <td>
                             <button class="btn btn-outline-primary btn-sm data-ficha" data="{{$row["id_stu"]}}" data2="{{$row["id_zmail"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Ficha</button>
                         </td>
                     </tr>             
@@ -519,6 +576,7 @@ const Toast = Swal.mixin({
     </div>
     <script>
         $(document).ready( function () {
+            
             $('#list_students').DataTable({
                     order: [],
                     language: {

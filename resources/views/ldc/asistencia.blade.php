@@ -233,6 +233,8 @@ Asistencias
                                             <b class="text-primary">Para registrar la asistencia de otro día</b> se debe presionar la tecla <b>ESC</b> (escape) 
                                             para que se habiliten las casillas de los días disponibles.
                                             <hr>
+                                            <b class="text-primary">Franja Amarilla/Naranja</b> quiere decir que el alumno fue retirado de la institución y se habilitará su asistencia hasta último dia que permaneció.
+                                            <hr>
                                             <b class="text-info">Recomendación de asistencia ágil</b> Para cambiar a la siguiente casilla utilice la tecla <b>TAB</b> de esta manera se ahorrará tiempo en hacer click a la siguiente casilla del alumno.
                                         </div>
                                     </div>
@@ -315,9 +317,15 @@ Asistencias
                                     $nrolista = 1;
                                 @endphp
                                 @foreach ($alumnos as $alumno)
+                                    @php
+                                    $retired = "";
+                                    if($alumno["fecha_retiro"] != null){
+                                        $retired = "bg-warning";
+                                    }
+                                    @endphp
                                     <tr>
-                                        <th scope="row" style="text-align: center;">{{$nrolista++}}</th>
-                                        <th>{{$alumno["nombre_stu"]}}</th>
+                                        <th scope="row" class="{{$retired}}" style="text-align: center;">{{$nrolista++}}</th>
+                                        <th class="{{$retired}}">{{$alumno["nombre_stu"]}}</th>
                                         @for ($i = 1; $i <= $lastd; $i++)
                                             @php
                                                 $today = date('w',strtotime("$year-$month-$i"));
@@ -339,18 +347,26 @@ Asistencias
                                                                 @endphp
                                                             @endif
                                                         @endforeach
-                                                        <th style="text-align: center;">
-                                                            <input id="input-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" class="form-control form-control-sm refdate-all refdate-bloq{{$horario["id"]}}-{{$year}}-{{$month}}-{{$day}}" stu="{{$alumno["id_stu"]}}" data="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" type="text" style="width: 30px;font-size: 0.8rem;text-transform:uppercase;font-weight: bold;display: inline;" maxlength="1" {{$inputenabled}}  placeholder="">
-                                                            <div id="just-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="opacity: 1;position: sticky;margin-left: -356px;margin-top: -44px;" hidden="">
-                                                                <div class="toast-body" style="padding: 0.5rem;">
-                                                                    <div class="input-group mb-2" style="margin-bottom: 0px !important;">
-                                                                        <div class="input-group-prepend">
-                                                                            <div style="background-color:     #e81515;color: white;font-weight: bold;" class="input-group-text">Justificación:</div>
+                                                        @php
+                                                            $dayoutret = "";
+                                                            if($alumno["fecha_retiro"] != null && ($year."-".$month."-".$day > $alumno["fecha_retiro"])){
+                                                                $dayoutret = "bg-warning";
+                                                            }
+                                                        @endphp
+                                                        <th class="{{$dayoutret}}" style="text-align: center;">
+                                                            @if($dayoutret == "")
+                                                                <input id="input-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" class="form-control form-control-sm refdate-all refdate-bloq{{$horario["id"]}}-{{$year}}-{{$month}}-{{$day}}" stu="{{$alumno["id_stu"]}}" data="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" type="text" style="width: 30px;font-size: 0.8rem;text-transform:uppercase;font-weight: bold;display: inline;" maxlength="1" {{$inputenabled}}  placeholder="">
+                                                                <div id="just-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="opacity: 1;position: sticky;margin-left: -356px;margin-top: -44px;" hidden="">
+                                                                    <div class="toast-body" style="padding: 0.5rem;">
+                                                                        <div class="input-group mb-2" style="margin-bottom: 0px !important;">
+                                                                            <div class="input-group-prepend">
+                                                                                <div style="background-color:     #e81515;color: white;font-weight: bold;" class="input-group-text">Justificación:</div>
+                                                                            </div>
+                                                                            <input id="descj-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" type="text" class="form-control justificacion" stu="{{$alumno["id_stu"]}}" data="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" >
                                                                         </div>
-                                                                        <input id="descj-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" type="text" class="form-control justificacion" stu="{{$alumno["id_stu"]}}" data="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" >
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            @endif
                                                         </th>
                                                     @endif
                                                 @endforeach

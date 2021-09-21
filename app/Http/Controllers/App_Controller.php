@@ -616,6 +616,28 @@ class App_Controller extends Controller {
             return "Sin Permiso";
         }
     }
+    public function change_student_FR(Request $request){
+        if($this->isAdmin()){
+            $gets = $request->input();
+            //dd($gets);
+            $dni_adm = Session::get('account')['dni'];
+            // matriculate_student_parent_center
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'matriculate_student_retired_date',
+                'data' => ['dni_adm' => $dni_adm,'id_stu' =>$gets["id_stu"],'id_curso' =>$gets["id_curso"], 'id_matricula' => $gets["id_matricula"], 'fecha_retiro' => $gets["inNM"] ]
+            );
+            //dd($arr);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true); 
+            //dd($data);
+            //return back();
+        }
+        else{
+            return "Sin Permiso";
+        }
+    }
     private function checkAdmin(){
         if (Session::has('account')){
             $arr = array(
