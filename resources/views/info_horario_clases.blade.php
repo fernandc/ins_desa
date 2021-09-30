@@ -83,12 +83,12 @@ Horarios de Clase
                                 if(idc == "20010" || idc == "5" || idc == "9201" || idc == "6616" || idc == "2972"){type = `<a href="#" class="badge badge-primary">MAT </a>`}
                                 if(idc == "249"){type = `<a href="#" class="badge badge-light" style="background-color: #ffe300;">ING </a>`}
                                 if(idc == "28"){type = `<a href="#" class="badge badge-primary" style="background-color: #ff57b6;">ART </a>`}
-                                if( idc == "517"){type = `<a href="#" class="badge badge-primary" style="background-color: #8b4fbd;">TEC </a>`}
-                                if(idc == "20013" || idc == "6" || idc == "20003" || idc == "4474"){type = `<a href="#" class="badge badge-primary" style="background-color: #00c61f;">CIE </a>`}
+                                if(idc == "517"){type = `<a href="#" class="badge badge-primary" style="background-color: #8b4fbd;">TEC </a>`}
+                                if(idc == "20014" || idc == "6" || idc == "20003" || idc == "4474"){type = `<a href="#" class="badge badge-primary" style="background-color: #00c61f;">CIE </a>`}
                                 if(idc == "9845" || idc == "20005" ){type = `<a href="#" class="badge badge-light" style="background-color: aqua;">DEP </a>`}
                                 if(idc == "20004"){type = `<a href="#" class="badge badge-light" style="background-color: #ffdac4;">DEP </a>`}
                                 if(idc == "22"){type = `<a href="#" class="badge badge-light" style="background-color: #f4d3c6;">ORI </a>`}
-                                if(idc == "474"){type = `<a href="#" class="badge badge-light" style="background-color: #f4d3c6;">ETI </a>`}
+                                if(idc == "20011" || idc == "474"){type = `<a href="#" class="badge badge-light" style="background-color: #f4d3c6;">ETI </a>`}
                                 if(idc == "20012" || idc == "2280" || idc == "20002" || idc == "2971"){type = `<a href="#" class="badge badge-primary" style="background-color: #ec9422;">HIS </a>`}
                                 if(idc == "999"){type = `<a href="#" class="badge badge-primary" style="background-color: #a8a8a8;">PSY </a>`}
                                 if(idc == "1493"){type = `<a href="#" class="badge badge-primary" style="background-color: #006166;">PRO </a>`}
