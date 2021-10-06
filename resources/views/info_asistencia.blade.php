@@ -112,6 +112,7 @@ Asistencias
     $curso = "";
     $id_clase = "";
     $materias = [];
+    $dias_contados = [];
 @endphp
 @foreach ($clases as $clase)
     @php
@@ -156,6 +157,8 @@ Asistencias
                             <th scope="col" style="text-align: center;">% Asistido</th>
                                 @foreach ($dias_activos as $horario)
                                     @php
+                                        $dias_contados[$dtda]["bloq"] = $horario["id_bloq"];
+                                        $dias_contados[$dtda]["date"] = $horario["date_day"];
                                         $dtda++;
                                         $type = "";
                                         $idc = $horario["id_materia"];
@@ -209,12 +212,16 @@ Asistencias
                                 @endphp
                                 @foreach ($assistance_data as $row)
                                     @if ($row["id_student"]==$alumno["id_stu"])
-                                        @php if($row["type_a"] == "1"){$ina++;} @endphp
-                                        @php if($row["type_a"] == "J"){$jus++;} @endphp
-                                        @php if($row["type_a"] == "E"){$exi++;} @endphp
-                                        @php if($row["type_a"] == "S"){$sca++;} @endphp
-                                        @php if($row["type_a"] == "R"){$ret++;} @endphp
-                                        @php if($row["type_a"] == "A"){$atr++;} @endphp
+                                        @foreach ($dias_contados as $dias)
+                                            @if($dias["bloq"] == $row["id_bloq"] && $dias["date"] == $row["assistance"])
+                                                @php if($row["type_a"] == "1"){$ina++;} @endphp
+                                                @php if($row["type_a"] == "J"){$jus++;} @endphp
+                                                @php if($row["type_a"] == "E"){$exi++;} @endphp
+                                                @php if($row["type_a"] == "S"){$sca++;} @endphp
+                                                @php if($row["type_a"] == "R"){$ret++;} @endphp
+                                                @php if($row["type_a"] == "A"){$atr++;} @endphp
+                                            @endif
+                                        @endforeach
                                     @endif
                                 @endforeach
                                 @php
