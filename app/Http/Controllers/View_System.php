@@ -339,6 +339,16 @@ class View_System extends Controller {
                         return view('ldc/asistencia')->with("clases",$class)->with("id_clase",$id_clase)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("assistance_data",$assistance_data)->with("horarios",$horarios)->with("anr",$can_anr);
                     }
                     return redirect('/home');
+                case "tickets":
+                    $arr = array(
+                        'institution' => getenv("APP_NAME"),
+                        'public_key' => getenv("APP_PUBLIC_KEY"),
+                        'method' => 'get_tickets',
+                        'data' => ['dni' => Session::get('account')['dni']]
+                    );
+                    $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                    $data = json_decode($response->body(), true);
+                    return view('tickets')->with('tickets',$data);
                 default:
                     return view('not_found')->with("path",$path);
             }

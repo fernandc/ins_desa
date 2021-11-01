@@ -833,6 +833,86 @@ class App_Controller extends Controller {
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
     }
+    public function response_ticket(Request $request){
+        $gets = $request->input();
+        $dni_staff = Session::get('account')['dni'];
+        $idrequest = $gets["idrequest"];
+        $status = $gets["respuesta"];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'response_ticket',
+            'data' => ['id_request' => $idrequest, 'dni' => $dni_staff, 'status' => $status]);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        return $response->status();
+    }
+    public function send_ticket(Request $request){
+        $gets = $request->input();
+        $files = $request->file();
+        $dni_staff = Session::get('account')['dni'];
+        $dni = str_replace([".","-"],"",Session::get('account')['dni']);
+        $type = $gets["type"];
+        $fileref = "";
+        if($type=="Solicitud"){
+            $fileref = "solicitudes";
+        }else{
+            $fileref = "justificaciones";
+        }
+        $subject = $gets["subject"];
+        $message = $gets["message"];
+        $dateto = $gets["dateto"];
+        $optional1 = $gets["optional1"];
+        $filepath1 = null;
+        $filepath2 = null;
+        $filepath3 = null;
+        $cont=0;
+        $todayadd2 = date('Y-m-d', strtotime('+2 days'));
+        if(($type == "Solicitud" && $dateto > $todayadd2) || $type=="Justificación"){
+            $id_account_receiver = 17;
+            if(isset($files)){
+                foreach ($files as $file) {
+                    $cont++;
+                    $extension = $file->extension();
+                    $name = "documento_$cont.$extension";
+                    $date = date('Ymd_His');
+                    $path = $file->storeAs("tickets/$dni/$fileref/$date"."_to_".str_replace("-","",$dateto), $name);
+                    if($cont == 1){
+                        $filepath1 = $path;
+                    }elseif($cont == 2){
+                        $filepath2 = $path;
+                    }elseif($cont == 3){
+                        $filepath3 = $path;
+                    }
+                }
+            }
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'send_ticket',
+                'data' => [
+                            'dni' => $dni_staff,
+                            'id_account_receiver' => $id_account_receiver, 
+                            'type' => $type,  
+                            'subject' => $subject,  
+                            'message' => $message,  
+                            'file_path_1' => $filepath1,
+                            'file_path_2' => $filepath2,
+                            'file_path_3' => $filepath3,
+                            'optional_1' => $optional1,
+                            'date_to' => $dateto
+                          ]
+            );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            return "A";
+        }else{
+            return "C";
+        }
+    }
+    public function download(Request $request){
+        $gets = $request->input();
+        $path = $gets["path"];
+        return Storage::download($path);
+    }
     private function activity_log($sec,$sub,$opA,$opB,$desc){
         if(isset(Session::get('account')['dni'])){
             $dni = Session::get('account')['dni'];

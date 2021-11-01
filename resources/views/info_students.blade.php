@@ -240,7 +240,7 @@ const Toast = Swal.mixin({
                             }
                     }
                 });
-        } );
+        });
     </script>
 </div>
 @endsection

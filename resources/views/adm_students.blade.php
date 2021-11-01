@@ -91,7 +91,7 @@ Admin Cursos
                 icon: 'error',
                 title: 'Oops...',
                 text: '{{$message}}',
-                })
+            });
         </script>
     @endif
     <hr>

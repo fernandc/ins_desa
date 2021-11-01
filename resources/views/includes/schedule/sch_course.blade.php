@@ -245,6 +245,11 @@
             var prof = $("#inputPR").val();
             var id_class = "";
             if(hin != "" && hou != "" && asig != "" && prof != ""){
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Cargando',
+                    showConfirmButton: false,
+                });
                 parse.forEach(element => {
                     if(element["nombre_personal"] == prof && element["materia"] == asig){
                         id_class = element["id_clase"];
