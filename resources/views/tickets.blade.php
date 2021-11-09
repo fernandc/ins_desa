@@ -186,6 +186,8 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{$row["asunto"]}}</h5>
                                         <h6 class="card-subtitle mb-2">
+                                            De: <span class="badge badge-light">{{$row["nombre_solicitante"]}}</span>
+                                            <br class="mb-1">
                                             @if ($row["tipo"] == "Solicitud")
                                                 <span class="badge badge-primary">Solicitud</span>
                                             @else
