@@ -9,6 +9,18 @@
 @endsection
 
 @section("context")
+    @php
+        $solicitudes = [];
+        $respuestas = [];
+        foreach($tickets as $row){
+            if($row["dni_solicitante"] == Session::get('account')['dni']){
+
+            }
+            if($row["dni_solicitante"] == Session::get('account')['dni']){
+                
+            }
+        }
+    @endphp
     <hr>
     <div class="container">
         <div class="text-center">
@@ -23,7 +35,7 @@
               <a class="nav-link" id="sendrequest-tab" data-toggle="tab" href="#sendrequest" role="tab" aria-controls="sendrequest" aria-selected="false">Enviar</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="responserequest-tab" data-toggle="tab" href="#responserequest" role="tab" aria-controls="responserequest" aria-selected="false">Responder</a>
+              <a class="nav-link" id="responserequest-tab" data-toggle="tab" href="#responserequest" role="tab" aria-controls="responserequest" aria-selected="false">Responder y Respuestas</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -183,6 +195,10 @@
                                         <p class="card-text">
                                             {{$row["mensaje"]}}
                                             <hr>
+                                            Fecha de Envío: <span class="badge badge-light">{{$row["fecha_ingreso"]}}</span>
+                                            <br>
+                                            Fecha de {{$row["tipo"]}}: <span class="badge badge-light">{{substr($row["fecha_para"],0,10)}}</span>
+                                            <hr>
                                             Solicita remuneración del día: 
                                             @if ($row["opcional_1"] == "Si")
                                                 <span class="badge badge-success">Si</span>
@@ -224,6 +240,81 @@
                             </div>
                         @endif
                     @endforeach
+                    <div class="col-md-12">
+                        <hr>
+                        <h3 class="mb-3">Registro de Respuestas:</h3>
+                        <table id="answeredtable" class="table table-hover ">
+                            <thead>
+                            <tr>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Asunto</th>
+                                <th scope="col">Para el día</th>
+                                <th scope="col">Día remunerado</th>
+                                <th scope="col">Fecha de envío</th>
+                                <th scope="col">Adjuntos</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Fecha de Respuesta</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($tickets as $row)
+                                    @if($row["dni_receptor"] == Session::get('account')['dni'] && $row["estado"] != "Pendiente")
+                                        <tr>
+                                            <td>
+                                                @if ($row["tipo"] == "Solicitud")
+                                                    <span class="badge badge-primary">Solicitud</span>
+                                                @else
+                                                    <span class="badge badge-info">Justificación</span>
+                                                @endif
+                                            </td>
+                                            <td>{{$row["asunto"]}}</td>
+                                            <td>{{substr($row["fecha_para"],0,10)}}</td>
+                                            <td>{{$row["opcional_1"]}}</td>
+                                            <td>{{$row["fecha_ingreso"]}}</td>
+                                            <td class="text-center">
+                                                @if (($row["ruta_archivo_1"] == "" || $row["ruta_archivo_1"] == null ) && ($row["ruta_archivo_2"] == "" || $row["ruta_archivo_2"] == null ) && ($row["ruta_archivo_3"] == "" || $row["ruta_archivo_3"] == null ))
+                                                    <span class="badge badge-light">Sin Documentos</span>
+                                                @else
+                                                    @for ($i = 1; $i <= 3; $i++)
+                                                        @if($row["ruta_archivo_$i"] != "")
+                                                            <a href="download?path={{$row["ruta_archivo_$i"]}}" target="_blank">
+                                                            @php
+                                                                $path_parts = pathinfo($row["ruta_archivo_$i"]);
+                                                                if($path_parts['extension'] == "pdf"){
+                                                                    echo '<i class="far fa-file-pdf fa-2x text-danger"></i>';
+                                                                }else if($path_parts['extension'] == "docx"){
+                                                                    echo '<i class="far fa-file-word fa-2x text-primary"></i>';
+                                                                }else{
+                                                                    echo '<i class="far fa-file fa-2x"></i>';
+                                                                }
+                                                            @endphp
+                                                            </a>
+                                                        @endif
+                                                    @endfor
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($row["estado"] == "Pendiente")
+                                                    <span class="badge badge-secondary">Pendiente</span>
+                                                @elseif($row["estado"] == "Aprobado")
+                                                    <span class="badge badge-success">Aprobado</span>
+                                                @else
+                                                    <span class="badge badge-danger">Rechazado</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($row["fecha_ingreso"] == $row["fecha_actualizacion"])
+                                                    <span class="badge badge-secondary">Pendiente</span>
+                                                @else
+                                                    {{$row["fecha_actualizacion"]}}
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endif    
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -274,6 +365,31 @@
                 });
             });
             $('#requesttable').DataTable({
+                "ordering": true,
+                "order": [[4 , "desc"]],
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay resultados",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Filas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Filas",
+                    "infoFiltered": "(Filtrado de MAX total Filas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Filas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                        }
+                }
+            });
+            $('#answeredtable').DataTable({
                 "ordering": true,
                 "order": [[4 , "desc"]],
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
