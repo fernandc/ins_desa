@@ -120,36 +120,56 @@ const Toast = Swal.mixin({
         <table class="table table-sm" style="text-align: center;" id="list_students">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col"># Matricula</th>
                     <th scope="col">Rut</th>
                     <th scope="col">Nombre Completo</th>
                     <th scope="col">Curso</th>
-                    <th scope="col">Estado</th>
+                    <th scope="col">Vacunas</th>
+                    <th scope="col">A. Madre</th>
+                    <th scope="col">A. Padre</th>
+                    <th scope="col">Apoderado</th>
+                    <th scope="col">Info Adicional</th>
                     <th scope="col">Apoderado</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($students as $row)
-                <tr>
-                        <td>
-                            @if ($row["reg_mat"] == 0)
-                                <span class="text-danger">Sin # Matricula</span>
-                            @else
-                                <span class="text-primary">{{$row["reg_mat"]}}</span>
-                            @endif
-                        </td>
+                    <tr>
                         <td>{{$row["dni"]}} </td>
                         <td>{{$row["full_name"]}} </td>
                         <td>{{$row["curso"]}}</td>
                         <td>
-                            @if ($row["retirado"] != null)
-                            <span class="badge badge-warning" style="min-width: 96px;">Retirado</span>
-                            @else
-                                @if ($row["id_reg"] != null)
+                            @if ($row["vacunas"] == 1)
                                 <span class="badge badge-success" style="min-width: 96px;">Completado</span>
-                                @else
+                            @else
                                 <span class="badge badge-danger" style="min-width: 96px;">No Completado</span>
-                                @endif
+                            @endif
+                        </td>
+                        <td>
+                            @if ($row["a_madre"] == 1)
+                                <span class="badge badge-success" style="min-width: 96px;">Completado</span>
+                            @else
+                                <span class="badge badge-danger" style="min-width: 96px;">No Completado</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($row["a_padre"] == 1)
+                                <span class="badge badge-success" style="min-width: 96px;">Completado</span>
+                            @else
+                                <span class="badge badge-danger" style="min-width: 96px;">No Completado</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($row["apoderado"] != null || $row["apoderado"] != "")
+                                <span class="badge badge-primary" style="min-width: 96px;">{{$row["apoderado"]}}</span>
+                            @else
+                                <span class="badge badge-danger" style="min-width: 96px;">No Completado</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($row["misc"] == 1)
+                                <span class="badge badge-success" style="min-width: 96px;">Completado</span>
+                            @else
+                                <span class="badge badge-danger" style="min-width: 96px;">No Completado</span>
                             @endif
                         </td>
                         <td>
