@@ -14,7 +14,7 @@
             <img src="" alt="Alumno">
         </div>
       -->
-      <main id="content">
+      <main id="content" class="border" style="padding: 40px;">
         <div class="float-left" style="width: 80px; heigth:80px;">
               <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://scc.cloupping.com/public/scc_logo.png')); ?>" alt="" class="img-fluid">
           </div>
@@ -282,7 +282,7 @@
     $('#imprimir').click(function() {
       var element = document.getElementById('content');
       var opt = {
-        margin:       1,
+        margin:       0.5,
         filename:     'Ficha.pdf',
         image:        { type: 'jpg', quality: 0.98 },
         html2canvas:  { scale: 2 },
