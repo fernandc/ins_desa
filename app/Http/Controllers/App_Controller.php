@@ -687,6 +687,23 @@ class App_Controller extends Controller {
             return "SESSION EXPIRED";
         }
     }
+    public function assistance_stu(Request $request){
+        if (Session::has('account')){
+            $gets = $request->input();
+            $id_stu = $gets["id_stu"];
+            $id_grade = $gets["id_grade"];
+            $year = $gets["year"];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'assistance_student',
+                'data' => [ 'year' => $year, 'id_stu' => $id_stu, 'id_grade' => $id_grade ]
+            );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true);
+            return $data;
+        }
+    }
     public function full_assistance(Request $request){
         if(isset(Session::get('account')['dni'])){
             $gets = $request->input();

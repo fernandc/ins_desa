@@ -8,7 +8,17 @@ Asistencias
 
 @section("headex")
     <script>
-        
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
     </script>
     <style>
         .text-warning {
@@ -21,6 +31,20 @@ Asistencias
 @endsection
 
 @section("context")
+    <script>
+        var total_alumnos = {{count($alumnos)}};
+        var cargados_alumnos = 0;
+        var respawn = 0;
+        var totalrespawn = 0;
+        @if(isset($_GET['curso']))
+            Swal.fire({
+                icon: 'info',
+                title: 'Cargando',
+                html: 'Alumnos: <span id="alloaded"> </span> / '+total_alumnos+'<br>Registros de alumnos: <span id="datatostu">0</span>/'+total_alumnos+'<br>Registros: <span id="respawn">0</span>',
+                showConfirmButton: false,
+            });
+        @endif
+    </script>
     <ul id="contentcourses" class="nav nav-tabs my-3 justify-content-center">
         <li class="nav-item">
             <a class="nav-link text-success" data="0" href="info_assistance">HOY</a>
@@ -197,71 +221,42 @@ Asistencias
                                 $nrolista = 1;
                             @endphp
                             @foreach ($alumnos as $alumno)
+                                
                                 @php
-                                    $atr = 0;
-                                    $ret = 0;
-                                    $sca = 0;
-                                    $exi = 0;
-                                    $ina = 0;
-                                    $jus = 0;
-                                    //Results
-                                    $tin = 0;
-                                    $tas = 0;
-                                    $por = 0;
-                                    $pre = 0;
-                                @endphp
-                                @foreach ($assistance_data as $row)
-                                    @if ($row["id_student"]==$alumno["id_stu"])
-                                        @foreach ($dias_contados as $dias)
-                                            @if($dias["bloq"] == $row["id_bloq"] && $dias["date"] == $row["assistance"])
-                                                @php if($row["type_a"] == "1"){$ina++;} @endphp
-                                                @php if($row["type_a"] == "J"){$jus++;} @endphp
-                                                @php if($row["type_a"] == "E"){$exi++;} @endphp
-                                                @php if($row["type_a"] == "S"){$sca++;} @endphp
-                                                @php if($row["type_a"] == "R"){$ret++;} @endphp
-                                                @php if($row["type_a"] == "A"){$atr++;} @endphp
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                @endforeach
-                                @php
-                                    $tin = $ina+$jus; 
-                                    $tas = $dtda-$tin;
-                                    $por = round((($dtda-$tin)*100)/$dtda,2);
-                                    $pre = $dtda-$atr-$ret-$sca-$exi-$ina-$jus;
+                                    $pre = $dtda;
                                 @endphp
                                 <tr>
                                     <th scope="row" style="text-align: center;">{{$nrolista++}}</th>
                                     <th>{{$alumno["nombre_stu"]}}</th>
                                     <th style="text-align: center;">
-                                        <span class="badge @if($pre==0) badge-light @else badge-info @endif">{{$pre}}</span>
+                                        <span id="typeP{{$alumno["id_stu"]}}" class="badge badge-info">{{$pre}}</span>
                                     </th>
                                     <th style="text-align: center;">
-                                        <span class="badge @if($atr==0) badge-light @else badge-info @endif">{{$atr}}</span>
+                                        <span id="typeA{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
                                     </th>
                                     <th style="text-align: center;">
-                                        <span class="badge @if($ret==0) badge-light @else badge-info @endif">{{$ret}}</span>
+                                        <span id="typeR{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
                                     </th>
                                     <th style="text-align: center;">
-                                        <span class="badge @if($sca==0) badge-light @else badge-info @endif">{{$sca}}</span>
+                                        <span id="typeS{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
                                     </th>
                                     <th style="text-align: center;">
-                                        <span class="badge @if($exi==0) badge-light @else badge-info @endif">{{$exi}}</span>
+                                        <span id="typeE{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
                                     </th>
                                     <th style="text-align: center;">
-                                        <span class="badge @if($ina==0) badge-light @else badge-warning @endif">{{$ina}}</span>
+                                        <span id="typeX{{$alumno["id_stu"]}}" class="badge badge-light ">0</span>
                                     </th>
                                     <th style="text-align: center;">
-                                        <span class="badge @if($jus==0) badge-light @else badge-warning @endif">{{$jus}}</span>
+                                        <span id="typeJ{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
                                     </th>
                                     <th style="text-align: center;">
-                                        <span class="badge badge-success">{{$tas}}</span> de <span class="badge badge-light">{{$dtda}}</span>
+                                        <span id="typeIN{{$alumno["id_stu"]}}" class="badge badge-success">0</span> de <span class="badge badge-light">{{$pre}}</span>
                                     </th>
                                     <th style="text-align: center;">
-                                        <span class="badge @if($tin==0) badge-light @else badge-danger @endif">{{$tin}}</span>
+                                        <span id="typeINA{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
                                     </th>
                                     <th style="text-align: center;" >
-                                        <span class="@if($por==100) badge badge-primary @elseif($por>=90) text-primary @elseif($por>=85) text-warning @else text-danger @endif" @if($por==100) style="font-size: 1rem;" @endif>{{$por}}%</span>
+                                        <span id="typePER{{$alumno["id_stu"]}}" >0%</span>
                                     </th>
                                     @foreach ($dias_activos as $horario)
                                         <th style="text-align: center;">
@@ -271,6 +266,9 @@ Asistencias
                                         </th>
                                     @endforeach
                                 </tr>
+                                <script>
+                                    $("#alloaded").html({{$nrolista}}-1);
+                                </script>
                             @endforeach
                         </tbody>
                       </table>
@@ -280,39 +278,150 @@ Asistencias
                 <script>
                     $(document).ready(function(){
                         //LIST CURRENT ASSISTANCES
-                        @foreach ($assistance_data as $row)
-                            @if($row["type_a"] == "J")
-                                $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","#ea00ea");
-                            @elseif($row["type_a"] == "A" || $row["type_a"] == "S")
-                                $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","#0058ff");
-                            @elseif($row["type_a"] == "1")
-                                $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","red");
-                            @elseif($row["type_a"] == "R")
-                                $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","darkorange");
-                            @elseif($row["type_a"] == "E")
-                                $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","black");
-                            @endif
-                            $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").val("{{$row["type_a"]}}");
-                            //justify
-                            @if($row["type_a"] == "J" || $row["type_a"] == "A" || $row["type_a"] == "R")
-                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-toggle","tooltip");
-                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-placement","top");
-                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("title","{{$row["justify"]}}");
-                            @endif
-                            @if($row["type_a"] == "S" )
-                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-toggle","tooltip");
-                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-placement","top");
-                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("title","Sin Camara");
-                            @endif
-                            @if($row["type_a"] == "E" )
-                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-toggle","tooltip");
-                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("data-placement","top");
-                                $("#tooltip{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").attr("title","Eximido");
-                            @endif
+                        function throwData(item, index){
+                            respawn++;
+                            var currentNum = 0;
+                            $("#respawn").html(respawn);
+                            if(item.type_a == "J"){
+                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","#ea00ea");
+                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
+                                    currentNum = $("#typeJ"+item.id_student).html();
+                                    currentNum++;
+                                    $("#typeJ"+item.id_student).removeClass("badge-light");
+                                    $("#typeJ"+item.id_student).addClass("badge-warning");
+                                    $("#typeJ"+item.id_student).html(currentNum);
+                                }
+                            }
+                            else if(item.type_a == "S"){
+                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","#0058ff");
+                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
+                                    currentNum = $("#typeS"+item.id_student).html();
+                                    currentNum++;
+                                    $("#typeS"+item.id_student).removeClass("badge-light");
+                                    $("#typeS"+item.id_student).addClass("badge-info");
+                                    $("#typeS"+item.id_student).html(currentNum);
+                                }
+                            }
+                            else if(item.type_a == "A"){
+                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","#0058ff");
+                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
+                                    currentNum = $("#typeS"+item.id_student).html();
+                                    currentNum++;
+                                    $("#typeA"+item.id_student).removeClass("badge-light");
+                                    $("#typeA"+item.id_student).addClass("badge-info");
+                                    $("#typeA"+item.id_student).html(currentNum);
+                                }
+                            }
+                            else if(item.type_a == "1"){
+                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","red");
+                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
+                                    currentNum = $("#typeX"+item.id_student).html();
+                                    currentNum++;
+                                    $("#typeX"+item.id_student).removeClass("badge-light");
+                                    $("#typeX"+item.id_student).addClass("badge-warning");
+                                    $("#typeX"+item.id_student).html(currentNum);
+                                }
+                            }
+                            else if(item.type_a == "R"){
+                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","darkorange");
+                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
+                                    currentNum = $("#typeR"+item.id_student).html();
+                                    currentNum++;
+                                    $("#typeR"+item.id_student).removeClass("badge-light");
+                                    $("#typeR"+item.id_student).addClass("badge-info");
+                                    $("#typeR"+item.id_student).html(currentNum);
+                                }
+                            }
+                            else if(item.type_a == "E"){
+                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","black");
+                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
+                                    currentNum = $("#typeE"+item.id_student).html();
+                                    currentNum++;
+                                    $("#typeE"+item.id_student).removeClass("badge-light");
+                                    $("#typeE"+item.id_student).addClass("badge-info");
+                                    $("#typeE"+item.id_student).html(currentNum);
+                                }
+                            }
+                            $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).val(item.type_a);
+                            //
+                            if(item.type_a == "J" || item.type_a == "A" || item.type_a == "R"){
+                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-toggle","tooltip");
+                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-placement","top");
+                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("title",item.justify);
+                            }
+                            if(item.type_a == "S"){
+                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-toggle","tooltip");
+                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-placement","top");
+                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("title","Sin Cámara");
+                            }
+                            if(item.type_a == "E"){
+                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-toggle","tooltip");
+                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-placement","top");
+                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("title","Eximido");
+                            }
+                            var totTA = parseInt($("#typeA"+item.id_student).html(),10);
+                            var totTR = parseInt($("#typeR"+item.id_student).html(),10);
+                            var totTS = parseInt($("#typeS"+item.id_student).html(),10);
+                            var totTE = parseInt($("#typeE"+item.id_student).html(),10);
+                            var totTX = parseInt($("#typeX"+item.id_student).html(),10);
+                            var totTJ = parseInt($("#typeJ"+item.id_student).html(),10);
+                            $("#typeP"+item.id_student).html({{$pre}}-totTA-totTR-totTS-totTE-totTX-totTJ);
+                            var totTP = parseInt($("#typeP"+item.id_student).html(),10);
+                            $("#typeIN"+item.id_student).html(totTP+totTA+totTR+totTS+totTE);
+                            $("#typeINA"+item.id_student).html(totTX+totTJ);
+                            if($("#typeINA"+item.id_student).html() != "0"){
+                                $("#typeINA"+item.id_student).removeClass("badge-light");
+                                $("#typeINA"+item.id_student).addClass("badge-danger");
+                            }
+                            var percent = (((totTP+totTA+totTR+totTS+totTE))*100)/{{$pre}};
+                            $("#typePER"+item.id_student).html(percent.toFixed(2)+"%");
+                            $("#typePER"+item.id_student).removeClass("badge");
+                            $("#typePER"+item.id_student).removeClass("badge-primary");
+                            $("#typePER"+item.id_student).removeClass("text-primary");
+                            $("#typePER"+item.id_student).removeClass("text-warning");
+                            $("#typePER"+item.id_student).removeClass("text-danger");
+                            var totPER = parseInt($("#typePER"+item.id_student).html(),10);
+                            if(totPER == 100){
+                                $("#typePER"+item.id_student).addClass("badge");
+                                $("#typePER"+item.id_student).addClass("badge-primary");
+                            }else if(totPER >=90){
+                                $("#typePER"+item.id_student).addClass("text-primary");
+                            }else if(totPER >=85){
+                                $("#typePER"+item.id_student).addClass("text-warning");
+                            }else{
+                                $("#typePER"+item.id_student).addClass("text-danger");
+                            }
+                            if(cargados_alumnos == total_alumnos){
+                                $(function () {
+                                    $('[data-toggle="tooltip"]').tooltip()
+                                });
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Completado'
+                                });
+                            }
+                        }
+                        @foreach ($alumnos as $alumno)
+                            var id_stu = "{{$alumno["id_stu"]}}";
+                            var id_grade = "{{$active}}"
+                            var year = "@if(Session::has('period')){{Session::get('period')}}@endif";
+                            $.ajax({
+                                type: "GET",
+                                url: "assistance_stu",
+                                data:{
+                                    id_stu,id_grade,year
+                                },
+                                success: function (data)
+                                {
+                                    cargados_alumnos++;
+                                    $("#datatostu").html(cargados_alumnos);
+                                    respawn = 0;
+                                    $("#respawn").html("0");
+                                    data.forEach(throwData);
+                                }
+                            });
                         @endforeach
-                        $(function () {
-                            $('[data-toggle="tooltip"]').tooltip()
-                        })
+                        
                         $('.table-responsive').height(function(index, height) {
                             let rest = window.innerHeight - $(this).offset().top;
                             return rest -1 ;

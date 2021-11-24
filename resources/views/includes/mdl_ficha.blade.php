@@ -7,12 +7,7 @@
   </div>
   <div class="modal-body">
     <header style=" padding: 10px 0; margin-bottom: 30px;">
-        <div class="float-left" style="width: 80px; heigth:80px; ">
-            <img src="https://scc.cloupping.com/public/scc_logo.png" alt="" class="img-fluid">
-        </div>
-        <div class="d-flex">
-            <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;FICHA DE MATRÍCULA {{Session::get('period')}} </p>
-        </div>
+        
       </header>
       <!--
         <div class="float-right" style="width:118px; heigth:139px;">
@@ -20,6 +15,12 @@
         </div>
       -->
       <main id="content">
+        <div class="float-left" style="width: 80px; heigth:80px;">
+              <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://scc.cloupping.com/public/scc_logo.png')); ?>" alt="" class="img-fluid">
+          </div>
+          <div class="d-flex">
+              <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;FICHA DE MATRÍCULA {{Session::get('period')}} </p>
+          </div>
           <div >
               <div class="my-3">
                 <p class="pt-3 my-3 text-center" style="font-size: 24px; font-weight:bold">Antecedentes del Estudiante</p>
@@ -27,14 +28,15 @@
 
               <div class="my-3">
                 <p class="font-weight-bold" style="font-size: 10pt;">N° de matrícula: &nbsp;&nbsp;<span style="text-decoration: underline;white-space: break-spaces;"><?php echo str_pad($data["inscription"]["numero_matricula"], 20, " ", STR_PAD_BOTH); ?></span></p>
-                <p class="font-weight-bold" style="font-size: 10pt;">Centro de padres: <span style="text-decoration: underline;white-space: break-spaces;"><?php echo str_pad($data["inscription"]["centro_padres"], 20, " ", STR_PAD_BOTH); ?></span></p>
-                <p class="font-weight-bold" style="font-size: 10pt;">Curso al que postula {{Session::get('period')}}: {{$data["inscription"]["curso"]}} </p>
+                <p class="font-weight-bold" style="font-size: 10pt;display: none;">Centro de padres: <span style="text-decoration: underline;white-space: break-spaces;"><?php echo str_pad($data["inscription"]["centro_padres"], 20, " ", STR_PAD_BOTH); ?></span></p>
+                <p class="font-weight-bold" style="font-size: 10pt;">Centro de padres: <span style="text-decoration: underline;white-space: break-spaces;"><?php echo str_pad("", 20, "_", STR_PAD_BOTH); ?></span></p>
+                <p class="font-weight-bold" style="font-size: 10pt;">Curso al que postula {{Session::get('period')}}: <b style="font-size: large;">{{$data["inscription"]["curso"]}}</b> </p>
                 <p class="font-weight-bold" style="font-size: 10pt;">RUT Estudiante: {{$data["student"]["dni"]}}</p>
               </div>
 
               <div class="my-3">
                 <table class="table table-sm table-striped" style="font-size: 10pt;">
-                  <tr>
+                  <tr style="font-size: large;">
                     <th>{{$data["student"]["last_f"]}}</th>
                     <th>{{$data["student"]["last_m"]}}</th>
                     <th>{{$data["student"]["names"]}}</th>
@@ -260,13 +262,13 @@
                     @endif
                   @endforeach
               </table>
-              <div style="margin: 50px 40px 0px 40px;">
+              <div style="margin: 100px 40px 0px 40px;">
                 <div style="text-align: left" class="float-left">
-                  <p>______________________</p>
+                  <p>________________________________</p>
                   <p style="font-weight:bold">Firma Apoderado</p>
                 </div>
                 <div style="text-align: right">
-                  <p>______________________</p>
+                  <p>________________________________</p>
                   <p style="font-weight:bold">Firma y timbre de Recepción</p>
                 </div>
               </div>
@@ -282,7 +284,7 @@
       var opt = {
         margin:       1,
         filename:     'Ficha.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
+        image:        { type: 'jpg', quality: 0.98 },
         html2canvas:  { scale: 2 },
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
