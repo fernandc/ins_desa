@@ -168,17 +168,26 @@ const Toast = Swal.mixin({
                 },
                 success: function (data)
                 {
-                    $("#modalContent").html(data);
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Completado'
-                    })
+                    if(data == "" || data == null){
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Apoderado No Completado'
+                        });
+                    }else{
+                        $("#modalContent").html(data);
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Completado'
+                        })
+                    }
+                    
                 }
             });
         });
         $(".data-ficha").click(function(){
                 var id_stu = $(this).attr('data');
                 var id_apo = $(this).attr('data2');
+                var year = "@if(Session::has('period')){{Session::get('period')}}@endif";
                 Swal.fire({
                     icon: 'info',
                     title: 'Cargando',
@@ -188,7 +197,7 @@ const Toast = Swal.mixin({
                     type: "GET",
                     url: "modal_ficha",
                     data:{
-                        id_stu,id_apo
+                        id_stu,id_apo,year
                     },
                     success: function (data)
                     {

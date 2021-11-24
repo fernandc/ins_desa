@@ -52,7 +52,14 @@
                     <th>Nacionalidad: {{$data["student"]["nationality"]}} </th>
                   </tr>
                   <tr>
-                    <th colspan="2">Pertenece a etnia: {{$data["student"]["ethnic"]}} </th>
+                    <th>Pertenece a etnia: {{$data["student"]["ethnic"]}} </th>
+                    <th>Cantidad Vacunas Covid: 
+                      @if ($data["student_background"]["vaccines"] != null)
+                        {{$data["student_background"]["vaccines"]}} 
+                      @else
+                        Sin Datos
+                      @endif
+                    </th>
                     <th>Teléfono estudiante: {{$data["student_background"]["cellphone"]}}</th>
                   </tr>
                   <tr>
@@ -242,13 +249,15 @@
                   <th>Ocupación</th>
                 </tr>
                   @foreach($data["circle"] as $row)
-                  <tr>
-                      <th>{{$row["full_name"]}}</th>
-                      <th>{{$row["kinship"]}}</th>
-                      <th>{{$row["same_ins"]}}</th>
-                      <th>{{$row["years_old"]}}</th>
-                      <th>{{$row["occupation"]}}</th>
-                  </tr>
+                    @if ($row["full_name"] != "")
+                      <tr>
+                        <th>{{$row["full_name"]}}</th>
+                        <th>{{$row["kinship"]}}</th>
+                        <th>{{$row["same_ins"]}}</th>
+                        <th>{{$row["years_old"]}}</th>
+                        <th>{{$row["occupation"]}}</th>
+                      </tr>
+                    @endif
                   @endforeach
               </table>
               <div style="margin: 50px 40px 0px 40px;">
@@ -278,6 +287,6 @@
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
       html2pdf().set(opt).from(element).save();
-      html2pdf(element);
+      //html2pdf(element);
     });
   </script>

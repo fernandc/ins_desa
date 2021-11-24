@@ -360,13 +360,16 @@ class View_System extends Controller {
         $gets = $request->input();
         $id_stu = $gets["id_stu"];
         $id_apo = $gets["id_apo"];
+        $year = $gets["year"];
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'downloadPdf',
-            'data' => ["id" => $id_stu,
-                        "id_apo" => $id_apo
-                    ]
+            'data' => [
+                "id" => $id_stu,
+                "id_apo" => $id_apo,
+                "year" => $year
+            ]
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://scc.cloupping.com/api-apoderado");
         $data = json_decode($response->body(), true);
@@ -627,6 +630,9 @@ class View_System extends Controller {
         $gets = $request->input();
         $dni = $gets["dni"];
         $apoderado = $this->get_apoderado_by_dni_stu($dni);
+        if($apoderado == null){
+            return null;
+        }
         return view("includes/mdl_apoderado")->with("apoderado",$apoderado);
     }
     public function modal_asignatura(Request $request){

@@ -24,10 +24,10 @@ const Toast = Swal.mixin({
 
 @section("context")
 
-<div class="container">
+<div class="mx-2">
     <h2 style="text-align: center;" id="temp1">Alumnos Inscritos y Pendientes
             @if(Session::has('period'))
-                {{Session::get('period')}}
+                {{Session::get('period')+1}}
             @endif            
     </h2>
     @if(isset($message))
@@ -129,6 +129,7 @@ const Toast = Swal.mixin({
                     <th scope="col">Apoderado</th>
                     <th scope="col">Info Adicional</th>
                     <th scope="col">Apoderado</th>
+                    <th scope="col">Ficha</th>
                 </tr>
             </thead>
             <tbody>
@@ -174,7 +175,14 @@ const Toast = Swal.mixin({
                         </td>
                         <td>
                             @if ($row["id_reg"] != null)
-                            <button class="btn btn-outline-secondary btn-sm data-apo" data="{{$row["dni"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Apoderado</button>
+                                <button class="btn btn-outline-secondary btn-sm data-apo" data="{{$row["dni"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Apoderado</button>
+                            @endif
+                        </td>
+                        <td>
+                            @if ($row["id_reg"] != null && $row["vacunas"] == 1 && $row["a_madre"] == 1 && $row["a_padre"] == 1 && $row["apoderado"] != "" && $row["misc"] == 1)
+                                <button class="btn btn-outline-primary btn-sm data-ficha" data="{{$row["id_stu"]}}" data2="{{$row["id_zmail"]}}" data-toggle="modal" data-target="#ficha">Ver Ficha de Alumno</button>
+                            @else
+
                             @endif
                         </td>
                     </tr>             
@@ -205,10 +213,41 @@ const Toast = Swal.mixin({
                     }
                 });
             });
+            $(".data-ficha").click(function(){
+                var id_stu = $(this).attr('data');
+                var id_apo = $(this).attr('data2');
+                var year = "@if(Session::has('period')){{Session::get('period')+1}}@endif";
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Cargando',
+                    showConfirmButton: false,
+                })
+                $.ajax({
+                    type: "GET",
+                    url: "modal_ficha",
+                    data:{
+                        id_stu,id_apo,year
+                    },
+                    success: function (data)
+                    {
+                        $("#modalContentFicha").html(data);
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Completado'
+                        })
+                    }
+                });
+            });
         </script>
         <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl" >
                 <div class="modal-content" id="modalContent">
+                </div>
+            </div>
+        </div>
+        <div id="ficha" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" >
+                <div class="modal-content" id="modalContentFicha">
                 </div>
             </div>
         </div>
