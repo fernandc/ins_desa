@@ -130,6 +130,7 @@ const Toast = Swal.mixin({
                     <th scope="col">Info Adicional</th>
                     <th scope="col">Apoderado</th>
                     <th scope="col">Ficha</th>
+                    <th scope="col"><i class="fas fa-syringe"></i></th>
                 </tr>
             </thead>
             <tbody>
@@ -183,6 +184,15 @@ const Toast = Swal.mixin({
                                 <button class="btn btn-outline-primary btn-sm data-ficha" data="{{$row["id_stu"]}}" data2="{{$row["id_zmail"]}}" data-toggle="modal" data-target="#ficha">Ver Ficha de Alumno</button>
                             @else
 
+                            @endif
+                        </td>
+                        <td>
+                            @if ($row["c_vacunas"] > 0)
+                                <a class="btn btn-warning btn-sm" target="_blank" href="https://saintcharlescollege.cl/apoderados/storage/{{str_replace("/","-",$row["ruta_vacuna"])}}">{{$row["c_vacunas"]}} <i class="fas fa-syringe"></i></a>
+                            @elseif($row["vacunas"] == 0)
+                                <button class="btn btn-secondary btn-sm" disabled="">0 <i class="fas fa-syringe"></i></button>
+                            @else
+                                <button class="btn btn-secondary btn-sm" disabled="">{{$row["c_vacunas"]}} <i class="fas fa-syringe"></i></button>
                             @endif
                         </td>
                     </tr>             
