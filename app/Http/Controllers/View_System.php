@@ -373,7 +373,7 @@ class View_System extends Controller {
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://scc.cloupping.com/api-apoderado");
         $data = json_decode($response->body(), true);
-        return view('includes/mdl_ficha')->with("data",$data);
+        return view('includes/mdl_ficha')->with("data",$data)->with("year",$year);
     }
     public function iframe_news(){
         //header('Access-Control-Allow-Origin: https://saintcharlescollege.cl/wp/comunicaciones-2021/'); 

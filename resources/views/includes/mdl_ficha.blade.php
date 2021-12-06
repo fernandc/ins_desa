@@ -19,7 +19,7 @@
               <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://scc.cloupping.com/public/scc_logo.png')); ?>" alt="" class="img-fluid">
           </div>
           <div class="d-flex">
-              <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;FICHA DE MATRÍCULA {{Session::get('period')}} </p>
+              <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;FICHA DE MATRÍCULA {{$year}} </p>
           </div>
           <div >
               <div class="my-3">
@@ -30,7 +30,7 @@
                 <p class="font-weight-bold" style="font-size: 10pt;">N° de matrícula: &nbsp;&nbsp;<span style="text-decoration: underline;white-space: break-spaces;"><?php echo str_pad($data["inscription"]["numero_matricula"], 20, " ", STR_PAD_BOTH); ?></span></p>
                 <p class="font-weight-bold" style="font-size: 10pt;display: none;">Centro de padres: <span style="text-decoration: underline;white-space: break-spaces;"><?php echo str_pad($data["inscription"]["centro_padres"], 20, " ", STR_PAD_BOTH); ?></span></p>
                 <p class="font-weight-bold" style="font-size: 10pt;">Centro de padres: <span style="text-decoration: underline;white-space: break-spaces;"><?php echo str_pad("", 20, "_", STR_PAD_BOTH); ?></span></p>
-                <p class="font-weight-bold" style="font-size: 10pt;">Curso al que postula {{Session::get('period')}}: <b style="font-size: large;">{{$data["inscription"]["curso"]}}</b> </p>
+                <p class="font-weight-bold" style="font-size: 10pt;">Curso al que postula {{$year}}: <b style="font-size: large;">{{$data["inscription"]["curso"]}}</b> </p>
                 <p class="font-weight-bold" style="font-size: 10pt;">RUT Estudiante: {{$data["student"]["dni"]}}</p>
               </div>
 
@@ -72,8 +72,8 @@
                   </tr>
                   <tr>
                     <th>Año Ingreso al establecimiento: {{$data["student_background"]["school_origin_year_in"]}} </th>
-                    <th>Pertenece a PIE 2020: @if($data["student_background"]["has_pie"]=="true") Si @else No @endif</th>
-                    <th>Postula a PIE 2021: @if($data["student_background"]["apply_pie_next_year"]=="true") Si @else no @endif</th>
+                    <th>Pertenece a PIE {{$year-1}}: @if($data["student_background"]["has_pie"]=="true") Si @else No @endif</th>
+                    <th>Postula a PIE {{$year}}: @if($data["student_background"]["apply_pie_next_year"]=="true") Si @else no @endif</th>
                   </tr>
                   <tr>
                     <th colspan="3">Enfermedad de riesgo del estudiante: {{$data["student_background"]["risk_disease"]}}</th>
