@@ -919,6 +919,21 @@ class App_Controller extends Controller {
                             'date_to' => $dateto
                           ]
             );
+            $fname = Session::get('account')["full_name"];
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $arr= array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'simple_send_mail',
+                'data' => ["subject" => "$type de $fname",
+                        "body" => "<b>$subject</b><br>$message<br>Para el día: $dateto <hr> Para más detalles e ingresar una respuesta ingrese a <a href=\"https://saintcharlescollege.cl/ins/tickets\" target=\"_blank\">Charly Notas - sección: Solicitudes y Justificaciones </a> en la pestaña <b>Responder y Respuestas</b>", 
+                        "addressees" => [
+                            [
+                                "email" => "directora.scc@saintcharlescollege.cl"
+                            ]
+                        ]
+                ]
+            );
             $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
             return "A";
         }else{
