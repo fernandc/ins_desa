@@ -93,7 +93,23 @@ class View_System extends Controller {
                     $list_students_groups = $this->list_students_groups();
                     return view('mails/groups')->with("list_groups",$list_groups)->with("list_students_groups",$list_students_groups)->with("message",$message);                    
                 case "mail_sent_and_tracing_mails":
-                    $info = $this->info_sent_mails();
+                    $filter="";
+                    if(isset($_GET["filter"])){
+                        $flag = false;
+                        if($this->isAdmin()){
+                            $flag = true;
+                        }else{
+                            foreach ($privileges as $priv) {
+                                if ($priv["id_privilege"] == 11) {
+                                    $flag = true;
+                                }
+                            }
+                        }
+                        if($flag){
+                            $filter = $_GET["filter"];
+                        }
+                    }
+                    $info = $this->info_sent_mails($filter);
                     //dd($info);
                     //$destinatarios = $this->destinatarios_sent_mails($gets);->with("destinatarios",$destinatarios)
                     return view('mails/sent_and_tracing_mails')->with("info_mails",$info);                    
@@ -686,11 +702,12 @@ class View_System extends Controller {
         return $data;
     }
     // Sent Mails
-    public function info_sent_mails(){
+    public function info_sent_mails($filter){
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => 'mails_sended'
+            'method' => 'mails_sended',
+            'data' => ['filter' => $filter]
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);

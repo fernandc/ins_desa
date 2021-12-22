@@ -40,7 +40,7 @@ Seguimiento
                             @endif
                           </td>
                           <td>
-                            @if ($row["tipo_mail"] == 1)
+                            @if ($row["tipo_mail"] == 1 || $row["tipo_mail"] == 0)
                               <a href="" data-toggle="modal" data-target="#modalCorreo{{$row["id_mail"]}}"><i class="far fa-envelope mr-2" ></i> <span class="text-primary">{{$row["titulo"]}}</span> <i class="fas fa-info-circle text-primary"></i></a>
                             @elseif($row["tipo_mail"] == 2)  
                               <a href="" data-toggle="modal" data-target="#modalCorreo{{$row["id_mail"]}}"><i class="far fa-envelope mr-2" ></i> <span class="text-info">{{$row["titulo"]}}</span> <i class="fas fa-info-circle text-info"></i></a>

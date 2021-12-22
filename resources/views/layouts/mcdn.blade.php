@@ -69,7 +69,6 @@ if(Session::has('period')){
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
@@ -81,6 +80,10 @@ if(Session::has('period')){
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownCorreo">
                             <a class="dropdown-item" href="mail_send_mail">Enviar Correo</a>
                             <a class="dropdown-item" href="mail_sent_and_tracing_mails">Correos Enviados y Seguimiento</a>
+                            @if(in_array(11,$privileges))
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="mail_sent_and_tracing_mails?filter=only_system">Correos Enviados del Sistema</a>
+                            @endif
                             <!--<a class="dropdown-item" href="mail_groups">Grupos</a> -->
                         </div>
                     </li>
