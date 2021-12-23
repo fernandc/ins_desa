@@ -356,6 +356,7 @@ class View_System extends Controller {
                     }
                     return redirect('/home');
                 case "tickets":
+                    $all_tickets = null;
                     $arr = array(
                         'institution' => getenv("APP_NAME"),
                         'public_key' => getenv("APP_PUBLIC_KEY"),
@@ -364,7 +365,23 @@ class View_System extends Controller {
                     );
                     $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
                     $data = json_decode($response->body(), true);
-                    return view('tickets')->with('tickets',$data);
+                    $view_all = false;
+                    foreach ($privileges as $row) {
+                        if($row["id_privilege"] == 12){
+                            $view_all = true;
+                        }
+                    }
+                    if($view_all){
+                        $arr = array(
+                            'institution' => getenv("APP_NAME"),
+                            'public_key' => getenv("APP_PUBLIC_KEY"),
+                            'method' => 'get_tickets'
+                        );
+                        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                        $all_tickets = json_decode($response->body(), true);
+                        
+                    }
+                    return view('tickets')->with('tickets',$data)->with('all_tickets',$all_tickets);
                 default:
                     return view('not_found')->with("path",$path);
             }

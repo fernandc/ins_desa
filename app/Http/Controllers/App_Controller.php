@@ -884,8 +884,8 @@ class App_Controller extends Controller {
         $filepath2 = null;
         $filepath3 = null;
         $cont=0;
-        $todayadd2 = date('Y-m-d', strtotime('+2 days'));
-        if(($type == "Solicitud" && $dateto > $todayadd2) || $type=="Justificación"){
+        $today = date('Y-m-d');
+        if(($type == "Solicitud" && $dateto >= $today) || $type=="Justificación"){
             $id_account_receiver = 17;
             if(isset($files)){
                 foreach ($files as $file) {

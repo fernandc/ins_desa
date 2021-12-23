@@ -37,6 +37,11 @@
             <li class="nav-item">
               <a class="nav-link" id="responserequest-tab" data-toggle="tab" href="#responserequest" role="tab" aria-controls="responserequest" aria-selected="false">Responder y Respuestas</a>
             </li>
+            @if ($all_tickets != null)
+            <li class="nav-item">
+                <a class="nav-link" id="allrequest-tab" data-toggle="tab" href="#allrequest" role="tab" aria-controls="allrequest" aria-selected="false">Ver Todos</a>
+              </li>
+            @endif
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="sended" role="tabpanel" aria-labelledby="sended-tab">
@@ -164,7 +169,7 @@
                         <textarea class="form-control is-invalid" id="txtBody" rows="2"  autocomplete="off"></textarea>
                     </div>
                     <div class="col-md-6 team-b" style="display: none;">
-                        <label for="optionSelect" class="form-label"><span class="referer-team"> </span> para la fecha <span class="text-danger">*</span></label>
+                        <label for="optionSelect" class="form-label"><span class="referer-team"> </span> para la fecha <span class="text-danger">*</span> <span id="datetomessage" class="text-danger"></span></label>
                         <input class="form-control is-invalid" type="date" id="txtDateTo" autocomplete="off" required="">
                     </div>
                     <div class="col-md-6 team-b" style="display: none;">
@@ -351,7 +356,7 @@
                                                             </div>
                                                         </div>
                                                     @else
-                                                        
+                                                        {{$row["respuesta"]}}
                                                     @endif
                                                 @endif
                                             </td>
@@ -370,6 +375,100 @@
                     </div>
                 </div>
             </div>
+            @if ($all_tickets != null)
+                <div class="tab-pane fade" id="allrequest" role="tabpanel" aria-labelledby="allrequest-tab">
+                    <table id="alltickets" class="table table-hover ">
+                        <thead>
+                        <tr>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">De</th>
+                            <th scope="col">Asunto</th>
+                            <th scope="col">Para el día</th>
+                            <th scope="col">Día remunerado</th>
+                            <th scope="col">Fecha de envío</th>
+                            <th scope="col">Adjuntos</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Respuesta</th>
+                            <th scope="col">Fecha de Respuesta</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($all_tickets as $row)
+                                <tr>
+                                    <td>
+                                        @if ($row["tipo"] == "Solicitud")
+                                            <span class="badge badge-primary">Solicitud</span>
+                                        @else
+                                            <span class="badge badge-info">Justificación</span>
+                                        @endif
+                                    </td>
+                                    <td>{{$row["nombre_solicitante"]}}</td>
+                                    <td>{{$row["asunto"]}}</td>
+                                    <td>{{substr($row["fecha_para"],0,10)}}</td>
+                                    <td>{{$row["opcional_1"]}}</td>
+                                    <td>{{$row["fecha_ingreso"]}}</td>
+                                    <td class="text-center">
+                                        @if (($row["ruta_archivo_1"] == "" || $row["ruta_archivo_1"] == null ) && ($row["ruta_archivo_2"] == "" || $row["ruta_archivo_2"] == null ) && ($row["ruta_archivo_3"] == "" || $row["ruta_archivo_3"] == null ))
+                                            <span class="badge badge-light">Sin Documentos</span>
+                                        @else
+                                            @for ($i = 1; $i <= 3; $i++)
+                                                @if($row["ruta_archivo_$i"] != "")
+                                                    <a href="download?path={{$row["ruta_archivo_$i"]}}" target="_blank">
+                                                    @php
+                                                        $path_parts = pathinfo($row["ruta_archivo_$i"]);
+                                                        if($path_parts['extension'] == "pdf"){
+                                                            echo '<i class="far fa-file-pdf fa-2x text-danger"></i>';
+                                                        }else if($path_parts['extension'] == "docx"){
+                                                            echo '<i class="far fa-file-word fa-2x text-primary"></i>';
+                                                        }else{
+                                                            echo '<i class="far fa-file fa-2x"></i>';
+                                                        }
+                                                    @endphp
+                                                    </a>
+                                                @endif
+                                            @endfor
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($row["estado"] == "Pendiente")
+                                            <span class="badge badge-secondary">Pendiente</span>
+                                        @elseif($row["estado"] == "Aprobado")
+                                            <span class="badge badge-success">Aprobado</span>
+                                        @else
+                                            <span class="badge badge-danger">Rechazado</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($row["respuesta"] == null)
+                                            <span class="badge badge-secondary">Sin mensaje de respuesta</span>
+                                        @else
+                                            @if (strlen($row["respuesta"]) > 90)
+                                                <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapse{{$row["id"]}}" aria-expanded="false" aria-controls="collapse{{$row["id"]}}">
+                                                    Ver mensaje de respuesta
+                                                </button>
+                                                <div class="collapse" id="collapse{{$row["id"]}}">
+                                                    <div class="card card-body">
+                                                        {{$row["respuesta"]}}
+                                                    </div>
+                                                </div>
+                                            @else
+                                                {{$row["respuesta"]}}
+                                            @endif
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($row["fecha_ingreso"] == $row["fecha_actualizacion"])
+                                            <span class="badge badge-secondary">Pendiente</span>
+                                        @else
+                                            {{$row["fecha_actualizacion"]}}
+                                        @endif
+                                    </td>
+                                </tr>   
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         </div>
     </div>
     <hr>
@@ -470,6 +569,33 @@
                         }
                 }
             });
+            @if ($all_tickets != null)
+            $('#alltickets').DataTable({
+                "ordering": true,
+                "order": [[4 , "asc"]],
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay resultados",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Filas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Filas",
+                    "infoFiltered": "(Filtrado de MAX total Filas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Filas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                        }
+                }
+            });
+            @endif
         });
         var flag = false;
         var typeSel = "";
@@ -478,7 +604,7 @@
             typeSel = $(this).val();
             $(".team-b").show();
             if($(this).val() == "Solicitud"){
-                $("#txtDateTo").attr({ "min" : "{{Date('Y-m-d', strtotime('+3 days'))}}"})
+                $("#txtDateTo").attr({ "min" : "{{Date('Y-m-d')}}"})
             }else{
                 $("#txtDateTo").removeAttr("min");
             }
@@ -491,6 +617,15 @@
             var valSubject = 0;
             var valDatetov = 0;
             var valRemuner = 0;
+            if(typeSel == "Solicitud"){
+                if($("#txtDateTo").val() < "{{Date('Y-m-d', strtotime('+3 days'))}}"){
+                    $("#datetomessage").html("La fecha de la Solicitud debe ser con 2 días de anticipación de la fecha Actual");
+                }else{
+                    $("#datetomessage").html("");
+                }
+            }else{
+                $("#datetomessage").html("");
+            }
             if($("#txtSubject").val().length >= 5){
                 valSubject = 1;
             }else{
