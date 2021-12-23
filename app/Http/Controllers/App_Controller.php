@@ -855,11 +855,12 @@ class App_Controller extends Controller {
         $dni_staff = Session::get('account')['dni'];
         $idrequest = $gets["idrequest"];
         $status = $gets["respuesta"];
+        $response_message = $gets["message"];
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'response_ticket',
-            'data' => ['id_request' => $idrequest, 'dni' => $dni_staff, 'status' => $status]);
+            'data' => ['id_request' => $idrequest, 'dni' => $dni_staff, 'status' => $status, 'response_message' => $response_message]);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         return $response->status();
     }

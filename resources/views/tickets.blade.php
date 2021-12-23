@@ -22,7 +22,7 @@
         }
     @endphp
     <hr>
-    <div class="container">
+    <div class="mx-4">
         <div class="text-center">
             <h2>Solicitudes y Justificaciones</h2>
             <hr>
@@ -51,6 +51,7 @@
                         <th scope="col">Fecha de envío</th>
                         <th scope="col">Adjuntos</th>
                         <th scope="col">Estado</th>
+                        <th scope="col" style="min-width: 300px;">Mensaje de Respuesta</th>
                         <th scope="col">Fecha de Respuesta</th>
                       </tr>
                     </thead>
@@ -98,6 +99,29 @@
                                             <span class="badge badge-success">Aprobado</span>
                                         @else
                                             <span class="badge badge-danger">Rechazado</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($row["estado"] == "Pendiente")
+                                            <span class="badge badge-secondary">Pendiente</span>
+                                        @else
+                                            @if ($row["respuesta"] == null)
+                                                <span class="badge badge-secondary">Sin mensaje de respuesta</span>
+                                            @else
+                                                @if (strlen($row["respuesta"]) > 90)
+                                                    <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapse{{$row["id"]}}" aria-expanded="false" aria-controls="collapse{{$row["id"]}}">
+                                                        Ver mensaje de respuesta
+                                                    </button>
+                                                    <div class="collapse" id="collapse{{$row["id"]}}">
+                                                        <div class="card card-body">
+                                                            {{$row["respuesta"]}}
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    
+                                                @endif
+                                                
+                                            @endif
                                         @endif
                                     </td>
                                     <td class="text-center">
@@ -233,6 +257,12 @@
                                             @endif
                                         </div>
                                         <hr>
+                                        <div>
+                                            <div class="form-group">
+                                                <label for="responsemessage{{$row["id"]}}">Agregar Mensaje</label>
+                                                <textarea class="form-control" id="responsemessage{{$row["id"]}}" rows="3"></textarea>
+                                            </div>
+                                        </div>
                                         <div class="text-right">
                                             <button class="btn btn-danger response-request" data="{{$row["id"]}}" datasel="Rechazar" datacolor="#dc3545" value="Rechazado">Rechazar</button>
                                             <button class="btn btn-success response-request" data="{{$row["id"]}}" datasel="Aprobar" datacolor="#28a745" value="Aprobado">Aprobar</button>
@@ -249,12 +279,14 @@
                             <thead>
                             <tr>
                                 <th scope="col">Tipo</th>
+                                <th scope="col">De</th>
                                 <th scope="col">Asunto</th>
                                 <th scope="col">Para el día</th>
                                 <th scope="col">Día remunerado</th>
                                 <th scope="col">Fecha de envío</th>
                                 <th scope="col">Adjuntos</th>
                                 <th scope="col">Estado</th>
+                                <th scope="col">Respuesta</th>
                                 <th scope="col">Fecha de Respuesta</th>
                             </tr>
                             </thead>
@@ -269,6 +301,7 @@
                                                     <span class="badge badge-info">Justificación</span>
                                                 @endif
                                             </td>
+                                            <td>{{$row["nombre_solicitante"]}}</td>
                                             <td>{{$row["asunto"]}}</td>
                                             <td>{{substr($row["fecha_para"],0,10)}}</td>
                                             <td>{{$row["opcional_1"]}}</td>
@@ -304,6 +337,24 @@
                                                     <span class="badge badge-danger">Rechazado</span>
                                                 @endif
                                             </td>
+                                            <td>
+                                                @if ($row["respuesta"] == null)
+                                                    <span class="badge badge-secondary">Sin mensaje de respuesta</span>
+                                                @else
+                                                    @if (strlen($row["respuesta"]) > 90)
+                                                        <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapse{{$row["id"]}}" aria-expanded="false" aria-controls="collapse{{$row["id"]}}">
+                                                            Ver mensaje de respuesta
+                                                        </button>
+                                                        <div class="collapse" id="collapse{{$row["id"]}}">
+                                                            <div class="card card-body">
+                                                                {{$row["respuesta"]}}
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        
+                                                    @endif
+                                                @endif
+                                            </td>
                                             <td class="text-center">
                                                 @if ($row["fecha_ingreso"] == $row["fecha_actualizacion"])
                                                     <span class="badge badge-secondary">Pendiente</span>
@@ -321,12 +372,14 @@
             </div>
         </div>
     </div>
+    <hr>
     <script>
         $(document).ready( function () {
             $(".response-request").click(function(){
                 var idrequest = $(this).attr("data");
                 var datasel = $(this).attr("datasel");
                 var datacolor = $(this).attr("datacolor");
+                var message = $("#responsemessage"+idrequest).val();
                 var respuesta = $(this).val();
                 Swal.fire({
                     title: 'Se ha elegido: '+datasel,
@@ -344,7 +397,8 @@
                             url: "response_ticket",
                             data:{
                                 idrequest,
-                                respuesta
+                                respuesta,
+                                message
                             },
                             success: function (data){
                                 if(data == 200){
