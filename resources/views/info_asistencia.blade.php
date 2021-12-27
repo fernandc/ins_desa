@@ -157,10 +157,38 @@ Asistencias
 <div class="row" style="margin: 0px;">
     @if (isset($_GET["curso"]))
         <div id="contentlist" class="col-md-12">
-            <div class="card">
+            <div id="content" class="card">
                 <div class="card-header">
                     <div id="scrollw">
-                        Asistencia de <span class='text-primary'>{{$curso}}</span>
+                        Asistencia de <span class='text-primary'>{{$curso}}</span> 
+                        <button id="triggerHideShow" class="btn btn-info btn-sm" style="float: right;">Descargar Resumen</button>
+                        <script>
+                            $("#triggerHideShow").click(function(){
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Cargando',
+                                    showConfirmButton: false,
+                                });
+                                $(".todis").hide();
+                                var heightvalue = $(".table-responsive").css("height");
+                                $(".table-responsive").css("height", "");
+                                $("#triggerHideShow").hide();
+                                setTimeout(function () {
+                                    var element = document.getElementById('content');
+                                    var opt = {
+                                        margin:       0.5,
+                                        filename:     'Asistencia.pdf',
+                                        image:        { type: 'jpg', quality: 0.98 },
+                                        html2canvas:  { scale: 2 },
+                                        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+                                    };
+                                    html2pdf().set(opt).from(element).save();
+                                }, 1000);
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 10000);
+                            });
+                        </script>
                     </div>
                 </div>
                 <div class="card-body table-responsive" style="padding: 0px;">
@@ -201,7 +229,7 @@ Asistencias
                                         if($idc == "999"){$type = '<a href="#" class="badge badge-primary" style="background-color: #a8a8a8;">PSY </a>';}
                                         if($idc == "1493"){$type = '<a href="#" class="badge badge-primary" style="background-color: #006166;">PRO </a>';}
                                     @endphp
-                                    <th scope="col" style="min-width: 40px;text-align: center">
+                                    <th class="todis" scope="col" style="min-width: 40px;text-align: center">
                                         {{$mes[intval(substr($horario["date_day"],5,2))]}}
                                         <hr style="margin: 0px">
                                         <span class="text-secondary">{{$sem[date('w',strtotime($horario["date_day"]))]}}</span>
@@ -259,7 +287,7 @@ Asistencias
                                         <span id="typePER{{$alumno["id_stu"]}}" >0%</span>
                                     </th>
                                     @foreach ($dias_activos as $horario)
-                                        <th style="text-align: center;">
+                                        <th class="todis" style="text-align: center;">
                                             <div id="tooltip{{$alumno["id_stu"]}}-class{{$horario["id_class"]}}-bloq{{$horario["id_bloq"]}}-date{{$horario["date_day"]}}">
                                                 <input id="input-stu{{$alumno["id_stu"]}}-class{{$horario["id_class"]}}-bloq{{$horario["id_bloq"]}}-date{{$horario["date_day"]}}" class="form-control form-control-sm refdate-all refdate-bloq{{$horario["id"]}}-{{$horario["date_day"]}}" stu="{{$alumno["id_stu"]}}" data="{{$horario["date_day"]}}" bloq="{{$horario["id"]}}" type="text" style="width: 30px;font-size: 0.8rem;text-transform:uppercase;font-weight: bold;display: inline;background-color: white;" maxlength="1" placeholder="" readonly="">
                                             </div>
