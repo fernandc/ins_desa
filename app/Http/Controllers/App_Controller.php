@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 class App_Controller extends Controller {
     public function logo_ins(Request $request){
@@ -959,5 +961,56 @@ class App_Controller extends Controller {
             $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
             $data = json_decode($response->body(), true);
         }
+    }
+    // File Manager
+    public function saveFile_FM(Request $request){
+        
+        $gets = $request->input();
+        $file = $request->file();
+        $path ="";
+        $id_materia = $gets["id_materia"];
+        $id_curso_periodo = $gets["id_curso_periodo"];
+        $year = $gets["year"];
+        // dd($gets);
+        if(isset($file)){
+            foreach ($file as $fil) {
+                $extension = $fil->extension();
+                $name = "test.$extension";
+                $path = $fil->storeAs("public/FileManager/$year/$id_curso_periodo/$id_materia", $name);
+            }
+        }
+        dd($path);
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => '',
+            'data' => [ 'year' => $year, 'id_materia' => $id_materia, 'id_curso_periodo' => $id_curso_periodo, 'path' => $path ]
+        );
+        
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return $data;
+    }
+    public function get_file_FM($path){
+        $path = str_replace("-","/",$path);
+        $ruta = storage_path("app/".$path);
+        if(!File::exists($ruta)){
+            abort(404);
+        }
+        $file = File::get($ruta);
+        $type = File::mimeType($ruta);
+        $response = Response::make($file,200);
+        $response->header("Content-Type",$type);
+        // dd(gettype($response));
+        return $response;
+    }
+    public function downloadFile(){
+        return null;
+    }
+    public function deleteFile(){
+        return null;
+    }
+    public function getFiles(){
+        return null;
     }
 }

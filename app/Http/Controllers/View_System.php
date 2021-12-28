@@ -355,6 +355,69 @@ class View_System extends Controller {
                         return view('ldc/asistencia')->with("clases",$class)->with("id_clase",$id_clase)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("assistance_data",$assistance_data)->with("horarios",$horarios)->with("anr",$can_anr);
                     }
                     return redirect('/home');
+                    
+                case "fileManager":
+                    $has_priv = false;
+                    $check_all = false;
+                    $can_anr = false;
+                    foreach ($privileges as $priv) {
+                        if ($priv["id_privilege"] == 5) {
+                            $has_priv = true;
+                        }
+                        if($priv["id_privilege"] == 9){
+                            $check_all = true;
+                            $has_priv = true;
+                        }
+                        if($priv["id_privilege"] == 10){
+                            $can_anr = true;
+                            $has_priv = true;
+                        }
+                    }
+                    if($this->isAdmin() || $has_priv){
+                        $class = [];
+                        if($this->isAdmin() || $check_all){
+                            $class = $this->list_checked("all");
+                        }else{
+                            $class = $this->list_checked(Session::get('account')['dni']);
+                        }
+                        if($this->isAdmin()){
+                            $can_anr = true;
+                        }
+                        $curso = 0;
+                        $alumnos = [];
+                        $horarios = [];
+                        $teacher = null;
+                        $id_clase = null;
+                        if(isset($_GET['curso'])){
+                            $curso = $_GET['curso'];
+                            if(isset($_GET['materia'])){
+                                $id_materia = $gets['materia'];
+                                $alumnos = $this->matriculas($curso);
+                                if(isset($_GET['profesor'])){
+                                    $teacher = $_GET['profesor'];
+                                }
+                                foreach ($class as $row) {
+                                    if($row["id_curso"] == $curso && $row["id_materia"] == $id_materia){
+                                        $horarios = $this->list_class_scheduler($row["id_curso_periodo"]);
+                                    }
+                                }
+                                foreach($horarios as $row){
+                                    if($row["id_materia"] == $id_materia){
+                                        $year = Session::get('period');
+                                        $enabled_days = $this->list_class_enabled_days($row["id_clase"],null,$year);
+                                        $assistance_data = $this->list_assistance_class($row["id_clase"],null);
+                                        $id_clase = $row["id_clase"];
+                                    }
+                                }
+                            }
+                        }
+                        // Implementar al final 
+                        //  para revisar que alumnos han revisado los archivos
+                        // ->with("alumnos",$alumnos) 
+                        // 
+                        return view('ldc/file_manager/file_manager')->with("clases",$class)->with("id_clase",$id_clase)->with("horarios",$horarios)->with("anr",$can_anr);
+                    }
+                    return redirect('/home');
                 case "tickets":
                     $all_tickets = null;
                     $arr = array(
@@ -893,4 +956,5 @@ class View_System extends Controller {
         $data = json_decode($response->body(), true);
         return $data;
     }
+    
 }
