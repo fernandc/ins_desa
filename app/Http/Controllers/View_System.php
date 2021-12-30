@@ -136,7 +136,7 @@ class View_System extends Controller {
                     }else{
                         return back();
                     }
-                case "info_assistance":
+                case "info_assistance_old":
                     $has_priv = false;
                     foreach ($privileges as $priv) {
                         if ($priv["id_privilege"] == 8) {
@@ -157,6 +157,53 @@ class View_System extends Controller {
                             $enabled_days = $this->list_class_enabled_days(null,$curso,$year);
                         }
                         return view('info_asistencia')->with("clases",$class)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("horarios",$horarios);
+                    }else{
+                        return back();
+                    }
+                case "info_assistance":
+                    $has_priv = false;
+                    foreach ($privileges as $priv) {
+                        if ($priv["id_privilege"] == 8) {
+                            $has_priv = true;
+                        }
+                    }
+                    if($this->isAdmin() || $has_priv){
+                        $class = $this->list_checked("all");
+                        $curso = 0;
+                        $alumnos = [];
+                        $enabled_days = [];
+                        $assistance_data = [];
+                        $horarios = [];
+                        if(isset($_GET['curso'])){
+                            $curso = $_GET['curso'];
+                            $alumnos = $this->matriculas($curso);
+                            $year = Session::get('period');
+                            $enabled_days = $this->list_class_enabled_days(null,$curso,$year);
+                            $arr = array(
+                                'institution' => getenv("APP_NAME"),
+                                'public_key' => getenv("APP_PUBLIC_KEY"),
+                                'method' => 'assistance_student_lite',
+                                'data' => [ 'year' => $year, 'id_grade' => $curso ]
+                            );
+                            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                            $data = json_decode($response->body(), true);
+                            foreach ($data as $row) {
+                                $exploded = explode("_",$row["a"]);
+                                $item["id"] = $exploded[0];
+                                $item["id_staff"] = $exploded[1];
+                                $item["id_student"] = $exploded[2];
+                                $item["id_class"] = $exploded[3];
+                                $item["id_curso_periodo"] = $exploded[4];
+                                $item["id_curso"] = $exploded[5];
+                                $item["id_bloq"] = $exploded[6];
+                                $item["type_a"] = $exploded[7];
+                                $item["assistance"] = $exploded[8];
+                                $item["justify"] = $exploded[9];
+                                $item["date_in"] = $exploded[10];
+                                array_push($assistance_data,$item);
+                            }
+                        }
+                        return view('info_asistencia2')->with("clases",$class)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("horarios",$horarios)->with("assistance",$assistance_data);
                     }else{
                         return back();
                     }
