@@ -997,11 +997,12 @@ class View_System extends Controller {
     }
 
     private function list_files_fm($path){
+        $app_status = getenv("APP_STATUS");
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'list_filemanager',
-            'data' => ["path" => $path]
+            'data' => ["path" => $path, "app_status" => $app_status]
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);

@@ -1,7 +1,7 @@
 <div class="card" id="cardTableFiles">
     <div class="card-header" style="overflow-x: auto" >
         <div>
-            <h3>Gestor de Archivos <i>{{$materias[$_GET["materia"]]}} {{$year}} {{$id_curso_periodo}} {{$_GET["materia"]}}  </i> </h3>
+            <h3>Gestor de Archivos <i>{{$materias[$_GET["materia"]]}}</i> </h3>
         </div>
         <div class="row">
             <div class="class col-md-6">
@@ -27,12 +27,11 @@
                             <tr style="text-align:center;">
                             <th scope="col">Nombre</th>
                             <th scope="col">Tipo</th>
-                            <th scope="col">Visualizar</th>
                             <th scope="col">Fecha de creación</th>
                             <th scope="col">Creador</th>
                             <th scope="col">Editar</th>
                             <th scope="col">Descargar</th>
-                            <th scope="col">Eliminar</th>
+                            {{-- <th scope="col">Eliminar</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -48,8 +47,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
+                                {{-- <td></td> --}}
                             </tr>
                             @endif
                             @foreach ($list_files_fm as $item)
@@ -68,13 +66,7 @@
                                     <td>
                                         {{$item["type"]}}                                                  
                                     </td>
-                                    <td>
-                                        @if ($item["type"] != "folder")
-                                            <button class="btn btn-md bg-info text-white">
-                                                <i class="fas fa-eye"></i>
-                                            </button>                                              
-                                        @endif
-                                    </td>
+
                                     <td>
                                         {{$item["date_in"]}}
                                     </td>
@@ -83,20 +75,20 @@
                                         {{$item["creator"]}}
                                     </td>
                                     <td>
-                                        <button class="btn btn-md bg-primary text-white">  
+                                        <button class="btn btn-md bg-warning text-white btn-edit-name" data-id="{{$item["id"]}}" data-name="{{$item["name"]}}" data-path="{{$item["path"]}}" data-parent="{{$item["parent_folder"]}}" data-type="{{$item["type"]}}" id="editBtn" data-toggle="modal" data-target="#modalEditItem">  
                                             <i class="far fa-edit"></i>
-                                        </button>  
+                                        </button>
                                     </td>
                                     <td>
                                         @if ($item["type"] != "folder")
-                                            <button class="btn btn-md bg-primary text-white">  
+                                            <a class="btn btn-md bg-primary text-white" target="_blank" href="/downloadFile_FM?path={{$item["path"]}}" id="downloadBtn">  
                                                 <i class="fas fa-cloud-download-alt"></i>
-                                            </button>                                              
+                                            </a>                                              
                                         @endif
                                     </td>
-                                    <td>
-                                        <button class="btn btn-md bg-danger text-white"> <i class="fas fa-trash"></i> </button>                    
-                                    </td>
+                                    {{-- <td>
+                                        <button class="btn btn-md bg-danger text-white" hidden="true"> <i class="fas fa-trash"></i> </button>                    
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>
@@ -118,35 +110,25 @@
                 </div>
                 <form action="save_file_fm" id="newFile" class="was-validated" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input id="id_materia" class="form-control is-invalid" value="{{$_GET["materia"]}}" name="id_materia" hidden="">
-                    <input id="id_curso_periodo" class="form-control is-invalid" value="{{$id_curso_periodo}}" name="id_curso_periodo" hidden="">
-                    <input id="year" class="form-control is-invalid" value="{{$year}}" name="year" hidden="">
+                    <input id="file_id_materia" class="form-control is-invalid" value="{{$_GET["materia"]}}" name="id_materia" hidden="">
+                    <input id="file_id_curso_periodo" class="form-control is-invalid" value="{{$id_curso_periodo}}" name="id_curso_periodo" hidden="">
+                    <input id="file_year" class="form-control is-invalid" value="{{$year}}" name="year" hidden="">
+                    <input id="file_path_file" class="form-control is-invalid" value="{{$path}}" name="path_file" hidden="">
                     
                     <div class="modal-body">
                         
                         <div class="form-group">
                             <div class="custom-file" style="width:100%" >
-                                <input type="file" class="custom-file-input" accept=".pdf,image/*" autocomplete="off" id="fileAdded" name="fileAdded"  onchange="loadFile(event)" required="" lang="es">
-                                <label id="label_vac_file" for="fileAdded" class="custom-file-label" lang="es" >
+                                <input type="file" class="custom-file-input" autocomplete="off" id="fileAdded" name="fileAdded"  required="" lang="es">
+                                <label id="addFileLabel" for="fileAdded" class="custom-file-label" lang="es" >
                                     <i class="fa fa-cloud-upload"></i>Subir archivo...
                                 </label>
                                 <hr>
-                                <div class="text-center">
-                                    <img id="output" style="width:100%"/>
-                                </div>                            
-                                <br>
                             </div>                                
                         </div>                        
                     </div>
                     {{-- Image Functions --}}
                     <script>
-                        var loadFile = function(event) {
-                            var output = document.getElementById('output');
-                            output.src = URL.createObjectURL(event.target.files[0]);
-                            output.onload = function() {
-                                URL.revokeObjectURL(output.src) // free memory
-                            }
-                        };
                         // Send vaccine file
                         function file_extension(filename){
                             return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename)[0] : undefined;
@@ -155,20 +137,17 @@
                             var i = $(this).prev('label').clone();
                             var file = $('#fileAdded')[0].files[0].name;
                             var extension = file_extension(file);
-                            if(extension == "pdf" || extension == "jpg" || extension == "png" || extension == "jpeg"){
-                                if(extension == "pdf"){
-                                    $("#output").hide();
-                                }else{
-                                    $("#output").show();
-                                }
+                            var extensiones = ["pdf","jpg","png","jpeg","xlsx","docx","doc","dot","xls","txt","rar","zip","ppt","pptx","mp3","mp4","avi","csv","gif","m4a","mov","wav","wma"];
+                            if(extensiones.includes(extension)){                                
                                 $("#saveNewFile").attr("disabled",false);
+                                $("#addFileLabel").html(file);
                             }else{
                                 Swal.fire('Error!', 'el archivo no es válido.', 'error');
                                 $("#saveNewFile").attr("disabled",true);
                                 file = null;
                             }
                             $(this).prev('label').text(file);
-                            console.log(extension);
+                            console.log(file);
                         });
 
                     </script>
@@ -192,17 +171,16 @@
                 </div>
                 <form action="addFolder_FM" class="was-validated" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input id="id_materia" class="form-control is-invalid" value="{{$_GET["materia"]}}" name="id_materia" hidden="">
-                    <input id="id_curso_periodo" class="form-control is-invalid" value="{{$id_curso_periodo}}" name="id_curso_periodo" hidden="">
-                    <input id="year" class="form-control is-invalid" value="{{$year}}" name="year" hidden="">
-                    <input id="path_folder" class="form-control is-invalid" value="{{$path}}" name="path_folder" hidden="">
+                    <input id="folder_id_materia" class="form-control is-invalid" value="{{$_GET["materia"]}}" name="id_materia" hidden="">
+                    <input id="folder_id_curso_periodo" class="form-control is-invalid" value="{{$id_curso_periodo}}" name="id_curso_periodo" hidden="">
+                    <input id="folder_year" class="form-control is-invalid" value="{{$year}}" name="year" hidden="">
+                    <input id="folder_path_file" class="form-control is-invalid" value="{{$path}}" name="path_folder" hidden="">
                     <div class="modal-body">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputNombreCarpeta">Nombre</span>
                             </div>
-                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputNombreCarpeta" id="addFolder" name="addFolder">
-                            
+                            <input type="text" class="form-control" maxlength="50" minlength="3" required aria-label="Sizing example input" aria-describedby="inputNombreCarpeta" id="addFolder" name="addFolder">                            
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -213,6 +191,65 @@
             </div>
         </div>
     </div>
+    {{-- Modal Editar Item --}}
+    <script>
+        $(".btn-edit-name").click(function(){
+            var id = $(this).attr("data-id");
+            var name = $(this).attr("data-name");
+            var path = $(this).attr("data-path");
+            var parent = $(this).attr("data-parent");
+            var type = $(this).attr("data-type");
+            $("#spnEditName").html(name);
+            $("#renameId").val(id);
+            $("#renameName").val(name);
+            $("#renamePath").val(path);
+            $("#renameParent").val(parent);
+            $("#renameType").val(type);
+            if(type == "folder"){
+                $("#newNameItem").val(name);
+            }else{
+                $("#newNameItem").val(name.substring(0,name.length - type.length - 1));
+            }
+        });
+    </script>
+    <div class="modal fade" id="modalEditItem" tabindex="-1" role="dialog" aria-labelledby="modalEditItemCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditItemCenterTitle">Cambiando nombre de: <span id="spnEditName"></span> </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="renameItem_FM" class="was-validated" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input id="renameId" class="form-control is-invalid" value="" name="renameId" hidden="">
+                    <input id="renameName" class="form-control is-invalid" value="" name="renameName" hidden="">
+                    <input id="renamePath" class="form-control is-invalid" value="" name="renamePath" hidden="">
+                    <input id="renameParent" class="form-control is-invalid" value="" name="renameParent" hidden="">
+                    <input id="renameType" class="form-control is-invalid" value="" name="renameType" hidden="">
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputNewName">Nuevo Nombre</span>
+                            </div>
+                            <input type="text" class="form-control" maxlength="50" minlength="3" aria-label="Sizing example input" aria-describedby="inputNewName" id="newNameItem" name="newNameItem">
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="sumbit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    {{-- Alert Error Carpeta --}}
     @if (Session::has('msj'))
         <script>                                
             Swal.fire('Error!', "{{Session::get('msj')}}", 'error');

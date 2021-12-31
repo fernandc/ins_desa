@@ -968,71 +968,51 @@ class App_Controller extends Controller {
         
         $gets = $request->input();
         $file = $request->file();
+        $path_folder = $gets["path_file"];
         $path ="";
         $id_materia = $gets["id_materia"];
         $id_curso_periodo = $gets["id_curso_periodo"];
         $year = $gets["year"];
         $dni = Session::get('account')['dni'];
-        // $folder = $gets["folder"];
-        dd($gets);
         if(isset($file)){
             foreach ($file as $fil) {
                 $extension = $fil->extension();
-                $name = "test.$extension";
-                $path = $fil->storeAs("public/FileManager/$year/$id_curso_periodo/$id_materia/", $name);
+                $name = $fil->getClientOriginalName();
+                
+                $duplicated = $this->duplicated_items($gets["path_file"],$name,"file");
+                if($duplicated){
+                    return back();
+                }
+                $path = $fil->storeAs("$path_folder", $name);
             }
         }
-
+        $app_status = getenv("APP_STATUS");
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => '',
-            'data' => [ 'name' => $name, "path" => $path, "type" => $extension, "dni" => $dni ,  ]
+            'method' => 'create_item_filemanager',
+            'data' => [ 'name' => $name, "path" => $path, "type" => $extension, "dni" => $dni , "app_status" => $app_status ]
         );
-        dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
-        return $data;
+        return back();
     }
-    // Recuperar archivo con Path
-    public function get_file_FM($path){
-        $path = str_replace("-","/",$path);
-        $ruta = storage_path("app/".$path);
-        if(!File::exists($ruta)){
-            abort(404);
-        }
-        $file = File::get($ruta);
-        $type = File::mimeType($ruta);
-        $response = Response::make($file,200);
-        $response->header("Content-Type",$type);
-        // dd(gettype($response));
-        return $response;
-    }
-
-    public function downloadFile(){
-        return null;
-    }
-    public function deleteFile(){
-        return null;
+    // Descargar Archivo
+    public function downloadFile_FM(Request $request){
+        $gets = $request->input();
+        $path = $gets["path"];
+        return Storage::download($path);
     }
     // Carpetas
     // Agregar Carpeta 
     public function addFolder_FM(Request $request){
         $gets = $request->input();
         $name = $gets["addFolder"];
-        $list_items = $this->list_files_fm($gets["path_folder"]);
-        $flag = false;
-        $msj = "Ya existe una carpeta con este nombre.";
-        foreach($list_items as $item){
-            if($item["name"] == $name){
-                $flag = true;
-            }
-        }
-        if($flag){
-            Session::put(["msj" => $msj]);
+
+        $duplicated = $this->duplicated_items($gets["path_folder"],$name,"folder");
+        if($duplicated){
             return back();
         }
-
         $id_materia = $gets["id_materia"];
         $id_curso_periodo = $gets["id_curso_periodo"];
         $year = $gets["year"];
@@ -1052,25 +1032,103 @@ class App_Controller extends Controller {
         $data = json_decode($response->body(), true);
         return back();
     }
+    // Listar archivos, carpetas 
     private function list_files_fm($path){
+        $app_status = getenv("APP_STATUS");
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'list_filemanager',
-            'data' => ["path" => $path]
+            'data' => ["path" => $path, "app_status" => $app_status]
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
         return $data;
     }
-    // Renombrar carpeta
-    public function renameFolder_FM(){
-        return null;
-    }
-    // Eliminar Carpeta
-    public function deleteFolder_FM(){
-        return null;
-    }
+    // Renombrar carpeta/archivo
+    public function renameItem_FM(Request $request){
+        $gets = $request->input();
+        // params
+        $id = $gets["renameId"];
+        $name = $gets["renameName"];
+        $path = $gets["renamePath"];
+        $parent_path = $gets["renameParent"];
+        $type = $gets["renameType"];
+        $newNameItem = $gets["newNameItem"];
+        $newPath = $parent_path."/".$newNameItem;
+        // dd($gets);
+        $duplicated = $this->duplicated_items($parent_path,$newNameItem,$type);
+        if($duplicated){
+            return back();
+        }
+        
+        // modificar nombre de carpeta
+        if($type == "folder"){
+            Storage::move($path, $newPath);
+        }else{
+            Storage::move($path, $newPath.".".$type);
+            $newPath = $newPath.".".$type;
+            $newNameItem = $newNameItem.".".$type;
+        }
 
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'rename_item',
+            'data' => ["path" => $newPath, "name" => $newNameItem , "id" => $id]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return back(); 
+        
+    }
+    // Evita que se dupliquen archivos o carpetas 
+    private function duplicated_items($path,$name,$type){
+        $list_items = $this->list_files_fm($path);
+        $flag = false;
+        
+        foreach($list_items as $item){
+            if($item["name"] == $name){
+                $flag = true;
+            }
+        }
+        if($type != "folder"){
+            if($flag){
+                $msj = "Ya existe un archivo con este nombre: ".$name;
+                Session::put(["msj" => $msj]);
+                return $flag;
+            }else{
+                return $flag;
+            }
+        }else{
+            if($flag){
+                $msj = "Ya existe una carpeta con este nombre: ".$name;
+                Session::put(["msj" => $msj]);
+                return $flag;
+            }
+            else{
+                return $flag;
+            }
+            
+        }
+    }
+    // Recuperar archivo con Path no utilizado 
+    public function get_file_FM($path){
+        $path = str_replace("-","/",$path);
+        $ruta = storage_path("app/".$path);
+        if(!File::exists($ruta)){
+            abort(404);
+        }
+        $file = File::get($ruta);
+        $type = File::mimeType($ruta);
+        $response = Response::make($file,200);
+        $response->header("Content-Type",$type);
+        // dd(gettype($response));
+        return $response;
+    }
+    // Eliminar Carpeta **Pendiente**
+    public function deleteItem_FM(){
+        return null;
+    }
     
 }
