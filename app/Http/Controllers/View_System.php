@@ -406,7 +406,7 @@ class View_System extends Controller {
                 case "fileManager":
                     $has_priv = false;
                     $check_all = false;
-                    $can_anr = false;
+                    
                     foreach ($privileges as $priv) {
                         if ($priv["id_privilege"] == 5) {
                             $has_priv = true;
@@ -427,42 +427,34 @@ class View_System extends Controller {
                         }else{
                             $class = $this->list_checked(Session::get('account')['dni']);
                         }
-                        if($this->isAdmin()){
-                            $can_anr = true;
-                        }
                         $curso = 0;
                         $alumnos = [];
                         $horarios = [];
                         $teacher = null;
                         $id_clase = null;
+                        $id_curso_periodo ="";
+                        $id_materia = "";
+                        $list_files_fm = [];
+
                         if(isset($_GET['curso'])){
-                            $curso = $_GET['curso'];
-                            if(isset($_GET['materia'])){
-                                $id_materia = $gets['materia'];
-                                $alumnos = $this->matriculas($curso);
-                                if(isset($_GET['profesor'])){
-                                    $teacher = $_GET['profesor'];
-                                }
-                                foreach ($class as $row) {
-                                    if($row["id_curso"] == $curso && $row["id_materia"] == $id_materia){
-                                        $horarios = $this->list_class_scheduler($row["id_curso_periodo"]);
-                                    }
-                                }
-                                foreach($horarios as $row){
-                                    if($row["id_materia"] == $id_materia){
-                                        $year = Session::get('period');
-                                        $enabled_days = $this->list_class_enabled_days($row["id_clase"],null,$year);
-                                        $assistance_data = $this->list_assistance_class($row["id_clase"],null);
-                                        $id_clase = $row["id_clase"];
-                                    }
+                            foreach ($class as $clase){
+                                if($clase["id_curso"] == $_GET['curso']){
+                                    $id_curso_periodo = $clase["id_curso_periodo"];
                                 }
                             }
                         }
-                        // Implementar al final 
-                        //  para revisar que alumnos han revisado los archivos
-                        // ->with("alumnos",$alumnos) 
-                        // 
-                        return view('ldc/file_manager/file_manager')->with("clases",$class)->with("id_clase",$id_clase)->with("horarios",$horarios)->with("anr",$can_anr);
+                        if(isset($_GET["materia"])){
+                            $id_materia = $_GET["materia"];
+                            $year = Session::get('period');
+                            $path = "public/FileManager/$year/$id_curso_periodo/$id_materia";
+                            if(isset($_GET["path"])){
+                                $path =  $_GET["path"];
+                            }
+                            $list_files_fm = $this->list_files_fm($path);
+                        }           
+                                     
+                        // dd($list_files_fm);
+                        return view('ldc/file_manager/file_manager')->with("clases",$class)->with("list_files_fm", $list_files_fm)->with("path", $path);
                     }
                     return redirect('/home');
                 case "tickets":
@@ -998,6 +990,18 @@ class View_System extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'list_schedule_course_by_user',
             'data' => ['dni' => Session::get('account')['dni']]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return $data;
+    }
+
+    private function list_files_fm($path){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'list_filemanager',
+            'data' => ["path" => $path]
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);

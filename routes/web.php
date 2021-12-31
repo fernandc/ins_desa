@@ -73,5 +73,6 @@ Route::get('/adm_schedule', [View_System::class, 'adm_schedule']);
 Route::get('/iframe_news', [View_System::class, 'iframe_news']);
 Route::post('/save_file_fm',[App_Controller::class, 'saveFile_FM']);
 Route::get('/get_file/{path}', [App_Controller::class, 'get_file_FM']);
+Route::post('/addFolder_FM', [App_Controller::class, 'addFolder_FM']);
 Route::get('/{param}',[View_System::class, 'main']);
 

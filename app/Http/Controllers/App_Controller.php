@@ -963,6 +963,7 @@ class App_Controller extends Controller {
         }
     }
     // File Manager
+    // Agregar Archivo 
     public function saveFile_FM(Request $request){
         
         $gets = $request->input();
@@ -971,26 +972,29 @@ class App_Controller extends Controller {
         $id_materia = $gets["id_materia"];
         $id_curso_periodo = $gets["id_curso_periodo"];
         $year = $gets["year"];
-        // dd($gets);
+        $dni = Session::get('account')['dni'];
+        // $folder = $gets["folder"];
+        dd($gets);
         if(isset($file)){
             foreach ($file as $fil) {
                 $extension = $fil->extension();
                 $name = "test.$extension";
-                $path = $fil->storeAs("public/FileManager/$year/$id_curso_periodo/$id_materia", $name);
+                $path = $fil->storeAs("public/FileManager/$year/$id_curso_periodo/$id_materia/", $name);
             }
         }
-        dd($path);
+
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => '',
-            'data' => [ 'year' => $year, 'id_materia' => $id_materia, 'id_curso_periodo' => $id_curso_periodo, 'path' => $path ]
+            'data' => [ 'name' => $name, "path" => $path, "type" => $extension, "dni" => $dni ,  ]
         );
-        
+        dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
         return $data;
     }
+    // Recuperar archivo con Path
     public function get_file_FM($path){
         $path = str_replace("-","/",$path);
         $ruta = storage_path("app/".$path);
@@ -1004,13 +1008,69 @@ class App_Controller extends Controller {
         // dd(gettype($response));
         return $response;
     }
+
     public function downloadFile(){
         return null;
     }
     public function deleteFile(){
         return null;
     }
-    public function getFiles(){
+    // Carpetas
+    // Agregar Carpeta 
+    public function addFolder_FM(Request $request){
+        $gets = $request->input();
+        $name = $gets["addFolder"];
+        $list_items = $this->list_files_fm($gets["path_folder"]);
+        $flag = false;
+        $msj = "Ya existe una carpeta con este nombre.";
+        foreach($list_items as $item){
+            if($item["name"] == $name){
+                $flag = true;
+            }
+        }
+        if($flag){
+            Session::put(["msj" => $msj]);
+            return back();
+        }
+
+        $id_materia = $gets["id_materia"];
+        $id_curso_periodo = $gets["id_curso_periodo"];
+        $year = $gets["year"];
+        $dni = Session::get('account')['dni'];
+        $path = $gets["path_folder"]."/$name";
+        Storage::makeDirectory($path);
+
+        $app_status = getenv("APP_STATUS");
+        $arr = array(   
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'create_item_filemanager',
+            'data' => ['name' => $name, "path" => $path, "type" => "folder", "dni" => $dni , "app_status" => $app_status]
+        );
+        
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return back();
+    }
+    private function list_files_fm($path){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'list_filemanager',
+            'data' => ["path" => $path]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return $data;
+    }
+    // Renombrar carpeta
+    public function renameFolder_FM(){
         return null;
     }
+    // Eliminar Carpeta
+    public function deleteFolder_FM(){
+        return null;
+    }
+
+    
 }

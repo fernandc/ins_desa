@@ -108,33 +108,8 @@ Gestor de Archivos
         </script>
     </ul>
     @php
-        $mes[1] = "Ene";
-        $mes[2] = "Feb";
-        $mes[3] = "Mar";
-        $mes[4] = "Abr";
-        $mes[5] = "May";
-        $mes[6] = "Jun";
-        $mes[7] = "Jul";
-        $mes[8] = "Ago";
-        $mes[9] = "Sep";
-        $mes[10] = "Oct";
-        $mes[11] = "Nov";
-        $mes[12] = "Dic";
-        $sem[1] = "Lu";
-        $sem[2] = "Ma";
-        $sem[3] = "Mi";
-        $sem[4] = "Ju";
-        $sem[5] = "Vi";
-        $sem[6] = "Sá";
-        $sem[0] = "Do";
+
         $year =  Session::get('period');
-        $month = 0;
-        $lastd = 0;
-        if(isset($_GET["mes"])){
-            $month = $_GET["mes"];
-            $lastd = date("t",strtotime("$year-$month"));
-        }
-        $contador = 0;
         $curso = "";
         $materias = [];
         $id_curso_periodo = "";
@@ -165,7 +140,7 @@ Gestor de Archivos
                                 @if (isset($_GET["materia"]) && array_search($materia,$materias)==$_GET["materia"])
                                     <a class="nav-link disabled text-primary">{{$materia}}</a>
                                 @else
-                                    <a class="nav-link text-secondary" href="fileManager?curso={{$active}}&materia={{array_search($materia,$materias)}}&mes={{date('m')}}">{{$materia}}</a>
+                                    <a class="nav-link text-secondary" href="fileManager?curso={{$active}}&materia={{array_search($materia,$materias)}}">{{$materia}}</a>
                                 @endif
                             @endforeach
                         </nav>
