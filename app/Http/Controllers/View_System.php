@@ -440,6 +440,17 @@ class View_System extends Controller {
                             $year = Session::get('period');
                             $path = "public/FileManager/$year/$id_curso/$id_materia";
                             if(isset($_GET["path"])){
+                                $flag = false;
+                                $explode = explode("/",$_GET["path"]);
+                                if($explode[3] != $_GET["curso"]){
+                                    $flag = true;
+                                }
+                                if($explode[4] != $_GET["materia"]){
+                                    $flag = true;
+                                }
+                                if($flag){
+                                    return redirect("/fileManager?curso=$id_curso&materia=$id_materia");
+                                }
                                 $path =  $_GET["path"];
                             }
                             $list_files_fm = $this->list_files_fm($path);

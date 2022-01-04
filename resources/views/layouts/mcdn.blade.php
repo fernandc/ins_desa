@@ -96,8 +96,10 @@ if(Session::has('period')){
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @if (in_array(5,$privileges) || in_array(9,$privileges))
                                 <a class="dropdown-item" href="checks_points"><i class="far fa-check-square"></i> Asistencias</a>
-                                <a class="dropdown-item" href="fileManager"><i class="far fa-folder-open" ></i> Archivos</a>
                                 {{-- style="display: none" --}}
+                            @endif
+                            @if (in_array(13,$privileges) || in_array(14,$privileges))
+                                <a class="dropdown-item" href="fileManager"><i class="far fa-folder-open" ></i> Archivos</a>
                             @endif
                         </div>
 
