@@ -966,38 +966,41 @@ class App_Controller extends Controller {
     // File Manager
     // Agregar Archivo 
     public function saveFile_FM(Request $request){
-        
-        $gets = $request->input();
-        $file = $request->file();
-        $path_folder = $gets["path_file"];
-        $path ="";
-        $id_materia = $gets["id_materia"];
-        $id_curso_periodo = $gets["id_curso"];
-        $year = $gets["year"];
-        $dni = Session::get('account')['dni'];
-  
-        if(isset($file)){
-            foreach ($file as $fil) {
-                $extension = $fil->extension();
-                $name = $fil->getClientOriginalName();
-                
-                $duplicated = $this->duplicated_items($gets["path_file"],$name,"file");
-                if($duplicated){
-                    return back();
+        if(isset(Session::get('account')['dni'])){
+            $gets = $request->input();
+            $file = $request->file();
+            $path_folder = $gets["path_file"];
+            $path ="";
+            $id_materia = $gets["id_materia"];
+            $id_curso_periodo = $gets["id_curso"];
+            $year = $gets["year"];
+            $dni = Session::get('account')['dni'];
+      
+            if(isset($file)){
+                foreach ($file as $fil) {
+                    $extension = $fil->extension();
+                    $name = $fil->getClientOriginalName();
+                    
+                    $duplicated = $this->duplicated_items($gets["path_file"],$name,"file");
+                    if($duplicated){
+                        return back();
+                    }
+                    $path = $fil->storeAs("$path_folder", $name);
                 }
-                $path = $fil->storeAs("$path_folder", $name);
             }
+            $app_status = getenv("APP_STATUS");
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'create_item_filemanager',
+                'data' => [ 'name' => $name, "path" => $path, "type" => $extension, "dni" => $dni , "app_status" => $app_status ]
+            );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true);
+            return back();
+        }else{
+            return "SESSION EXPIRED";
         }
-        $app_status = getenv("APP_STATUS");
-        $arr = array(
-            'institution' => getenv("APP_NAME"),
-            'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => 'create_item_filemanager',
-            'data' => [ 'name' => $name, "path" => $path, "type" => $extension, "dni" => $dni , "app_status" => $app_status ]
-        );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-        $data = json_decode($response->body(), true);
-        return back();
     }
     // Descargar Archivo
     public function downloadFile_FM(Request $request){
@@ -1008,32 +1011,37 @@ class App_Controller extends Controller {
     // Carpetas
     // Agregar Carpeta 
     public function addFolder_FM(Request $request){
-        $gets = $request->input();
-        $name = $gets["addFolder"];
-        
-        $duplicated = $this->duplicated_items($gets["path_folder"],$name,"folder");
-        if($duplicated){
+        if(isset(Session::get('account')['dni'])){
+            $gets = $request->input();
+            $name = $gets["addFolder"];
+            
+            $duplicated = $this->duplicated_items($gets["path_folder"],$name,"folder");
+            if($duplicated){
+                return back();
+            }
+            
+            $id_materia = $gets["id_materia"];
+            $id_curso_periodo = $gets["id_curso"];
+            $year = $gets["year"];
+            $dni = Session::get('account')['dni'];
+            $path = $gets["path_folder"]."/$name";
+            Storage::makeDirectory($path);
+    
+            $app_status = getenv("APP_STATUS");
+            $arr = array(   
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'create_item_filemanager',
+                'data' => ['name' => $name, "path" => $path, "type" => "folder", "dni" => $dni , "app_status" => $app_status]
+            );
+            
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true);
             return back();
+        }else{
+            return "SESSION EXPIRED";
         }
         
-        $id_materia = $gets["id_materia"];
-        $id_curso_periodo = $gets["id_curso"];
-        $year = $gets["year"];
-        $dni = Session::get('account')['dni'];
-        $path = $gets["path_folder"]."/$name";
-        Storage::makeDirectory($path);
-
-        $app_status = getenv("APP_STATUS");
-        $arr = array(   
-            'institution' => getenv("APP_NAME"),
-            'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => 'create_item_filemanager',
-            'data' => ['name' => $name, "path" => $path, "type" => "folder", "dni" => $dni , "app_status" => $app_status]
-        );
-        
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-        $data = json_decode($response->body(), true);
-        return back();
     }
     // Listar archivos, carpetas 
     private function list_files_fm($path){
@@ -1050,43 +1058,41 @@ class App_Controller extends Controller {
     }
     // Renombrar carpeta/archivo
     public function renameItem_FM(Request $request){
-        $gets = $request->input();
-        // params
-        $id = $gets["renameId"];
-        $name = $gets["renameName"];
-        $path = $gets["renamePath"];
-        $parent_path = $gets["renameParent"];
-        $type = $gets["renameType"];
-        $newNameItem = $gets["newNameItem"];
-        $newPath = $parent_path."/".$newNameItem;
-        // dd($gets);
-        
-        
-
-
-        $duplicated = $this->duplicated_items($parent_path,$newNameItem,$type);
-        if($duplicated){
-            return back();
-        }
-        
-        // modificar nombre de carpeta
-        if($type == "folder"){
-            Storage::move($path, $newPath);
+        if(isset(Session::get('account')['dni'])){
+            $gets = $request->input();
+            // params
+            $id = $gets["renameId"];
+            $name = $gets["renameName"];
+            $path = $gets["renamePath"];
+            $parent_path = $gets["renameParent"];
+            $type = $gets["renameType"];
+            $newNameItem = $gets["newNameItem"];
+            $newPath = $parent_path."/".$newNameItem;
+            $duplicated = $this->duplicated_items($parent_path,$newNameItem,$type);
+            if($duplicated){
+                return back();
+            }        
+            // modificar nombre de carpeta
+            if($type == "folder"){
+                Storage::move($path, $newPath);
+            }else{
+                Storage::move($path, $newPath.".".$type);
+                $newPath = $newPath.".".$type;
+                $newNameItem = $newNameItem.".".$type;
+            }
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'rename_item',
+                'data' => ["path" => $newPath, "name" => $newNameItem , "id" => $id]
+            );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true);
+            return back(); 
         }else{
-            Storage::move($path, $newPath.".".$type);
-            $newPath = $newPath.".".$type;
-            $newNameItem = $newNameItem.".".$type;
+            return "SESSION EXPIRED";
         }
-
-        $arr = array(
-            'institution' => getenv("APP_NAME"),
-            'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => 'rename_item',
-            'data' => ["path" => $newPath, "name" => $newNameItem , "id" => $id]
-        );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-        $data = json_decode($response->body(), true);
-        return back(); 
+        
         
     }
     // Evita que se dupliquen archivos o carpetas 
@@ -1137,8 +1143,6 @@ class App_Controller extends Controller {
     public function deleteItem_FM(){
         return null;
     }
-    public function invalidChars(){
-        
-    }
+
     
 }
