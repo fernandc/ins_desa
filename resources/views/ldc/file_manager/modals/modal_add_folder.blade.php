@@ -17,7 +17,23 @@
             </div>
             <input type="text" class="form-control" maxlength="50" minlength="3" required aria-label="Sizing example input" aria-describedby="inputNombreCarpeta" id="addFolder" name="addFolder">                            
             <script>
-
+                // Validation Chars
+                $('#addFolder').bind('keypress', function(e) {
+                    console.log( e.which );
+                    if($('#addFolder').val().length >= 0){
+                        var k = e.which;
+                        var ok = (k == 32) || //space 
+                                (k > 47 && k < 58)|| // 0-9
+                                (k >= 65 && k <= 90) || // A-Z
+                                (k > 96 && k < 123) ||// a-z
+                                (k == 241 || k == 209) || //ñ Ñ
+                                (k == 225 || k == 233 || k == 237 || k == 243 || k == 250) || //áéíóú
+                                (k == 193 || k == 201 || k == 205 || k == 211 || k == 218); //ÁÉÍÓÚ
+                        if (!ok){
+                            e.preventDefault();
+                        }
+                    }
+                });
             </script>
         </div>
     </div>
