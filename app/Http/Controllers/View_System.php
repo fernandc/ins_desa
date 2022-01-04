@@ -408,15 +408,11 @@ class View_System extends Controller {
                     $check_all = false;
                     
                     foreach ($privileges as $priv) {
-                        if ($priv["id_privilege"] == 5) {
+                        if ($priv["id_privilege"] == 13) {
                             $has_priv = true;
                         }
-                        if($priv["id_privilege"] == 9){
+                        if($priv["id_privilege"] == 14){
                             $check_all = true;
-                            $has_priv = true;
-                        }
-                        if($priv["id_privilege"] == 10){
-                            $can_anr = true;
                             $has_priv = true;
                         }
                     }
