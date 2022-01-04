@@ -121,8 +121,7 @@ Gestor de Archivos
                 if($clase["id_curso"] == $_GET['curso']){
                     $materias[$clase["id_materia"]] = $clase["materia"];
                     $curso = $clase["curso"];
-                    $id_curso_periodo = $clase["id_curso_periodo"];
-                    
+                    $id_curso =$_GET['curso'];                    
                 }
             }
         @endphp

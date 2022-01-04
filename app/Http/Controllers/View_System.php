@@ -432,21 +432,17 @@ class View_System extends Controller {
                         $horarios = [];
                         $teacher = null;
                         $id_clase = null;
-                        $id_curso_periodo ="";
+                        $id_curso ="";
                         $id_materia = "";
                         $list_files_fm = [];
 
                         if(isset($_GET['curso'])){
-                            foreach ($class as $clase){
-                                if($clase["id_curso"] == $_GET['curso']){
-                                    $id_curso_periodo = $clase["id_curso_periodo"];
-                                }
-                            }
+                            $id_curso = $_GET['curso'];
                         }
                         if(isset($_GET["materia"])){
                             $id_materia = $_GET["materia"];
                             $year = Session::get('period');
-                            $path = "public/FileManager/$year/$id_curso_periodo/$id_materia";
+                            $path = "public/FileManager/$year/$id_curso/$id_materia";
                             if(isset($_GET["path"])){
                                 $path =  $_GET["path"];
                             }

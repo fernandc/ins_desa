@@ -15,6 +15,12 @@
                 </button> 
             </div>
         </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                @include('ldc.file_manager.nav_breadcrumb_file_manager')
+            </div>
+        </div>
     </div>
     
     <div class="card-body table-responsive" style="padding: 0px">
@@ -36,7 +42,7 @@
                         </thead>
                         <tbody>
 
-                            @if (isset($_GET["path"]) && (strlen("public/FileManager/$year/$id_curso_periodo/".$_GET['materia']) < strlen($_GET['path'])) )
+                            @if (isset($_GET["path"]) && (strlen("public/FileManager/$year/$id_curso/".$_GET['materia']) < strlen($_GET['path'])) )
                                 
                             <tr style="text-align:center;">                                    
                                 <td>                       
@@ -102,60 +108,7 @@
     <div class="modal fade" id="modalAddArchivo"  tabindex="-1" role="dialog" aria-labelledby="modalAddArchivoCenterTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAddArchivoCenterTitle">Agregar Nuevo Archivo</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="save_file_fm" id="newFile" class="was-validated" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input id="file_id_materia" class="form-control is-invalid" value="{{$_GET["materia"]}}" name="id_materia" hidden="">
-                    <input id="file_id_curso_periodo" class="form-control is-invalid" value="{{$id_curso_periodo}}" name="id_curso_periodo" hidden="">
-                    <input id="file_year" class="form-control is-invalid" value="{{$year}}" name="year" hidden="">
-                    <input id="file_path_file" class="form-control is-invalid" value="{{$path}}" name="path_file" hidden="">
-                    
-                    <div class="modal-body">
-                        
-                        <div class="form-group">
-                            <div class="custom-file" style="width:100%" >
-                                <input type="file" class="custom-file-input" autocomplete="off" id="fileAdded" name="fileAdded"  required="" lang="es">
-                                <label id="addFileLabel" for="fileAdded" class="custom-file-label" lang="es" >
-                                    <i class="fa fa-cloud-upload"></i>Subir archivo...
-                                </label>
-                                <hr>
-                            </div>                                
-                        </div>                        
-                    </div>
-                    {{-- Image Functions --}}
-                    <script>
-                        // Send vaccine file
-                        function file_extension(filename){
-                            return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename)[0] : undefined;
-                        }
-                        $('#fileAdded').change(function() {
-                            var i = $(this).prev('label').clone();
-                            var file = $('#fileAdded')[0].files[0].name;
-                            var extension = file_extension(file);
-                            var extensiones = ["pdf","jpg","png","jpeg","xlsx","docx","doc","dot","xls","txt","rar","zip","ppt","pptx","mp3","mp4","avi","csv","gif","m4a","mov","wav","wma"];
-                            if(extensiones.includes(extension)){                                
-                                $("#saveNewFile").attr("disabled",false);
-                                $("#addFileLabel").html(file);
-                            }else{
-                                Swal.fire('Error!', 'el archivo no es válido.', 'error');
-                                $("#saveNewFile").attr("disabled",true);
-                                file = null;
-                            }
-                            $(this).prev('label').text(file);
-                            console.log(file);
-                        });
-
-                    </script>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="closeModalBtn" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-success" id="saveNewFile" disabled >Guardar</button>
-                    </div>
-                </form>
+                @include('ldc.file_manager.modals.modal_add_file')
             </div>
         </div>
     </div>
@@ -163,31 +116,7 @@
     <div class="modal fade" id="modalAddCarpeta" tabindex="-1" role="dialog" aria-labelledby="modalAddCarpetaCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAddCarpetaCenterTitle">Agregar Nueva Carpeta</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="addFolder_FM" class="was-validated" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input id="folder_id_materia" class="form-control is-invalid" value="{{$_GET["materia"]}}" name="id_materia" hidden="">
-                    <input id="folder_id_curso_periodo" class="form-control is-invalid" value="{{$id_curso_periodo}}" name="id_curso_periodo" hidden="">
-                    <input id="folder_year" class="form-control is-invalid" value="{{$year}}" name="year" hidden="">
-                    <input id="folder_path_file" class="form-control is-invalid" value="{{$path}}" name="path_folder" hidden="">
-                    <div class="modal-body">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputNombreCarpeta">Nombre</span>
-                            </div>
-                            <input type="text" class="form-control" maxlength="50" minlength="3" required aria-label="Sizing example input" aria-describedby="inputNombreCarpeta" id="addFolder" name="addFolder">                            
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="sumbit" class="btn btn-primary">Guardar</button>
-                    </div>
-                </form>
+                @include('ldc.file_manager.modals.modal_add_folder')
             </div>
         </div>
     </div>
@@ -210,46 +139,17 @@
             }else{
                 $("#newNameItem").val(name.substring(0,name.length - type.length - 1));
             }
+            
         });
     </script>
     <div class="modal fade" id="modalEditItem" tabindex="-1" role="dialog" aria-labelledby="modalEditItemCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditItemCenterTitle">Cambiando nombre de: <span id="spnEditName"></span> </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="renameItem_FM" class="was-validated" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input id="renameId" class="form-control is-invalid" value="" name="renameId" hidden="">
-                    <input id="renameName" class="form-control is-invalid" value="" name="renameName" hidden="">
-                    <input id="renamePath" class="form-control is-invalid" value="" name="renamePath" hidden="">
-                    <input id="renameParent" class="form-control is-invalid" value="" name="renameParent" hidden="">
-                    <input id="renameType" class="form-control is-invalid" value="" name="renameType" hidden="">
-                    <div class="modal-body">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputNewName">Nuevo Nombre</span>
-                            </div>
-                            <input type="text" class="form-control" maxlength="50" minlength="3" aria-label="Sizing example input" aria-describedby="inputNewName" id="newNameItem" name="newNameItem">
-                        </div>
-                    </div>
-                    
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="sumbit" class="btn btn-primary">Guardar</button>
-                    </div>
-                </form>
+                @include('ldc.file_manager.modals.modal_edit_item')
             </div>
         </div>
     </div>
-
-
-
-
-    {{-- Alert Error Carpeta --}}
+    {{-- Alert Error Carpeta/Archivo --}}
     @if (Session::has('msj'))
         <script>                                
             Swal.fire('Error!', "{{Session::get('msj')}}", 'error');

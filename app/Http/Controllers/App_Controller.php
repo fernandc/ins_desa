@@ -962,6 +962,7 @@ class App_Controller extends Controller {
             $data = json_decode($response->body(), true);
         }
     }
+
     // File Manager
     // Agregar Archivo 
     public function saveFile_FM(Request $request){
@@ -971,9 +972,10 @@ class App_Controller extends Controller {
         $path_folder = $gets["path_file"];
         $path ="";
         $id_materia = $gets["id_materia"];
-        $id_curso_periodo = $gets["id_curso_periodo"];
+        $id_curso_periodo = $gets["id_curso"];
         $year = $gets["year"];
         $dni = Session::get('account')['dni'];
+  
         if(isset($file)){
             foreach ($file as $fil) {
                 $extension = $fil->extension();
@@ -1008,13 +1010,14 @@ class App_Controller extends Controller {
     public function addFolder_FM(Request $request){
         $gets = $request->input();
         $name = $gets["addFolder"];
-
+        
         $duplicated = $this->duplicated_items($gets["path_folder"],$name,"folder");
         if($duplicated){
             return back();
         }
+        
         $id_materia = $gets["id_materia"];
-        $id_curso_periodo = $gets["id_curso_periodo"];
+        $id_curso_periodo = $gets["id_curso"];
         $year = $gets["year"];
         $dni = Session::get('account')['dni'];
         $path = $gets["path_folder"]."/$name";
@@ -1057,6 +1060,10 @@ class App_Controller extends Controller {
         $newNameItem = $gets["newNameItem"];
         $newPath = $parent_path."/".$newNameItem;
         // dd($gets);
+        
+        
+
+
         $duplicated = $this->duplicated_items($parent_path,$newNameItem,$type);
         if($duplicated){
             return back();
@@ -1129,6 +1136,9 @@ class App_Controller extends Controller {
     // Eliminar Carpeta **Pendiente**
     public function deleteItem_FM(){
         return null;
+    }
+    public function invalidChars(){
+        
     }
     
 }
