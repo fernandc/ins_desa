@@ -3,17 +3,21 @@
         <div>
             <h3>Gestor de Archivos <i>{{$materias[$_GET["materia"]]}}</i> </h3>
         </div>
-        <div class="row">
-            <div class="class col-md-6">
+
+        <div class="row mt-3">
+            <div class="col-md-2"></div>
+            <div class="class col-md-3">
             <button class="btn btn-md bg-success text-white" data-toggle="modal" data-target="#modalAddArchivo">
                     <i class="fas fa-plus-circle"></i> Agregar Nuevo Archivo
                 </button> 
             </div>
-            <div class="class col-md-6">
+            <div class="col-md-2"></div>
+            <div class="class col-md-3">
                 <button class="btn btn-md bg-info text-white"  data-toggle="modal" data-target="#modalAddCarpeta">
                     <i class="fas fa-plus-circle"></i> Agregar Nueva Carpeta
                 </button> 
             </div>
+            <div class="col-md-2"></div>
         </div>
         <br>
         <div class="row">
