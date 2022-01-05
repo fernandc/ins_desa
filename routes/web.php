@@ -76,5 +76,6 @@ Route::get('/get_file/{path}', [App_Controller::class, 'get_file_FM']);
 Route::post('/addFolder_FM', [App_Controller::class, 'addFolder_FM']);
 Route::post('/renameItem_FM', [App_Controller::class, 'renameItem_FM']);
 Route::get('/downloadFile_FM', [App_Controller::class, 'downloadFile_FM']);
+Route::get('/deleteFile_FM', [App_Controller::class, 'deleteItem_FM']);
 Route::get('/{param}',[View_System::class, 'main']);
 

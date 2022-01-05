@@ -962,7 +962,6 @@ class App_Controller extends Controller {
             $data = json_decode($response->body(), true);
         }
     }
-
     // File Manager
     // Agregar Archivo 
     public function saveFile_FM(Request $request){
@@ -1008,12 +1007,15 @@ class App_Controller extends Controller {
         $path = $gets["path"];
         return Storage::download($path);
     }
-    // Carpetas
+    //Descargar carpeta de archivos como zip **PENDIENTE**
+    public function downloadFolder_FM(Request $request){
+        //Descargar carpeta de archivos 
+    }
     // Agregar Carpeta 
     public function addFolder_FM(Request $request){
         if(isset(Session::get('account')['dni'])){
             $gets = $request->input();
-            $name = $gets["addFolder"];
+            $name = str_replace("/"," ",$gets["addFolder"]);
             
             $duplicated = $this->duplicated_items($gets["path_folder"],$name,"folder");
             if($duplicated){
@@ -1066,7 +1068,7 @@ class App_Controller extends Controller {
             $path = $gets["renamePath"];
             $parent_path = $gets["renameParent"];
             $type = $gets["renameType"];
-            $newNameItem = $gets["newNameItem"];
+            $newNameItem = str_replace("/"," ",$gets["newNameItem"]);
             $newPath = $parent_path."/".$newNameItem;
             $duplicated = $this->duplicated_items($parent_path,$newNameItem,$type);
             if($duplicated){
@@ -1092,8 +1094,6 @@ class App_Controller extends Controller {
         }else{
             return "SESSION EXPIRED";
         }
-        
-        
     }
     // Evita que se dupliquen archivos o carpetas 
     private function duplicated_items($path,$name,$type){
@@ -1139,10 +1139,41 @@ class App_Controller extends Controller {
         // dd(gettype($response));
         return $response;
     }
-    // Eliminar Carpeta **Pendiente**
-    public function deleteItem_FM(){
-        return null;
+    // Eliminar Item 
+    public function deleteItem_FM(Request $request){
+        if(isset(Session::get('account')['dni'])){
+            $gets = $request->input();
+            $id_item = $gets["id_item"];
+            $dni =  Session::get('account')['dni'];        
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'delete_item_filemanager',
+                'data' => ["id_item" => $id_item, "dni" => $dni]
+            );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true);
+            if($data[0]['type'] == 'folder'){            
+                Storage::deleteDirectory($data[0]["path"]);
+            }else{
+                Storage::delete($data[0]["path"]);
+            }    
+            return back();
+        }else{
+            return "SESSION EXPIRED";
+        }
     }
-
-    
+    // Valida que un Path exista en la DB
+    private function validate_path($path){        
+        $app_status = getenv("APP_STATUS");
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'validate_filemanager_path',
+            'data' => ["path" => $path, "app_status" => $app_status ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return $data;
+    }
 }

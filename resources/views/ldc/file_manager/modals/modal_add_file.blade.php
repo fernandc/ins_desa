@@ -43,7 +43,6 @@
                 file = null;
             }
             $(this).prev('label').text(file);
-            console.log(file);
         });
 
     </script>

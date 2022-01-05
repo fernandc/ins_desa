@@ -20,7 +20,6 @@
             <script>
                 // Validation Chars
                 $('#newNameItem').bind('keypress', function(e) {
-                    console.log( e.which );
                     if($('#newNameItem').val().length >= 0){
                         var k = e.which;
                         var ok = (k == 32) || //space 

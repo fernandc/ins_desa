@@ -19,7 +19,6 @@
             <script>
                 // Validation Chars
                 $('#addFolder').bind('keypress', function(e) {
-                    console.log( e.which );
                     if($('#addFolder').val().length >= 0){
                         var k = e.which;
                         var ok = (k == 32) || //space 

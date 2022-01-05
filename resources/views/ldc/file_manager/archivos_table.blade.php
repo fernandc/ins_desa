@@ -37,7 +37,7 @@
                             <th scope="col">Creador</th>
                             <th scope="col">Editar</th>
                             <th scope="col">Descargar</th>
-                            {{-- <th scope="col">Eliminar</th> --}}
+                            <th scope="col">Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,7 +53,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                {{-- <td></td> --}}
+                                <td></td>
                             </tr>
                             @endif
                             @foreach ($list_files_fm as $item)
@@ -92,9 +92,61 @@
                                             </a>                                              
                                         @endif
                                     </td>
-                                    {{-- <td>
-                                        <button class="btn btn-md bg-danger text-white" hidden="true"> <i class="fas fa-trash"></i> </button>                    
-                                    </td> --}}
+                                    <td>
+                                        <a class="btn btn-md bg-danger text-white" id="deleteBtn{{$item["id"]}}"> <i class="fas fa-trash"></i> </a>                    
+                                    </td>
+                                    <script>
+                                        $("#deleteBtn{{$item["id"]}}").click(function(){
+                                            if("{{$item["files_q"]}}" != 0){
+                                                Swal.fire({
+                                                    title: 'Quieres borrar esta carpeta?',
+                                                    text: "Se perdera toda la información contenida en ella!",
+                                                    icon: 'warning',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#d33',
+                                                    cancelButtonColor: '#99A3A4',
+                                                    confirmButtonText: 'Si, Borrar!',
+                                                    cancelButtonText: 'Cancelar'
+                                                    }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        window.location.href = '/deleteFile_FM?id_item={{$item["id"]}}';
+                                                        
+                                                    }
+                                                })
+                                            }else{
+                                                if("{{$item["type"]}}" == "folder"){
+                                                    Swal.fire({
+                                                        title: 'Quieres borrar esta carpeta?',
+                                                        icon: 'warning',
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: '#d33',
+                                                        cancelButtonColor: '#99A3A4',
+                                                        confirmButtonText: 'Si, Borrar!',
+                                                        cancelButtonText: 'Cancelar'
+                                                        }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            window.location.href = '/deleteFile_FM?id_item={{$item["id"]}}';                                                        
+                                                        }
+                                                    })
+                                                }else{
+                                                    Swal.fire({
+                                                        title: 'Quieres borrar este archivo?',
+                                                        icon: 'warning',
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: '#d33',
+                                                        cancelButtonColor: '#99A3A4',
+                                                        confirmButtonText: 'Si, Borrar!',
+                                                        cancelButtonText: 'Cancelar'
+                                                        }).then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            window.location.href = '/deleteFile_FM?id_item={{$item["id"]}}';                                                        
+                                                        }
+                                                    })
+                                                }
+                                            }  
+                                        })
+
+                                    </script>  
                                 </tr>
                             @endforeach
                         </tbody>

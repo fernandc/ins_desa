@@ -431,7 +431,7 @@ class View_System extends Controller {
                         $id_curso ="";
                         $id_materia = "";
                         $list_files_fm = [];
-
+                        // dd($class);
                         if(isset($_GET['curso'])){
                             $id_curso = $_GET['curso'];
                         }
@@ -452,6 +452,11 @@ class View_System extends Controller {
                                     return redirect("/fileManager?curso=$id_curso&materia=$id_materia");
                                 }
                                 $path =  $_GET["path"];
+                                $validation = $this->validate_path($path);
+                                // dd($validation);
+                                if($validation == "NO EXISTE"){
+                                    return redirect("/fileManager?curso=$id_curso&materia=$id_materia");
+                                }
                             }
                             $list_files_fm = $this->list_files_fm($path);
                         }           
@@ -704,7 +709,6 @@ class View_System extends Controller {
         return view("includes/mdl_privileges")->with("all_privileges",$all_privileges)->with("user_privileges",$user_privileges)->with("dni",$dni);
     }
     //schedule
-    
     public function show_block(Request $request){
         if(Session::get('account')['is_admin']=='YES'){
             $gets = $request->input();
@@ -998,7 +1002,6 @@ class View_System extends Controller {
         $data = json_decode($response->body(), true);
         return $data;
     }
-
     private function list_files_fm($path){
         $app_status = getenv("APP_STATUS");
         $arr = array(
@@ -1011,5 +1014,16 @@ class View_System extends Controller {
         $data = json_decode($response->body(), true);
         return $data;
     }
-    
+    private function validate_path($path){        
+        $app_status = getenv("APP_STATUS");
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'validate_filemanager_path',
+            'data' => ["path" => $path, "app_status" => $app_status ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return $data;
+    }
 }
