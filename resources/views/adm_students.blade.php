@@ -167,7 +167,7 @@ Admin Cursos
                     <th scope="col"><i class="far fa-id-badge"></i></th>
                     <th scope="col">Centro de Padres</th>
                     <th scope="col">Matriculado</th>
-                    <th scope="col">Repitente</th>
+                    <th scope="col">Repitiente</th>
                     <th scope="col">Nuevo</th>
                     <th scope="col">Fecha de Retiro</th>
                     <th scope="col">Ficha</th>

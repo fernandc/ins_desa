@@ -138,7 +138,7 @@ const Toast = Swal.mixin({
                                 <span class="badge badge-primary"  data-toggle="tooltip" data-placement="top" title="Nuevo">N</span>
                             @endif
                             @if ($row["es_repitente"] == "si")
-                                <span class="badge badge-danger"  data-toggle="tooltip" data-placement="top" title="Repitente">R</span>
+                                <span class="badge badge-danger"  data-toggle="tooltip" data-placement="top" title="Repitiente">R</span>
                             @endif
                             @if ($row["fecha_retiro"] != null)
                                 <span class="badge badge-warning"  data-toggle="tooltip" data-placement="top" title="Retirado: {{$row["fecha_retiro"]}}">R</span>

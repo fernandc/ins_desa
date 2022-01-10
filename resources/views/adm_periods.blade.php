@@ -44,7 +44,6 @@ Administrar Periodos
             <thead class="thead-light">
                 <tr>
                     <th scope="col">Año</th>
-                    <th scope="col">Cantidad Estudiantes</th>
                     <th scope="col">Estado</th>
                 </tr>
             </thead>
@@ -52,7 +51,6 @@ Administrar Periodos
                 @foreach($periods["list_periods"] as $row)
                     <tr>
                         <td>{{$row["year"]}}</td>
-                        <td>45658</td>
                         <td>
                             @if($row["status"] == 1)
                                 <a href="change_period?year={{$row["year"]}}" class="btn btn-primary btn-sm">Activado</a>    
