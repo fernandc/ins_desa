@@ -163,7 +163,7 @@ if(Session::has('period')){
                     </li>
                     @endif
                 </ul>
-                <a class="btn btn-light mr-2" >
+                <a class="btn btn-light mr-2" href="my_info" >
                     <img class="rounded-circle" src="{{ Session::get('account')["url_img"]}}" rel="Profile" height="22px" style="margin-top: -6px;margin-left: -4px;margin-right: 2px;">
                     {{ Session::get('account')["full_name"]}}
                 </a> 

@@ -1176,4 +1176,9 @@ class App_Controller extends Controller {
         $data = json_decode($response->body(), true);
         return $data;
     }
+    // Guarda informacion importante del usuario
+    public function save_user_info(Request $request){
+        $gets = $request->input();
+        dd($gets);
+    }
 }

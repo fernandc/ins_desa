@@ -492,6 +492,9 @@ class View_System extends Controller {
                         
                     }
                     return view('tickets')->with('tickets',$data)->with('all_tickets',$all_tickets);
+                case "my_info":
+                    return view('user/user_form');
+
                 default:
                     return view('not_found')->with("path",$path);
             }
