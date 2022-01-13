@@ -1,13 +1,5 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            
-            <select class="form-control form-control-sm" name="" id="" data-toggle="tooltip" data-placement="top" title="Seleccione año">                
-                <option value="">2020</option>
-                <option value="">2021</option>
-                <option value="">2022</option>
-            </select>
-        </li>
         @if (isset($_GET["path"]))
             @php                                
                 $breadPath = $_GET["path"];

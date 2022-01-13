@@ -30,8 +30,7 @@
     <div class="card-body table-responsive" style="padding: 0px">
         <div class="row" style="margin: 0px">
             <div class="class col-md-12"  >
-                <div class="table-responsive">      
-
+                <div class="table-responsive mt-3">
                     <table class="table table-hover" id="gestorArchivosTable">
                         <thead class="thead-dark">
                             <tr style="text-align:center;">

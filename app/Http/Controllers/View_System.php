@@ -124,7 +124,8 @@ class View_System extends Controller {
                         $list_to = $this->list_to();
                         $excCourses = array();
                         if(!$this->isAdmin()){
-                            $class = $this->list_checked(Session::get('account')['dni']);
+                            $period = $this->periods()["active_period"];
+                            $class = $this->list_checked(Session::get('account')['dni'],$period);
                             //dd($class);
                             foreach($class as $row){
                                 array_push($excCourses,$row["id_curso_periodo"]);
@@ -144,7 +145,8 @@ class View_System extends Controller {
                         }
                     }
                     if($this->isAdmin() || $has_priv){
-                        $class = $this->list_checked("all");
+                        $period = $this->periods()["active_period"];
+                        $class = $this->list_checked("all",$period);
                         $curso = 0;
                         $alumnos = [];
                         $enabled_days = [];
@@ -168,7 +170,8 @@ class View_System extends Controller {
                         }
                     }
                     if($this->isAdmin() || $has_priv){
-                        $class = $this->list_checked("all");
+                        $period = $this->periods()["active_period"];
+                        $class = $this->list_checked("all",$period);
                         $curso = 0;
                         $alumnos = [];
                         $enabled_days = [];
@@ -361,10 +364,11 @@ class View_System extends Controller {
                     }
                     if($this->isAdmin() || $has_priv){
                         $class = [];
+                        $period = $this->periods()["active_period"];
                         if($this->isAdmin() || $check_all){
-                            $class = $this->list_checked("all");
+                            $class = $this->list_checked("all",$period);
                         }else{
-                            $class = $this->list_checked(Session::get('account')['dni']);
+                            $class = $this->list_checked(Session::get('account')['dni'],$period);
                         }
                         if($this->isAdmin()){
                             $can_anr = true;
@@ -418,10 +422,16 @@ class View_System extends Controller {
                     }
                     if($this->isAdmin() || $has_priv){
                         $class = [];
-                        if($this->isAdmin() || $check_all){
-                            $class = $this->list_checked("all");
+                        $year = "";
+                        if(isset($_GET["year"])){
+                            $year = $_GET["year"];
                         }else{
-                            $class = $this->list_checked(Session::get('account')['dni']);
+                            $year = Session::get('period');
+                        }
+                        if($this->isAdmin() || $check_all){
+                            $class = $this->list_checked("all",$year);
+                        }else{
+                            $class = $this->list_checked(Session::get('account')['dni'],$year);
                         }
                         $curso = 0;
                         $alumnos = [];
@@ -432,12 +442,14 @@ class View_System extends Controller {
                         $id_materia = "";
                         $list_files_fm = [];
                         // dd($class);
+                        $periods = [];
+                        
                         if(isset($_GET['curso'])){
                             $id_curso = $_GET['curso'];
+                            $periods = $this->periods();
                         }
                         if(isset($_GET["materia"])){
                             $id_materia = $_GET["materia"];
-                            $year = Session::get('period');
                             $path = "public/FileManager/$year/$id_curso/$id_materia";
                             if(isset($_GET["path"])){
                                 $flag = false;
@@ -460,9 +472,8 @@ class View_System extends Controller {
                             }
                             $list_files_fm = $this->list_files_fm($path);
                         }           
-                                     
                         // dd($list_files_fm);
-                        return view('ldc/file_manager/file_manager')->with("clases",$class)->with("list_files_fm", $list_files_fm)->with("path", $path);
+                        return view('ldc/file_manager/file_manager')->with("clases",$class)->with("list_files_fm", $list_files_fm)->with("path", $path)->with("selected_year",$year)->with("periods",$periods);
                     }
                     return redirect('/home');
                 case "tickets":
@@ -494,7 +505,6 @@ class View_System extends Controller {
                     return view('tickets')->with('tickets',$data)->with('all_tickets',$all_tickets);
                 case "my_info":
                     return view('user/user_form');
-
                 default:
                     return view('not_found')->with("path",$path);
             }
@@ -785,7 +795,8 @@ class View_System extends Controller {
             $gets = $request->input();
             $full_name = $gets["full_name"];
             $dni = $gets["dni"];
-            $data = $this->list_checked($dni);
+            $period = $this->periods()["active_period"];
+            $data = $this->list_checked($dni,$period);
             //dd($data); 
             $cursos = $this->grades();
             $asignaturas = $this->subject_current_list();
@@ -863,7 +874,8 @@ class View_System extends Controller {
         foreach($staffs as $staff){
             $data = null;
             $data["dni_staff"] = $staff["dni"];
-            $list = $this->list_checked($staff["dni"]);
+            $period = $this->periods()["active_period"];
+            $list = $this->list_checked($staff["dni"],$period);
             $curs = array();
             $asig = array();
             foreach($list as $row){
@@ -876,8 +888,7 @@ class View_System extends Controller {
         }
         return $cclass;
     }
-    private function list_checked($dni){
-        $period = $this->periods()["active_period"];
+    private function list_checked($dni,$period){
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
