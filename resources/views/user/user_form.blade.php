@@ -10,131 +10,301 @@ My Info
 @endsection
 
 @section("context")
+@php
+    $fullname = '';
+    $dni = '';
+    $sex = '';
+    $bornDate = '';
+    $nationality = '';
+    $afp = '';
+    $isapre = '';
+    $city = '';
+    $commune = '';
+    $address = '';
+    $phone = '';
+    $cellPhone = '';
+    $foto = '';
+    if(isset($data)){
+        // dd($data);
+        $fullname = $data["fullname"];
+        $dni = $data['dni'];
+        $sex = $data['sex'];
+        $nationality = $data['nationality'];
+        $afp = $data['afp'];
+        $isapre = $data['isapre'];
+        $city = $data['city'];
+        $commune = $data['commune'];
+        $address = $data['address'];
+        $cellPhone = $data['cellPhone'];
 
-<form action="save_user_info" method="post">
+        $bornDate = $data['bornDate'];
+
+        $bornDate = explode("-",$bornDate);
+        $newBornDate = $bornDate[2]."-".$bornDate[1]."-".$bornDate[0]; 
+
+        if($data['phone'] != '' || $data['phone'] != null){
+            $phone = $data['phone'];
+        }
+        if($data['foto'] != '' || $data['foto'] != null){
+            $foto = $data['foto'];
+            $foto = str_replace("/","-",$foto);
+        }
+    }   
+@endphp
+<form action="save_user_info" method="post" class="was-validated" enctype="multipart/form-data">
     @csrf
-    <div class="container">
+    <div class="container  px-lg-5">
         <h2>Información del usuario </h2>        
-        <br>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputFullName" style="font-weight: bold;">Nombre Completo</label>
-                <input type="text" class="form-control" id="inputFullName" name="inputFullName" required minlength="3" maxlength="150">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputDni" style="font-weight: bold;">Rut</label>
-                <input type="text" class="form-control" id="inputDni" name="inputDni" required minlength="6" maxlength="11" onchange ="checkRut(this)" placeholder="Ingrese rut sin puntos y con guión." >
-            </div>
-            <div class="form-group col-md-6">
-                <h6>Foto</h6>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input"  accept=".pdf,image/*" autocomplete="off" id="inputImgFile" name="inputImgFile"  lang="es">
-                    <label id="inputImgFileLabel" for="inputImgFile" class="custom-file-label">Subir archivo...</label>
+        <hr>
+        <div class="form-row card mx-lg-n5 my-3" style="flex-direction: unset !important; ">
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <h6>Foto</h6>
+                    <div class="text-center">
+                        @if ($foto != '')
+                            <img class="rounded my-2" id="output" style="max-height:100%; max-width:100%;" src="get_file/{{$foto}}"/>                    
+                        @else                    
+                            <img id="output" style="max-height:100%; max-width:100%" src="images/default-user.png"/>
+                        @endif
+                    </div>                    
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input"  accept=".pdf,image/*" autocomplete="off" id="inputImgFile" name="inputImgFile"  lang="es">
+                        <label id="inputImgFileLabel" for="inputImgFile" class="custom-file-label">Subir archivo...</label>
+                    </div>
                 </div>
-            </div>
+            </div>                
             <div class="form-group col-md-6">
+                @if ($dni != '')
+                    <label for="inputDni" style="font-weight: bold;">Rut</label>
+                    <input type="text" value="{{$dni}}" class="form-control is-valid" id="inputDni" name="inputDni" required minlength="6" maxlength="11" oninput="checkRut(this)" placeholder="Ingrese rut sin puntos y con guión." >                    
+                @else
+                    <label for="inputDni" style="font-weight: bold;">Rut</label>
+                    <input type="text" class="form-control is-valid" id="inputDni" name="inputDni" required minlength="6" maxlength="11" oninput="checkRut(this)" placeholder="Ingrese rut sin puntos y con guión." >                    
+                @endif
+                @if ($fullname != '')
+                    <label for="inputFullName" style="font-weight: bold;">Nombre Completo</label>
+                    <input type="text" value="{{$fullname}}" class="form-control" id="inputFullName" name="inputFullName" required minlength="3" maxlength="150" placeholder="Nombres Apellidos">
+                @else
+                    <label for="inputFullName" style="font-weight: bold;">Nombre Completo</label>
+                    <input type="text" class="form-control" id="inputFullName" name="inputFullName" required minlength="3" maxlength="150" placeholder="Nombres Apellidos">
+                @endif
                 <h6>Sexo</h6>
                 <select class="custom-select" id="sex_opt" required name="sex_opt">
-                    <option selected value="0">Seleccionar</option>
-                    <option value="1">Femenino</option>
-                    <option value="2">Masculino</option>
-                    <option value="3">Otro</option>
-                </select>
-            </div>            
-            <div class="form-group col-md-6">
-                <label for="inputBornDate" style="font-weight: bold;">Fecha de Nacimiento</label>
-                <input type="text" class="form-control" required id="inputBornDate" name="inputBornDate" value="" min="1900-01-01" max="">
-            </div>            
-            <div class="form-group col-md-6">
+                    <option selected value="">Seleccionar</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Otro">Otro</option>
+                </select>                
+                @if ($sex != '')
+                    <script>
+                        $(document).ready(function(){
+                            $('#sex_opt option[value="{{$sex}}"').prop('selected', true);
+                        });
+                    </script>
+                @endif
+                @if ($bornDate != '')
+                    <label for="inputBornDate" style="font-weight: bold;">Fecha de Nacimiento</label>
+                    <input type="text" value="{{$newBornDate}}" class="form-control" required id="inputBornDate" name="inputBornDate" value="" min="1900-01-01" max="">
+                @else
+                    <label for="inputBornDate" style="font-weight: bold;">Fecha de Nacimiento</label>
+                    <input type="text" class="form-control" required id="inputBornDate" name="inputBornDate" value="" min="1900-01-01" max="">                    
+                @endif
+                {{-- <h6 class="mb-2">Nacionalidad</h6> --}}
                 <label id="inputNationalityLabel" for="inputNationality" style="font-weight: bold;">Nacionalidad</label>
-                <input type="text" class="form-control" required placeholder="Ejemplo: Chileno" id="inputNationality" name="inputNationality">
+                {{-- <input type="text" class="form-control" required minlength="3" maxlength="20" placeholder="Ejemplo: Chileno" id="inputNationality" name="inputNationality"> --}}
+                <select class="custom-select" id="inputNationality" required name="inputNationality">
+                    <option selected value="">Seleccione</option>
+                    <option value="Alemana" >Alemana</option>
+                    <option value="Argentina" >Argentina</option>
+                    <option value="Australiana" >Australiana</option>
+                    <option value="Boliviana" >Boliviana</option>
+                    <option value="Brasilera" >Brasilera</option>
+                    <option value="Chilena" >Chilena</option>
+                    <option value="China" >China</option>
+                    <option value="Colombiana" >Colombiana</option>
+                    <option value="Coreana" >Coreana</option>
+                    <option value="Cubana" >Cubana</option>
+                    <option value="Dominicana" >Dominicana</option>
+                    <option value="Ecuatoriana" >Ecuatoriana</option>
+                    <option value="Española" >Española</option>
+                    <option value="Estadounidense" >Estadounidense</option>
+                    <option value="Francesa" >Francesa</option>
+                    <option value="Haitiana" >Haitiana</option>
+                    <option value="Italiana" >Italiana</option>
+                    <option value="Japonesa" >Japonesa</option>
+                    <option value="Mexicana" >Mexicana</option>
+                    <option value="Panameña" >Panameña</option>
+                    <option value="Paraguaya" >Paraguaya</option>
+                    <option value="Peruana" >Peruana</option>
+                    <option value="Rusa" >Rusa</option>
+                    <option value="Sueca" >Sueca</option>
+                    <option value="Suiza" >Suiza</option>
+                    <option value="Uruguaya" >Uruguaya</option>
+                    <option value="Venezolana" >Venezolana</option>
+                    <option value="Apátrida (sin nacionalidad)" >Apátrida (sin nacionalidad)</option>
+                    <option value="Otra" >Otra</option>
+                </select>
+                @if ($nationality != '')
+                    <script>
+                        $(document).ready(function(){
+                            $('#inputNationality option[value="{{$nationality}}"').prop('selected', true);
+                        });
+                    </script>
+                @endif
+                
+            </div>
+
+        </div>
+
+        <div class="form-row mx-lg-n5">
+
+
+            
+            <div class="form-group col-md-4">
+                @if ($city != '')
+                    <label for="inputCity" style="font-weight: bold;">Ciudad</label>
+                    <input type="text" value="{{$city}}" class="form-control" required minlength="3" maxlength="30"  placeholder="Ejemplo: Santiago" id="inputCity" name="inputCity">
+                @else
+                    <label for="inputCity" style="font-weight: bold;">Ciudad</label>
+                    <input type="text" class="form-control" required minlength="3" maxlength="30"  placeholder="Ejemplo: Santiago" id="inputCity" name="inputCity">                    
+                @endif
+            </div>
+            <div class="form-group col-md-4">
+                @if ($commune != '')
+                    <label for="inputCommune" style="font-weight: bold;">Comuna</label>
+                    <input type="text" value="{{$commune}}" class="form-control" required minlength="3" maxlength="50"  placeholder="Ejemplo: La Florida" id="inputCommune" name="inputCommune">
+                @else
+                    <label for="inputCommune" style="font-weight: bold;">Comuna</label>
+                    <input type="text" class="form-control" required minlength="3" maxlength="50"  placeholder="Ejemplo: La Florida" id="inputCommune" name="inputCommune">                    
+                @endif
+            </div>
+            <div class="form-group col-md-4">
+                @if ($address != '')
+                    <label for="inputAddress" style="font-weight: bold;">Dirección</label>
+                    <input type="text" value="{{$address}}" class="form-control" required minlength="3" placeholder="Ejemplo: Pedro Donoso 8741" maxlength="150" id="inputAddress" name="inputAddress">
+                @else
+                    <label for="inputAddress" style="font-weight: bold;">Dirección</label>
+                    <input type="text" class="form-control" required minlength="3" placeholder="Ejemplo: Pedro Donoso 8741" maxlength="150" id="inputAddress" name="inputAddress">                    
+                @endif
+            </div>
+            <div class="form-group col-md-6">
+                @if ($phone != '')
+                    <label for="inputPhone" style="font-weight: bold;">Teléfono</label>
+                    <input type="number" value="{{$phone}}" class="form-control"  min="2200000000" max="2299999999" placeholder="Ejemplo: 2255555555" id="inputPhone" name="inputPhone">                    
+                @else                    
+                    <label for="inputPhone" style="font-weight: bold;">Teléfono</label>
+                    <input type="number" class="form-control"  min="2200000000" max="2299999999" placeholder="Ejemplo: 2255555555" id="inputPhone" name="inputPhone">
+                @endif
+            </div>
+            
+            <div class="form-group col-md-6">
+                @if ($cellPhone != '')
+                    <label for="inputCellPhone" style="font-weight: bold;">Celular</label>
+                    <input type="number" value="{{$cellPhone}}" class="form-control" required min="56900000000" max="56999999999" placeholder="Ejemplo: 56911112222" id="inputCellPhone" name="inputCellPhone">                                        
+                @else
+                    <label for="inputCellPhone" style="font-weight: bold;">Celular</label>
+                    <input type="number" class="form-control" required min="56900000000" max="56999999999" placeholder="Ejemplo: 56911112222" id="inputCellPhone" name="inputCellPhone">                    
+                @endif
             </div>
             <div class="form-group col-md-6">
                 <h6>AFP</h6>
-                <select class="custom-select" id="afp_opt" name="afp_opt">
-                    <option selected value="0">Seleccione</option>
-                    <option value="1">AFP Capital</option>
-                    <option value="2">AFP Cuprum</option>
-                    <option value="3">AFP Habitat</option>
-                    <option value="4">AFP Modelo</option>
-                    <option value="5">AFP Planvital</option>
-                    <option value="6">AFP Provida</option>
-                    <option value="7">AFP Uno</option>
+                <select class="custom-select" id="afp_opt" required name="afp_opt">
+                    <option selected value="">Seleccione</option>
+                    <option value="AFP Capital">AFP Capital</option>
+                    <option value="AFP Cuprum">AFP Cuprum</option>
+                    <option value="AFP Habitat">AFP Habitat</option>
+                    <option value="AFP Modelo">AFP Modelo</option>
+                    <option value="AFP Planvital">AFP Planvital</option>
+                    <option value="AFP Provida">AFP Provida</option>
+                    <option value="AFP Uno">AFP Uno</option>
                 </select>
+                @if ($afp != '')
+                    <script>
+                        $(document).ready(function(){
+                            $('#afp_opt option[value="{{$afp}}"').prop('selected', true);
+                        });
+                    </script>
+                @endif
             </div>
             <div class="form-group col-md-6">
                 <h6>Isapre</h6>
-                <select class="custom-select" id="isapre_opt" name="isapre_opt">
-                    <option selected value="0">Seleccione</option>
-                    <option value="1">Fonasa</option>
-                    <option value="2">Isapre Banmedica S.A</option>
-                    <option value="2">Isapre Colmena Golden Cross S.A</option>
-                    <option value="2">Isapre Consalud</option>
-                    <option value="2">Isapre Cruz Blanca</option>
-                    <option value="2">Isapre Fundación Banco del Estado</option>
-                    <option value="2">Isapre Nueva Más Vida</option>
-                    <option value="2">Isapre Vida Tres S.A</option>
-                    <option value="2">No Informada</option>
-                    <option value="2">Oncovida - Ges</option>
-                    <option value="2">Particular</option>
+                <select class="custom-select" id="isapre_opt" required name="isapre_opt">
+                    <option selected value="">Seleccione</option>
+                    <option value="Fonasa">Fonasa</option>
+                    <option value="Isapre Banmedica S.A">Isapre Banmedica S.A</option>
+                    <option value="Isapre Colmena Golden Cross S.A">Isapre Colmena Golden Cross S.A</option>
+                    <option value="Isapre Consalud">Isapre Consalud</option>
+                    <option value="Isapre Cruz Blanca">Isapre Cruz Blanca</option>
+                    <option value="Isapre Fundación Banco del Estado">Isapre Fundación Banco del Estado</option>
+                    <option value="Isapre Nueva Más Vida">Isapre Nueva Más Vida</option>
+                    <option value="Isapre Vida Tres S.A">Isapre Vida Tres S.A</option>
+                    <option value="No Informada">No Informada</option>
+                    <option value="Oncovida - Ges">Oncovida - Ges</option>
+                    <option value="Particular">Particular</option>
                 </select>
+                @if ($isapre != '')
+                    <script>
+                        $(document).ready(function(){
+                            $('#isapre_opt option[value="{{$isapre}}"').prop('selected', true);
+                        });
+                    </script>
+                @endif
             </div>
-            <div class="form-group col-md-6">
-                <label for="inputCity" style="font-weight: bold;">Ciudad</label>
-                <input type="text" class="form-control" required minlength="3" maxlength="30"  placeholder="Ejemplo: Santiago" id="inputCity" name="inputCity">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputCommune" style="font-weight: bold;">Comuna</label>
-                <input type="text" class="form-control" required minlength="3" maxlength="30"  placeholder="Ejemplo: La Florida" id="inputCommune" name="inputCommune">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputAddress" style="font-weight: bold;">Dirección</label>
-                <input type="text" class="form-control" required minlength="3" placeholder="Ejemplo: Pedro Donoso 8741" maxlength="100" id="inputAddress" name="inputAddress">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputPhone" style="font-weight: bold;">Telefono</label>
-                <input type="number" class="form-control" required minlength="6" maxlength="11" placeholder="2255555555" id="inputPhone" name="inputPhone">
-            </div>
-            <div class="form-group col-md-3"></div>
-            <div class="form-group col-md-6">
-                <label for="inputCellPhone" style="font-weight: bold;">Celular</label>
-                <input type="text" class="form-control" required minlength="6" maxlength="11" placeholder="56911112222" id="inputCellPhone" name="inputCellPhone">
-            </div>
-            <div class="form-group col-md-3"></div>            
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-success" id="saveUserInfo" >Guardar</button>
+            <button type="submit" class="btn btn-lg mb-3 btn-success" id="saveUserInfo" >Guardar</button>
         </div>
     </div>
 </form>
+
 <script>
-        // Verificar si el rut es válido
+    // Verificar rut
     function checkRut(rut) {
-        // if exist - s true
+        // Despejar Puntos
         var valor = rut.value.replace('.','');
-        var arrRut = valor.split("");
-        var dv = arrRut[arrRut.length-1];
-        var rut = arrRut;
-        var cuerporut = "";
-        rut.forEach(element => {
-            cuerporut = cuerporut.concat('',element);    
-        });
-        cuerporut = parseInt(cuerporut);
-        if(dv != dgv(cuerporut)){
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'El rut ingresado no es válido intente nuevamente.',
-            });
-            $("#inputDni").val("");
-        }  
-    }
-    //digito verificador
-    function dgv(T){  
-        var M=0,S=1;
-        for(;T;T=Math.floor(T/10))
-        S=(S+T%10*(9-M++%6))%11;
-        return S?S-1:'k';
+        // Despejar Guión
+        valor = valor.replace('-','');
+        
+        // Aislar Cuerpo y Dígito Verificador
+        cuerpo = valor.slice(0,-1);
+        dv = valor.slice(-1).toUpperCase();
+        
+        // Formatear RUN
+        rut.value = cuerpo + '-'+ dv
+        
+        // Si no cumple con el mínimo ej. (n.nnn.nnn)
+        if(cuerpo.length < 7) { rut.setCustomValidity("RUT Incompleto"); return false;}
+        
+        // Calcular Dígito Verificador
+        suma = 0;
+        multiplo = 2;
+        
+        // Para cada dígito del Cuerpo
+        for(i=1;i<=cuerpo.length;i++) {
+        
+            // Obtener su Producto con el Múltiplo Correspondiente
+            index = multiplo * valor.charAt(cuerpo.length - i);
+            
+            // Sumar al Contador General
+            suma = suma + index;
+            
+            // Consolidar Múltiplo dentro del rango [2,7]
+            if(multiplo < 7) { multiplo = multiplo + 1; } else { multiplo = 2; }
+    
+        }
+        
+        // Calcular Dígito Verificador en base al Módulo 11
+        dvEsperado = 11 - (suma % 11);
+        
+        // Casos Especiales (0 y K)
+        dv = (dv == 'K')?10:dv;
+        dv = (dv == 0)?11:dv;
+        
+        // Validar que el Cuerpo coincide con su Dígito Verificador
+        if(dvEsperado != dv) { rut.setCustomValidity("RUT Inválido"); return false; }
+        
+        // Si todo sale bien, eliminar errores (decretar que es válido)
+        rut.setCustomValidity('');
     }
     // Upload File
     function file_extension(filename){
@@ -154,7 +324,7 @@ My Info
     // BornDate DatePicker
     jQuery('#inputBornDate').datetimepicker({
         timepicker:false,
-        format:'Y-m-d',
+        format:'d-m-Y',
         maxDate:'+1970/01/01'
     });
     $.datetimepicker.setLocale('es');

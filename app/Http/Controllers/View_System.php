@@ -504,7 +504,11 @@ class View_System extends Controller {
                     }
                     return view('tickets')->with('tickets',$data)->with('all_tickets',$all_tickets);
                 case "my_info":
-                    return view('user/user_form');
+                    
+                    $dni = Session::get('account')['dni'];
+                    $data = $this->get_user_data($dni);
+                    return view('user/user_form')->with('data',$data);
+
                 default:
                     return view('not_found')->with("path",$path);
             }
@@ -1039,5 +1043,22 @@ class View_System extends Controller {
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
         return $data;
+    }
+    private function get_user_data($dni){
+        $data = [];
+        $data["fullname"] = 'Luciano Grandi Morales';
+        $data["dni"] = '19284310-3';
+        $data["sex"] = 'Masculino';
+        $data["bornDate"] = '1996-06-18';
+        $data["nationality"] = 'Chilena';
+        $data["afp"] = 'AFP Cuprum';
+        $data["isapre"] = 'Fonasa';
+        $data["city"] = 'Santiago';
+        $data["commune"] = 'La Florida';
+        $data["address"] = 'Santa Julia 3408';
+        $data["phone"] = "";
+        $data["cellPhone"] = "56966961292";
+        $data["foto"] = "public/staff/14656819K/1619310506535.jpg";
+        return $data; 
     }
 }
