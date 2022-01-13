@@ -994,6 +994,7 @@ class App_Controller extends Controller {
                 'method' => 'create_item_filemanager',
                 'data' => [ 'name' => $name, "path" => $path, "type" => $extension, "dni" => $dni , "app_status" => $app_status ]
             );
+            dd($arr);
             $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
             $data = json_decode($response->body(), true);
             return back();
@@ -1176,9 +1177,61 @@ class App_Controller extends Controller {
         $data = json_decode($response->body(), true);
         return $data;
     }
+    // USER
     // Guarda informacion importante del usuario
     public function save_user_info(Request $request){
         $gets = $request->input();
-        dd($gets);
+        $file = $request->file();
+        // dd($file);
+        $dniSession = Session::get('account')['dni'];
+        $dniSession = str_replace(".","", $dniSession);
+        $dniSession = str_replace("-","",$dniSession);
+        // dd($dniSession);
+        $pathfile = "public/staff/$dniSession";
+        $path = "";
+        $extension = "";
+        $name = ""; 
+        $duplicated ="";
+        // dd($gets);
+        if(isset($gets['inputBornDate'])){
+            $borndate = explode("-",$gets['inputBornDate']);
+            $newBornDate = $borndate[2]."-".$borndate[1]."-".$borndate[0]; 
+        }
+        if(isset($file)){
+            // dd($file);
+            foreach ($file as $fil) {
+                $extension = $fil->extension();
+                $name = $fil->getClientOriginalName();
+                
+                $duplicated = $this->duplicated_items($pathfile,$name,"file");
+                if($duplicated){
+                    return back();
+                }
+                $path = $fil->storeAs("$pathfile", $name);
+            }
+        }
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => '',
+            'data' => ["fullName" => $gets['inputFullName'],
+                    "dni" => $gets['inputDni'], 
+                    "sex" => $gets['sex_opt'],
+                    "bornDate" => $newBornDate,
+                    "nationality" => $gets['inputNationality'],
+                    "afp" => $gets['afp_opt'],
+                    "isapre" => $gets['isapre_opt'],
+                    "city" => $gets['inputCity'],
+                    "commune" => $gets['inputCommune'],
+                    "address" => $gets['inputAddress'],
+                    "phone" => $gets['inputPhone'],
+                    "cellPhone" => $gets['inputCellPhone'],
+                    "foto" => $path
+                    ]
+        );
+        // dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return back();
     }
 }
