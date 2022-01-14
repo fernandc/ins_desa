@@ -209,7 +209,7 @@
             <div class="tab-pane fade" id="responserequest" role="tabpanel" aria-labelledby="responserequest-tab">
                 <div class="row">
                     @foreach ($tickets as $row)
-                        @if($row["dni_receptor"] == Session::get('account')['dni'])
+                        @if($row["dni_receptor"] == Session::get('account')['dni'] && $row["estado"] == "Pendiente")
                             <div class="col-md-6 mt-3" id="divrequest{{$row["id"]}}">
                                 <div class="card" >
                                     <div class="card-body">
