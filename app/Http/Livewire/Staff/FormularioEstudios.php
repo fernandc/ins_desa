@@ -10,8 +10,16 @@ use Illuminate\Support\Facades\Log;
 
 class FormularioEstudios extends Component
 {
+    public $contador;
+    public function contar(){
+        $this->contador++;
+    }
+    public function mount(){
+        $this->contador=0;
+    }
     public function render()
     {
         return view('livewire.staff.formulario-estudios');
     }
+    
 }

@@ -78,6 +78,8 @@ Route::post('/renameItem_FM', [App_Controller::class, 'renameItem_FM']);
 Route::get('/downloadFile_FM', [App_Controller::class, 'downloadFile_FM']);
 Route::get('/deleteFile_FM', [App_Controller::class, 'deleteItem_FM']);
 Route::post('/save_user_info', [App_Controller::class, 'save_user_info']);
+Route::post('/user_bank_data', [App_Controller::class, 'user_bank_data']);
+Route::post('/user_add_cert', [App_Controller::class, 'user_add_cert']);
 Route::view('/ejemplos_livewire','ejemplos_livewire');
 Route::get('/{param}',[View_System::class, 'main']);
 

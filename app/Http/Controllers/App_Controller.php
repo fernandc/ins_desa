@@ -994,7 +994,7 @@ class App_Controller extends Controller {
                 'method' => 'create_item_filemanager',
                 'data' => [ 'name' => $name, "path" => $path, "type" => $extension, "dni" => $dni , "app_status" => $app_status ]
             );
-            dd($arr);
+            // dd($arr);
             $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
             $data = json_decode($response->body(), true);
             return back();
@@ -1126,7 +1126,7 @@ class App_Controller extends Controller {
             
         }
     }
-    // Recuperar archivo con Path no utilizado 
+    // Recuperar archivo con Path  
     public function get_file_FM($path){
         $path = str_replace("-","/",$path);
         $ruta = storage_path("app/".$path);
@@ -1192,7 +1192,7 @@ class App_Controller extends Controller {
         $extension = "";
         $name = ""; 
         $duplicated ="";
-        // dd($gets);
+        //  dd($gets);
         if(isset($gets['inputBornDate'])){
             $borndate = explode("-",$gets['inputBornDate']);
             $newBornDate = $borndate[2]."-".$borndate[1]."-".$borndate[0]; 
@@ -1201,7 +1201,7 @@ class App_Controller extends Controller {
             // dd($file);
             foreach ($file as $fil) {
                 $extension = $fil->extension();
-                $name = $fil->getClientOriginalName();
+                $name = 'foto_perfil.'.$extension;
                 
                 $duplicated = $this->duplicated_items($pathfile,$name,"file");
                 if($duplicated){
@@ -1210,28 +1210,87 @@ class App_Controller extends Controller {
                 $path = $fil->storeAs("$pathfile", $name);
             }
         }
+        
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => '',
-            'data' => ["fullName" => $gets['inputFullName'],
-                    "dni" => $gets['inputDni'], 
-                    "sex" => $gets['sex_opt'],
-                    "bornDate" => $newBornDate,
-                    "nationality" => $gets['inputNationality'],
-                    "afp" => $gets['afp_opt'],
-                    "isapre" => $gets['isapre_opt'],
-                    "city" => $gets['inputCity'],
-                    "commune" => $gets['inputCommune'],
-                    "address" => $gets['inputAddress'],
-                    "phone" => $gets['inputPhone'],
-                    "cellPhone" => $gets['inputCellPhone'],
-                    "foto" => $path
-                    ]
+            'method' => 'upsert_user_data',
+            'data' => [
+                "full_name" => $gets['inputFullName'],
+                "rut" => $gets['inputDni'],
+                "dni" => Session::get('account')['dni'], 
+                "sex" => $gets['sex_opt'],
+                "born_date" => $newBornDate,
+                "nationality" => $gets['inputNationality'],
+                "afp" => $gets['afp_opt'],
+                "isapre" => $gets['isapre_opt'],
+                "city" => $gets['inputCity'],
+                "commune" => $gets['inputCommune'],
+                "address" => $gets['inputAddress'],
+                "email" => $gets['personal_email'],
+                "cell_phone" => $gets['inputCellPhone'],
+                "path_photo" => $path,
+                ]
         );
         // dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
+        // dd($data);
         return back();
+    }
+    public function user_bank_data(Request $request){
+        $gets = $request->input();
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => '',
+            'data' => [
+                "bank" => $gets["user_bank_opt"],
+                "account_type" => $gets["user_account_type_opt"],
+                "account_number" => $gets["user_bank_account_type"],
+                "dni" => Session::get('account')['dni']
+            ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return back();
+    }
+    public function user_add_cert(Request $request){
+        $gets = $request->input();
+        $file = $request->file();
+        $dniSession = Session::get('account')['dni'];
+        $dniSession = str_replace(".","", $dniSession);
+        $dniSession = str_replace("-","",$dniSession);
+        // dd($gets);
+        $pathfile = "public/staff/$dniSession";
+        $path = "";
+        $extension = "";
+        $name = ""; 
+        $duplicated ="";
+        if(isset($file)){
+            // dd($file);
+            foreach ($file as $fil) {
+                $extension = $fil->extension();
+                $name = 'certificado_'.$gets['cert_name_input'].'.'.$extension;
+                
+                $duplicated = $this->duplicated_items($pathfile,$name,"file");
+                if($duplicated){
+                    return back();
+                }
+                $path = $fil->storeAs("$pathfile", $name);
+            }
+        }
+        $app_status = getenv("APP_STATUS");
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => '',
+            'data' => [ 'name' => $name, "path" => $path, "type" => $extension, "dni" =>  Session::get('account')['dni'], "app_status" => $app_status ]
+        );
+        dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return back();
+
     }
 }
