@@ -1243,7 +1243,7 @@ class App_Controller extends Controller {
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => '',
+            'method' => 'upsert_user_bank',
             'data' => [
                 "bank" => $gets["user_bank_opt"],
                 "account_type" => $gets["user_account_type_opt"],
@@ -1253,6 +1253,7 @@ class App_Controller extends Controller {
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
+        // dd($data);
         return back();
     }
     public function user_add_cert(Request $request){
@@ -1261,36 +1262,64 @@ class App_Controller extends Controller {
         $dniSession = Session::get('account')['dni'];
         $dniSession = str_replace(".","", $dniSession);
         $dniSession = str_replace("-","",$dniSession);
-        // dd($gets);
         $pathfile = "public/staff/$dniSession";
         $path = "";
         $extension = "";
         $name = ""; 
         $duplicated ="";
+        $input_name = "";
         if(isset($file)){
-            // dd($file);
-            foreach ($file as $fil) {
+            foreach ($file as $fil) {                
                 $extension = $fil->extension();
-                $name = 'certificado_'.$gets['cert_name_input'].'.'.$extension;
-                
-                $duplicated = $this->duplicated_items($pathfile,$name,"file");
-                if($duplicated){
-                    return back();
+                if(isset($gets["cert_name_input_index"])){
+                    $index = $gets["cert_name_input_index"];
+                    $name = $gets['cert_name_input'].'_'.$index.'.'.$extension;     
+                }else{
+                    $name = $gets['cert_name_input'].'.'.$extension;                
                 }
                 $path = $fil->storeAs("$pathfile", $name);
             }
         }
+
         $app_status = getenv("APP_STATUS");
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => '',
-            'data' => [ 'name' => $name, "path" => $path, "type" => $extension, "dni" =>  Session::get('account')['dni'], "app_status" => $app_status ]
+            'method' => 'upsert_user_documents',
+            'data' => [ 
+                'name' => $name,
+                "path" => $path,
+                "dni" =>  Session::get('account')['dni'], 
+                ]
         );
-        dd($arr);
+        // dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
         return back();
 
+    }
+    public function user_del_cert(Request $request){
+        $gets = $request->input();
+        $id = $gets['id'];
+        $path = $gets['path'];
+        $path = str_replace("-","/",$path);
+        // dd($path);
+        $dni = Session::get('account')['dni'];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'delete_user_documents',
+            'data' => [ 
+                'id' => $id,
+                "dni" =>  Session::get('account')['dni'], 
+                ]
+        );
+        // dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        if($response->body() == 'DELETED'){
+            Storage::delete($path);
+        }
+        return back();
     }
 }

@@ -2,13 +2,17 @@
     $bank = '';
     $account_type = '';
     $account_number = '';
+    $bank_user = '';
+    
     if(isset($data) && isset($data[0]["banco"])){
         $data = $data[0];
-        $bank = $data["banco"];
+        $bank_user = $data["banco"];
         $account_type = $data["tipo_cuenta"];
         $account_number = $data["numero_cuenta"];
     }
+    
 @endphp
+
 <div class="card">
     <div class="card-header" style="font-weight: bold;">       
         Información bancaria        
@@ -17,36 +21,24 @@
         <form action="user_bank_data" method="post" class="was-validated" enctype="multipart/form-data">
             @csrf
             <div class="form-group">            
-              <label for="user_bank_opt" style="font-weight: bold;">Banco</label>
-              <select  class="custom-select" required name="user_bank_opt" id="user_bank_opt">
-                    <option selected value="">Seleccione</option>
-                    <option value="Banco BICE">Banco BICE</option>
-                    <option value="Banco Consorcio">Banco Consorcio</option>
-                    <option value="Banco Corpbanca">Banco Corpbanca</option>
-                    <option value="Banco Crédito e inversiones">Banco Crédito e inversiones</option>
-                    <option value="Banco Estado">Banco Estado</option>
-                    <option value="Banco Falabella">Banco Falabella</option>
-                    <option value="Banco Internacional">Banco Internacional</option>
-                    <option value="Banco Paris">Banco Paris</option>
-                    <option value="Banco Ripley">Banco Ripley</option>
-                    <option value="Banco Santander">Banco Santander</option>
-                    <option value="Banco Security">Banco Security</option>
-                    <option value="Banco de Chile / Edwards-Citi">Banco de Chile / Edwards-Citi</option>
-                    <option value="Banco del Desarrollo">Banco del Desarrollo</option>
-                    <option value="Copeuch">Copeuch</option>
-                    <option value="HSBC Bank">HSBC Bank</option>
-                    <option value="Itaú">Itaú</option>
-                    <option value="Rabobank">Rabobank</option>
-                    <option value="Tenpo Prepago">Tenpo Prepago</option>
-                    <option value="Prepago Los Héroes">Prepago Los Héroes</option>
-                    <option value="Scotiabank">Scotiabank</option>
-                    <option value="Scotiabank Azul">Scotiabank Azul</option>
+                <label for="user_bank_opt" style="font-weight: bold;">Banco</label>
+                <select  class="custom-select" required name="user_bank_opt" id="user_bank_opt">
+                    @if (isset($banks))
+                        <option selected value="">Seleccione</option>
+                        @foreach ($banks as $bank)
+                            <option value="{{$bank['name']}}">{{$bank['name']}}</option>                            
+                        @endforeach                        
+                    @endif                   
                 </select>
-                <script>
-                    $(document).ready(function(){
-                        $('#user_bank_opt option[value="{{$bank}}"').prop('selected', true);
-                    });
-                </script>
+                @if ($bank_user != '')
+                    <script>
+                        $(document).ready(function(){
+                            $('#user_bank_opt option[value="{{$bank_user}}"').prop('selected', true);
+                            
+                        });
+                        
+                    </script>                    
+                @endif
             
             </div>
             <div class="form-group">
@@ -79,6 +71,7 @@
         </form>
         <script>
             $("#user_bank_opt").change(function(){
+                $('#user_account_type_opt option[value=""').prop('selected', true);
                 var val = $(this).val();
                 $("#opt_vista").show();
                 $("#opt_corriente").show();

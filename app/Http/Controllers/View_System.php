@@ -506,7 +506,9 @@ class View_System extends Controller {
                 case "my_info":                    
                     $dni = Session::get('account')['dni'];
                     $data = $this->get_user_data($dni);
-                    return view('user/user_base')->with('data',$data);
+                    $banks = $this->get_banks();
+                    $certificados = $this->get_certificados($dni);
+                    return view('user/user_base')->with('data',$data)->with('banks',$banks)->with('certificados',$certificados);
                 default:
                     return view('not_found')->with("path",$path);
             }
@@ -1051,6 +1053,23 @@ class View_System extends Controller {
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);
+        return $data;
+    }
+    public function get_banks(){
+        $response = Http::get('https://cloupping.com/api/getBanks');
+        $data = json_decode($response->body(), true);
+        
+        return $data;
+    }
+    private function get_certificados($dni){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_user_documents',
+            'data' => ["dni" => $dni ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);        
         return $data;
     }
 }

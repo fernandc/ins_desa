@@ -30,22 +30,24 @@
             $active = $_GET['cert'];
             if ($active == 1) {
                 $cert_name = 'Antecedentes';
-                $cert_id = 'antecedentes';
+                $cert_id = 'certificado_antecedentes';
             }elseif ($active == 2) {
                 $cert_name = 'AFP';       
-                $cert_id = 'afp';
+                $cert_id = 'certificado_afp';
             }elseif ($active == 3) {
                 $cert_name = 'Isapre';   
-                $cert_id = 'isapre'; 
+                $cert_id = 'certificado_isapre'; 
             }elseif ($active == 4) {
                 $cert_name = 'Titulo';  
-                $cert_id = 'titulo';         
+                $cert_id = 'certificado_titulo';         
             }elseif ($active == 5) {
                 $cert_name = 'Idoneidad docente'; 
-                $cert_id = 'idoneidad_docente';         
+                $cert_id = 'certificado_idoneidad_docente';         
             }elseif ($active == 6) {
-                $cert_name = 'Bono escolar - nacimiento hijo';
-                $cert_id = 'bono_hijo';
+                $cert_name = 'Bono escolar - certificado de nacimiento (hij@)';
+                $cert_id = 'certificado_nacimiento_hijo';
+                $cert_id_hijo = 'certificado_nacimiento_hijo';
+                $cert_id_bono = 'certificado_bono_escolar';
             }
         @endphp
     @endif
@@ -54,7 +56,6 @@
             $("[data={{$active}}]").addClass("active");
         });
     </script>
-
     <div class="container">
         @if (isset($_GET['cert']))
             @include('user.user_add_certificado')

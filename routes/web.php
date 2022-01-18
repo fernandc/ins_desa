@@ -80,6 +80,7 @@ Route::get('/deleteFile_FM', [App_Controller::class, 'deleteItem_FM']);
 Route::post('/save_user_info', [App_Controller::class, 'save_user_info']);
 Route::post('/user_bank_data', [App_Controller::class, 'user_bank_data']);
 Route::post('/user_add_cert', [App_Controller::class, 'user_add_cert']);
+Route::get('/user_del_cert', [App_Controller::class, 'user_del_cert']);
 Route::view('/ejemplos_livewire','ejemplos_livewire');
 Route::get('/{param}',[View_System::class, 'main']);
 
