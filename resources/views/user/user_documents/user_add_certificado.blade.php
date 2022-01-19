@@ -2,23 +2,18 @@
     $certificado = '';
     $filePath = '';
     if (isset($certificados) && $active!=6) {
-        // dd($certificados);
         foreach ($certificados as $certificado) {
             $name = $certificado['name'];            
             $name = explode(".",$name);
-
             if ($name[0] == $cert_id) {
                 $filePath = $certificado["path"];
                 $filePath = str_replace("/","-",$filePath);
-                // dd($filePath);
             }                        
         }
     }
 @endphp
-
-
 @if ($active == 6)
-        @include('user.user_add_cert_bono_hijo')
+    @include('user.user_documents.user_add_cert_bono_hijo')
  @else
     <form action="user_add_cert" method="post" class="was-validated" enctype="multipart/form-data">
         @csrf
@@ -53,8 +48,6 @@
         </div>
     </form>
 @endif
-
-
 <script>
     var loadFile = function(event) {
         var output = document.getElementById('output');

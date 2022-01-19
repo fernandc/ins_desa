@@ -3,16 +3,13 @@
     $account_type = '';
     $account_number = '';
     $bank_user = '';
-    
     if(isset($data) && isset($data[0]["banco"])){
         $data = $data[0];
         $bank_user = $data["banco"];
         $account_type = $data["tipo_cuenta"];
         $account_number = $data["numero_cuenta"];
     }
-    
 @endphp
-
 <div class="card">
     <div class="card-header" style="font-weight: bold;">       
         Información bancaria        
@@ -39,7 +36,6 @@
                         
                     </script>                    
                 @endif
-            
             </div>
             <div class="form-group">
               <label for="user_account_type_opt" style="font-weight: bold;">Tipo de cuenta</label>
@@ -51,7 +47,6 @@
                     <option value="Ahorro" id="opt_ahorro" >Ahorro</option>
                     <option value="Chequera Electrónica"id="opt_electronica" >Chequera Electrónica</option>
                 </select>
-                
                 <script>
                     $(document).ready(function(){
                         $('#user_account_type_opt option[value="{{$account_type}}"').prop('selected', true);
@@ -93,9 +88,7 @@
                     $("#opt_ahorro").hide();
                     $("#opt_rut").hide();
                 }
-                
             })
-            
         </script>
     </div>
 </div>

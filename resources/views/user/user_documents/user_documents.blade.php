@@ -58,7 +58,7 @@
     </script>
     <div class="container">
         @if (isset($_GET['cert']))
-            @include('user.user_add_certificado')
+            @include('user.user_documents.user_add_certificado')
         @endif
         
     </div>

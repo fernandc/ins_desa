@@ -29,18 +29,18 @@ My Info
         <div class="col-md-8">
             @if (isset($_GET['section']))
                 @if ($_GET['section'] == '1')
-                    @include('user.user_form')  
+                    @include('user.user_info.user_form')  
                 @elseif($_GET['section'] == '2')
                     @livewire('staff.formulario-estudios')
                 @elseif($_GET['section'] == '3')
-                    @include('user.user_documents')    
+                    @include('user.user_documents.user_documents')    
                 @elseif($_GET['section'] == '4')
-                    @include('user.user_bank_info')
+                    @include('user.user_bank.user_bank_info')
                 @else
-                    @include('user.user_form')
+                    @include('user.user_info.user_form') 
                 @endif                 
             @else
-                @include('user.user_form')
+                @include('user.user_info.user_form') 
             @endif
         </div>
         <div class="col-md-2"></div>

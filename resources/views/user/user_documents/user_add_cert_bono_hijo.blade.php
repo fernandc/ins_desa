@@ -1,5 +1,4 @@
-{{-- cert_id_hijo_hijo
-cert_id_hijo_bono --}}
+
 <div class="tab-pane fade show active" id="nav-{{$cert_id}}" role="tabpanel" aria-labelledby="nav-{{$cert_id}}-tab">
     <div class="form-group">
         <div class="card">
