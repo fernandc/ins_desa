@@ -1408,6 +1408,15 @@ class App_Controller extends Controller {
     }
     public function send_user_formation_info($get){
         dd($get);
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => '',
+            'data' => ["tipo_titulo" =>$type_title ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);  
+        return $data;
         return back();
     }
     

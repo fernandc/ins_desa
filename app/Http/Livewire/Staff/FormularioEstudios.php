@@ -19,6 +19,7 @@ class FormularioEstudios extends Component
     public $tipo_titulo_seleccionado;
     public $menciones_seleccionadas;
     public $especialidad_seleccionada;
+    public $area_seleccionada;
     public $semestres;
     public $anio_titulacion;
     // misc data 
@@ -26,7 +27,11 @@ class FormularioEstudios extends Component
     public $tipo_titulo;
     public $tipo_institucion;
     public $especialidades;
-
+    // Validations
+    public $btn_disabled;
+    public $anio_disabled;
+    public $modalidad_disabled;
+    public $duracion_disabled;
 
     public function actualizar_menciones_sm(){        
         if (isset($this->menciones_seleccionadas[1])) {
@@ -56,6 +61,7 @@ class FormularioEstudios extends Component
         $get["titulo_seleccionado"] = $this->titulo_seleccionado;
         $get["tipo_titulo_seleccionado"] = $this->tipo_titulo_seleccionado;
         $get["menciones_seleccionadas"] = $this->menciones_seleccionadas;
+        $get["area_seleccionada"] = $this->area_seleccionada;
         $get["semestres"] = $this->semestres;
         $get["anio_titulacion"] = $this->anio_titulacion;
         $get["modalidad"] = $this->modalidad;
@@ -71,11 +77,45 @@ class FormularioEstudios extends Component
         $controller = new App_Controller();
         $this->especialidades = $controller->get_user_specialty($this->tipo_titulo_seleccionado);
     }
+    public function validar_campos(){
+        $titulo = $this->titulo_seleccionado;
+        $tipo_titulo = $this->tipo_titulo_seleccionado;
+        $area_titulo = $this->area_seleccionada;
+        $this->btn_disabled = "disabled";
+        $this->anio_disabled = "";
+        $this->modalidad_disabled = "";
+        $this->duracion_disabled = "";
+        if($titulo != ""){
+            if($titulo == "No Titulado"){
+                $this->anio_disabled = "hidden";
+                $this->modalidad_disabled = "hidden";
+                $this->duracion_disabled = "hidden";
+            }
+            if($titulo == "Titulado en Otras Áreas"){
+                if($area_titulo != "" && $tipo_titulo != "" ){
+                    $this->btn_disabled = "";
+                }
+            }
+            if($tipo_titulo != ""){
+                $this->btn_disabled = "";
+            }
+        }
+    }
+    public function updated(){
+        $this->validar_campos();
+    }
     public function mount(){
         $controller = new App_Controller();
+        
         $this->titulos = $controller->get_user_degree_titles();
         $this->area_titulo = $controller->get_user_degree_area();
         $this->basic_mentions = $controller->get_user_basic_mentions();
+
+        $this->btn_disabled = "disabled";
+        $this->validar_campos();
+
+
+
     }
     public function render(){
         return view('livewire.staff.formulario-estudios');

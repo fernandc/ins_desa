@@ -38,7 +38,7 @@
             @if ($titulo_seleccionado == 'Titulado en Otras Áreas')
                 <div class="form-group col-md-12" >   
                     <label for="user_area_titulo_id">Área del Título</label>
-                    <select class="form-control" name="user_area_titulo_id" id="user_area_titulo_id">
+                    <select wire:model="area_seleccionada" class="form-control" name="user_area_titulo_id" id="user_area_titulo_id">
                         <option selected value="">Seleccione Área del Título</option>
                         @foreach ($area_titulo as $area)
                             <option value="{{$area['name']}}">{{$area['name']}}</option>                            
@@ -89,8 +89,8 @@
                 </select>                      
             </div>
             <div class="form-group col-md-6" >
-                <label for="user_semestres">Duración de la carrera (en semestres)</label>
-                <input wire:model="semestres" type="number"class="form-control" name="user_semestres" id="user_semestres" aria-describedby="helpId" placeholder="Ejemplo: 6">
+                <label {{$duracion_disabled}} for="user_semestres">Duración de la carrera (en semestres)</label>
+                <input wire:model="semestres" {{$duracion_disabled}} type="number"class="form-control" name="user_semestres" id="user_semestres" aria-describedby="helpId" placeholder="Ejemplo: 6">
             </div>
             
             @if ($tipo_titulo_seleccionado != '')
@@ -105,24 +105,23 @@
                 </div>                
             @endif
             <div class="form-group col-md-6" >                            
-                <label for="user_anio_titulacion_id">Año Titulación</label>
-                <input wire:model="anio_titulacion" type="number"class="form-control" name="user_anio_titulacion_id" id="user_anio_titulacion_id" min="1930" max="3000" aria-describedby="helpId" placeholder="Ejemplo: 2021">                                
+                <label {{$anio_disabled}} for="user_anio_titulacion_id">Año Titulación</label>
+                <input wire:model="anio_titulacion" {{$anio_disabled}} type="number"class="form-control" name="user_anio_titulacion_id" id="user_anio_titulacion_id" min="1930" max="3000" aria-describedby="helpId" placeholder="Ejemplo: 2021">                                
             </div>
             <div class="form-group col-md-6" >                  
-                <label for="user_modalidad_estudio_id">Modalidad Estudio</label>
-                <select wire:model="modalidad" class="form-control" name="user_modalidad_estudio_id" id="user_modalidad_estudio_id">
+                <label {{$modalidad_disabled}} for="user_modalidad_estudio_id">Modalidad Estudio</label>
+                <select wire:model="modalidad" {{$modalidad_disabled}} class="form-control" name="user_modalidad_estudio_id" id="user_modalidad_estudio_id">
                     <option selected value="">Seleccione Modalidad de Estudio</option>
                     <option value="Presencial">Presencial</option>
                     <option value="Semi Presencial">Semi Presencial</option>
-                    <option value="A distancia">A distancia</option>
-                    
+                    <option value="A distancia">A distancia</option>                    
                 </select>       
             </div>                    
         @endif
     </div>
     <div class="card-footer">
         <div class="text-center">
-            <button wire:click="enviar_datos()" type="button" id="send_user_formation" class="btn btn-lg btn-success">Guardar</button>
+            <button wire:click="enviar_datos()" {{$btn_disabled}} type="button" id="send_user_formation" class="btn btn-lg btn-success">Guardar</button>
         </div>
     </div>
 </div>                
