@@ -54,8 +54,8 @@
                                         @endif              
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" disabled id="btn_save_cert_{{$i+1}}" class="btn btn-success">Guardar archivo</button>
-                                        <button class="btn btn-danger float-right" id="btn_delete_cert_{{$i+1}}" >Eliminar</button>
+                                        <button type="submit" disabled id="btn_save_cert_{{$i+1}}" class="btn btn-lg btn-success">Guardar archivo</button>
+                                        <button class="btn btn-danger btn-lg float-right" id="btn_delete_cert_{{$i+1}}" >Eliminar</button>
                                     </div>
                                     <script>
                                         $("#btn_delete_cert_{{$i+1}}").click(function(){
@@ -119,7 +119,9 @@
                                     </div>          
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" disabled id="btn_save_cert" class="btn btn-success">Guardar archivo</button>
+                                    <div class="text-center">
+                                        <button type="submit" disabled id="btn_save_cert" class="btn btn-lg btn-success">Guardar archivo</button>
+                                    </div>
                                 </div>         
                             </form>
                         </div>
@@ -140,7 +142,9 @@
                             </div>   
                         </div>
                         <div class="card-footer">
-                            <button type="submit" disabled id="btn_save_cert" class="btn btn-success">Guardar archivo</button>
+                            <div class="text-center">
+                                <button type="submit" disabled id="btn_save_cert" class="btn btn-lg btn-success">Guardar archivo</button>
+                            </div>
                         </div>         
                     </form>
                 @endif                

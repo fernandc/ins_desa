@@ -1128,17 +1128,40 @@ class App_Controller extends Controller {
     }
     // Recuperar archivo con Path  
     public function get_file_FM($path){
-        $path = str_replace("-","/",$path);
-        $ruta = storage_path("app/".$path);
-        if(!File::exists($ruta)){
-            abort(404);
+        if(Session::has('account')){
+            $path = str_replace("-","/",$path);
+            $pathVerify = explode("/",$path);
+            $foto_perfil = $pathVerify[3];
+            $foto_perfil = explode(".",$foto_perfil);
+            if($foto_perfil[0] == "foto_perfil"){            
+                $dni = Session::get('account')['dni'];
+                $dni = str_replace(".","",$dni);
+                $dni = str_replace("-","",$dni);
+                if($dni == $pathVerify[2]  || $this->isAdmin()){
+                    $ruta = storage_path("app/".$path);
+                    if(!File::exists($ruta)){
+                        abort(404);
+                    }
+                    $file = File::get($ruta);
+                    $type = File::mimeType($ruta);
+                    $response = Response::make($file,200);
+                    $response->header("Content-Type",$type);
+                    // dd(gettype($response));
+                    return $response;
+                }
+            }else{
+                $ruta = storage_path("app/".$path);
+                if(!File::exists($ruta)){
+                    abort(404);
+                }
+                $file = File::get($ruta);
+                $type = File::mimeType($ruta);
+                $response = Response::make($file,200);
+                $response->header("Content-Type",$type);
+                // dd(gettype($response));
+                return $response;
+            }
         }
-        $file = File::get($ruta);
-        $type = File::mimeType($ruta);
-        $response = Response::make($file,200);
-        $response->header("Content-Type",$type);
-        // dd(gettype($response));
-        return $response;
     }
     // Eliminar Item 
     public function deleteItem_FM(Request $request){
@@ -1178,7 +1201,7 @@ class App_Controller extends Controller {
         return $data;
     }
     // USER
-    // Guarda informacion importante del usuario
+    // Guarda informacion relevante del usuario
     public function save_user_info(Request $request){
         $gets = $request->input();
         $file = $request->file();
@@ -1192,7 +1215,7 @@ class App_Controller extends Controller {
         $extension = "";
         $name = ""; 
         $duplicated ="";
-        //  dd($gets);
+        // dd($gets);
         if(isset($gets['inputBornDate'])){
             $borndate = explode("-",$gets['inputBornDate']);
             $newBornDate = $borndate[2]."-".$borndate[1]."-".$borndate[0]; 
@@ -1230,6 +1253,7 @@ class App_Controller extends Controller {
                 "email" => $gets['personal_email'],
                 "cell_phone" => $gets['inputCellPhone'],
                 "path_photo" => $path,
+                "civil_status" => $gets['inputCivilStatus'],
                 ]
         );
         // dd($arr);
@@ -1238,6 +1262,7 @@ class App_Controller extends Controller {
         // dd($data);
         return back();
     }
+    // Guarda informacion bancaria para transferencias del usuario
     public function user_bank_data(Request $request){
         $gets = $request->input();
         $arr = array(
@@ -1256,6 +1281,7 @@ class App_Controller extends Controller {
         // dd($data);
         return back();
     }
+    // Guarda certificados
     public function user_add_cert(Request $request){
         $gets = $request->input();
         $file = $request->file();
@@ -1298,6 +1324,7 @@ class App_Controller extends Controller {
         return back();
 
     }
+    // Borra certificados
     public function user_del_cert(Request $request){
         $gets = $request->input();
         $id = $gets['id'];
@@ -1322,4 +1349,66 @@ class App_Controller extends Controller {
         }
         return back();
     }
+    // Trae titulos que puede seleccionar el usuario
+    public function get_user_degree_titles(){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_degrees',
+            'data' => []
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);        
+        return $data;
+    }
+    public function get_user_type_titles($param){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_degrees_type',
+            'data' => ['titulo'=> $param]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);        
+        return $data;
+    }
+    // Trae areas de titulos que puede seleccionar el usuario
+    public function get_user_degree_area(){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_degrees_areas',
+            'data' => []
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);        
+        return $data;
+    }
+    public function get_user_specialty($type_title){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_degrees_specialty',
+            'data' => ["tipo_titulo" =>$type_title ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);  
+        return $data;
+    }
+    public function get_user_basic_mentions(){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_degrees_basic_mentions',
+            'data' => []
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);        
+        return $data;
+    }
+    public function send_user_formation_info($get){
+        dd($get);
+        return back();
+    }
+    
 }

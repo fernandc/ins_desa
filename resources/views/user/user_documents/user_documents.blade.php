@@ -19,6 +19,9 @@
         <a class="nav-link"  data="5" id="nav-docente-tab"  href="my_info?section=3&cert=5" >CERTIFICADO DE IDONEIDAD DOCENTE</a>
     </li>
     <li class="nav-item">
+        <a class="nav-link"  data="7" id="nav-hijo-tab"  href="my_info?section=3&cert=7" >DOCUMENTO DE EVALUACIÓN DOCENTE</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link"  data="6" id="nav-hijo-tab"  href="my_info?section=3&cert=6" >CERTIFICADO DE BONO ESCOLAR - NACIMIENTO HIJO</a>
     </li>
     @php
@@ -43,6 +46,9 @@
             }elseif ($active == 5) {
                 $cert_name = 'Idoneidad docente'; 
                 $cert_id = 'certificado_idoneidad_docente';         
+            }elseif ($active == 7) {
+                $cert_name = 'Evaluación docente'; 
+                $cert_id = 'documento_evaluación_docente';         
             }elseif ($active == 6) {
                 $cert_name = 'Bono escolar - certificado de nacimiento (hij@)';
                 $cert_id = 'certificado_nacimiento_hijo';

@@ -11,7 +11,7 @@ My Info
 @endsection
 @section("context")
     <div class="row" style="margin:auto">
-        <div class="col-md-2">
+        <div class="col-xl-2">
             <div class="card">
                 <div class="card-header">
                     <div class="text-center" style="font-weight: bold; font-size: x-large;">
@@ -26,7 +26,7 @@ My Info
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-xl-8">
             @if (isset($_GET['section']))
                 @if ($_GET['section'] == '1')
                     @include('user.user_info.user_form')  
@@ -43,7 +43,7 @@ My Info
                 @include('user.user_info.user_form') 
             @endif
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-xl-2"></div>
     </div>
 
     @livewireScripts

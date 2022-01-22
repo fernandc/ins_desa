@@ -22,7 +22,11 @@
                 <input id="cert_name_input_{{$cert_id}}" class="form-control is-invalid" value="{{$cert_id}}" name="cert_name_input" hidden="">
                 <div class="card">
                     <div class="card-header" style="font-weight: bold">
-                        Certificado de {{$cert_name}}
+                        @if ($active == 7)
+                            Documento de {{$cert_name}}
+                        @else
+                            Certificado de {{$cert_name}}                            
+                        @endif
                     </div>
                     <div class="card-body">                    
                         <div class="custom-file" style="margin-bottom: 50px;">
@@ -41,7 +45,9 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" disabled id="btn_save_cert" class="btn btn-success">Guardar archivo</button>
+                        <div class="text-center">
+                            <button type="submit" disabled id="btn_save_cert" class="btn btn-lg btn-success">Guardar archivo</button>
+                        </div>
                     </div>                
                 </div>
             </div>

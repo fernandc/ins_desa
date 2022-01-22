@@ -1072,4 +1072,5 @@ class View_System extends Controller {
         $data = json_decode($response->body(), true);        
         return $data;
     }
+    
 }

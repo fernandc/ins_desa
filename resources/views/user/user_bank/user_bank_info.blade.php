@@ -62,7 +62,9 @@
                     <input type="number" class="form-control" required min="5" max="9999999999999999999" name="user_bank_account_type" id="user_bank_account_type" aria-describedby="helpId" placeholder="">
                 @endif
             </div>
-            <button type="submit" class="btn btn-success">Guardar</button>
+            <div class="text-center">
+                <button type="submit" class="btn btn-lg btn-success">Guardar</button>
+            </div>
         </form>
         <script>
             $("#user_bank_opt").change(function(){

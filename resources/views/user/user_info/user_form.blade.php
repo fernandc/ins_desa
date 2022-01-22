@@ -13,6 +13,7 @@
     $personal_email = '';
     $cellPhone = '';
     $foto = '';
+    $civil_status = '';
     if(isset($data)){
         $data = $data[0];
         // dd($data);
@@ -26,7 +27,7 @@
         $commune = $data['comuna'];
         $address = $data['direccion'];
         $cellPhone = $data['celular'];
-
+        $civil_status = $data['estado_civil'];
         $bornDate = $data['fecha_nacimiento'];
 
         $bornDate = explode("-",$bornDate);
@@ -48,17 +49,17 @@
     <div class="form-row card my-3" style="flex-direction: unset !important; ">
         <div class="col-md-6">
             <div class="form-group ">
-                <h6>Foto</h6>
+                <label for="output" style="font-weight: bold;">Foto de carnet (frontal)</label>
                 <div class="text-center">
                     @if ($foto != '')
-                        <img class="rounded my-2" id="output" style="max-height:264px; max-width:100%;"  src="get_file/{{$foto}}"/>                    
+                        <img class="rounded my-2" id="output" style="max-height:334px; max-width:100%;"  src="get_file/{{$foto}}"/>                    
                     @else                    
-                        <img class="rounded my-2" id="output" style="max-height:264px; max-width:100%" onchange="loadFile(event)" src="images/default-user.png"/>
+                        <img class="rounded my-2" id="output" style="max-height:334px; max-width:100%" onchange="loadFile(event)" src="images/dni-ejemplo.png"/>
                     @endif
                 </div>                    
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" onchange="loadFile(event)" accept=".pdf,image/*" autocomplete="off" id="inputImgFile" name="inputImgFile"  lang="es">
-                    <label id="inputImgFileLabel" for="inputImgFile" class="custom-file-label">Subir archivo...</label>
+                <div class="custom-file" style="position: absolute;bottom: 16px;left: 2px;">
+                    <input type="file" class="custom-file-input" onchange="loadFile(event)" accept="image/*" autocomplete="off" id="inputImgFile" name="inputImgFile"  lang="es">
+                    <label id="inputImgFileLabel" for="inputImgFile" data-browse="Buscar" class="custom-file-label">Subir archivo...</label>
                 </div>
             </div>
         </div>                
@@ -77,7 +78,7 @@
                 <label for="inputFullName" style="font-weight: bold;">Nombre Completo</label>
                 <input type="text" class="form-control" id="inputFullName" name="inputFullName" required minlength="3" maxlength="150" placeholder="Nombres Apellidos">
             @endif
-            <h6>Sexo</h6>
+            <label for="sex_opt" style="font-weight: bold;">Sexo</label>
             <select class="custom-select" id="sex_opt" required name="sex_opt">
                 <option selected value="">Seleccionar</option>
                 <option value="Femenino">Femenino</option>
@@ -130,7 +131,7 @@
                 <option value="Uruguaya" >Uruguaya</option>
                 <option value="Venezolana" >Venezolana</option>
                 <option value="Apátrida (sin nacionalidad)" >Apátrida (sin nacionalidad)</option>
-                <option value="Otra" >Otra</option>
+                <option value="Otra">Otra</option>
             </select>
             @if ($nationality != '')
                 <script>
@@ -139,7 +140,22 @@
                     });
                 </script>
             @endif
-            
+            <label id="inputCivilStatusLabel" for="inputCivilStatus" style="font-weight: bold;">Estado Civil</label>
+            <select class="custom-select" name="inputCivilStatus" id="inputCivilStatus" required>
+                <option selected value="">Seleccione</option>
+                <option value="Soltero / Soltera">Soltero / Soltera</option>
+                <option value="Casado / Casada">Casado / Casada</option>
+                <option value="Viudo / Viuda">Viudo / Viuda</option>
+                <option value="Divorciado / Divorciada">Divorciado / Divorciada</option>
+                <option value="Conviviente civil">Conviviente civil</option>
+            </select>
+            @if ($civil_status != '')
+                <script>
+                    $(document).ready(function(){
+                        $('#inputCivilStatus option[value="{{$civil_status}}"').prop('selected', true);
+                    });
+                </script>
+            @endif
         </div>
     </div>
 
@@ -147,38 +163,38 @@
 
         <div class="form-group col-md-4">
             @if ($city != '')
-                <label for="inputCity" style="font-weight: bold;">Ciudad</label>
+                <label for="inputCity" style="font-weight: bold;">Ciudad (de residencia)</label>
                 <input type="text" value="{{$city}}" class="form-control" required minlength="3" maxlength="30"  placeholder="Ejemplo: Santiago" id="inputCity" name="inputCity">
             @else
-                <label for="inputCity" style="font-weight: bold;">Ciudad</label>
+                <label for="inputCity" style="font-weight: bold;">Ciudad (de residencia)</label>
                 <input type="text" class="form-control" required minlength="3" maxlength="30"  placeholder="Ejemplo: Santiago" id="inputCity" name="inputCity">                    
             @endif
         </div>
         <div class="form-group col-md-4">
             @if ($commune != '')
-                <label for="inputCommune" style="font-weight: bold;">Comuna</label>
+                <label for="inputCommune" style="font-weight: bold;">Comuna (de residencia)</label>
                 <input type="text" value="{{$commune}}" class="form-control" required minlength="3" maxlength="50"  placeholder="Ejemplo: La Florida" id="inputCommune" name="inputCommune">
             @else
-                <label for="inputCommune" style="font-weight: bold;">Comuna</label>
+                <label for="inputCommune" style="font-weight: bold;">Comuna (de residencia)</label>
                 <input type="text" class="form-control" required minlength="3" maxlength="50"  placeholder="Ejemplo: La Florida" id="inputCommune" name="inputCommune">                    
             @endif
         </div>
         <div class="form-group col-md-4">
             @if ($address != '')
-                <label for="inputAddress" style="font-weight: bold;">Dirección</label>
+                <label for="inputAddress" style="font-weight: bold;">Dirección (de residencia)</label>
                 <input type="text" value="{{$address}}" class="form-control" required minlength="3" placeholder="Ejemplo: Pedro Donoso 8741" maxlength="150" id="inputAddress" name="inputAddress">
             @else
-                <label for="inputAddress" style="font-weight: bold;">Dirección</label>
+                <label for="inputAddress" style="font-weight: bold;">Dirección (de residencia)</label>
                 <input type="text" class="form-control" required minlength="3" placeholder="Ejemplo: Pedro Donoso 8741" maxlength="150" id="inputAddress" name="inputAddress">                    
             @endif
         </div>
         <div class="form-group col-md-6">
             @if ($personal_email != '')
                 <label for="personal_email" style="font-weight: bold;">Correo Personal</label>
-                <input type="email" required value="{{$personal_email}}" class="form-control"  minlength="3" maxlength="25" placeholder="Ejemplo: ejemplo@ejemplo.cl" id="personal_email" name="personal_email">                    
+                <input type="email" required value="{{$personal_email}}" class="form-control"  minlength="3" maxlength="64" placeholder="Ejemplo: ejemplo@ejemplo.cl" id="personal_email" name="personal_email">                    
             @else                    
                 <label for="personal_email" style="font-weight: bold;">Correo Personal</label>
-                <input type="email" required class="form-control"  minlength="3" maxlength="25" placeholder="Ejemplo: ejemplo@ejemplo.cl" id="personal_email" name="personal_email">
+                <input type="email" required class="form-control"  minlength="3" maxlength="64" placeholder="Ejemplo: ejemplo@ejemplo.cl" id="personal_email" name="personal_email">
             @endif
         </div>
         
