@@ -31,7 +31,7 @@ My Info
                 @if ($_GET['section'] == '1')
                     @include('user.user_info.user_form')  
                 @elseif($_GET['section'] == '2')
-                    @livewire('staff.formulario-estudios')
+                    @include('user.user_studies.formulario-estudios')
                 @elseif($_GET['section'] == '3')
                     @include('user.user_documents.user_documents')    
                 @elseif($_GET['section'] == '4')

@@ -57,7 +57,7 @@
                         <img class="rounded my-2" id="output" style="max-height:334px; max-width:100%" onchange="loadFile(event)" src="images/dni-ejemplo.png"/>
                     @endif
                 </div>                    
-                <div class="custom-file" style="position: absolute;bottom: 16px;left: 2px;">
+                <div class="custom-file" style="position: absolute;bottom: 16px;left: 5px;width: 98%;">
                     <input type="file" class="custom-file-input" onchange="loadFile(event)" accept="image/*" autocomplete="off" id="inputImgFile" name="inputImgFile"  lang="es">
                     <label id="inputImgFileLabel" for="inputImgFile" data-browse="Buscar" class="custom-file-label">Subir archivo...</label>
                 </div>
@@ -163,28 +163,28 @@
 
         <div class="form-group col-md-4">
             @if ($city != '')
-                <label for="inputCity" style="font-weight: bold;">Ciudad (de residencia)</label>
+                <label for="inputCity" style="font-weight: bold;">Ciudad <span class="text-secondary" style="font-weight: normal;">(de residencia)</span></label>
                 <input type="text" value="{{$city}}" class="form-control" required minlength="3" maxlength="30"  placeholder="Ejemplo: Santiago" id="inputCity" name="inputCity">
             @else
-                <label for="inputCity" style="font-weight: bold;">Ciudad (de residencia)</label>
+                <label for="inputCity" style="font-weight: bold;">Ciudad <span class="text-secondary" style="font-weight: normal;">(de residencia)</span></label>
                 <input type="text" class="form-control" required minlength="3" maxlength="30"  placeholder="Ejemplo: Santiago" id="inputCity" name="inputCity">                    
             @endif
         </div>
         <div class="form-group col-md-4">
             @if ($commune != '')
-                <label for="inputCommune" style="font-weight: bold;">Comuna (de residencia)</label>
+                <label for="inputCommune" style="font-weight: bold;">Comuna <span class="text-secondary" style="font-weight: normal;">(de residencia)</span></label>
                 <input type="text" value="{{$commune}}" class="form-control" required minlength="3" maxlength="50"  placeholder="Ejemplo: La Florida" id="inputCommune" name="inputCommune">
             @else
-                <label for="inputCommune" style="font-weight: bold;">Comuna (de residencia)</label>
+                <label for="inputCommune" style="font-weight: bold;">Comuna <span class="text-secondary" style="font-weight: normal;">(de residencia)</span></label>
                 <input type="text" class="form-control" required minlength="3" maxlength="50"  placeholder="Ejemplo: La Florida" id="inputCommune" name="inputCommune">                    
             @endif
         </div>
         <div class="form-group col-md-4">
             @if ($address != '')
-                <label for="inputAddress" style="font-weight: bold;">Dirección (de residencia)</label>
+                <label for="inputAddress" style="font-weight: bold;">Dirección <span class="text-secondary" style="font-weight: normal;">(de residencia)</span></label>
                 <input type="text" value="{{$address}}" class="form-control" required minlength="3" placeholder="Ejemplo: Pedro Donoso 8741" maxlength="150" id="inputAddress" name="inputAddress">
             @else
-                <label for="inputAddress" style="font-weight: bold;">Dirección (de residencia)</label>
+                <label for="inputAddress" style="font-weight: bold;">Dirección <span class="text-secondary" style="font-weight: normal;">(de residencia)</span></label>
                 <input type="text" class="form-control" required minlength="3" placeholder="Ejemplo: Pedro Donoso 8741" maxlength="150" id="inputAddress" name="inputAddress">                    
             @endif
         </div>

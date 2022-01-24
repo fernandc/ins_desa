@@ -29,32 +29,7 @@ class FormularioEstudios extends Component
     public $especialidades;
     // Validations
     public $btn_disabled;
-    public $anio_disabled;
-    public $modalidad_disabled;
-    public $duracion_disabled;
 
-    public function actualizar_menciones_sm(){        
-        if (isset($this->menciones_seleccionadas[1])) {
-            if($this->menciones_seleccionadas[1] == true ){
-                for ($i=2; $i <= 26; $i++) {
-                    if (isset($this->menciones_seleccionadas[$i])) {
-                        $this->menciones_seleccionadas[$i] = false;                    
-                    }
-                }
-            }
-        }
-    }
-    public function actualizar_menciones(){        
-        if(count($this->menciones_seleccionadas)!=0){
-            for ($j=2; $j <=26 ; $j++) {
-                if (isset($this->menciones_seleccionadas[$j])) {                    
-                    if($this->menciones_seleccionadas[$j] == true){
-                        $this->menciones_seleccionadas[1] = false;   
-                    }        
-                }
-            }            
-        }
-    }
     public function enviar_datos(){
         $controller = new App_Controller();
         $get = [];
@@ -70,6 +45,16 @@ class FormularioEstudios extends Component
     }
     public function obtener_tipo_titulo(){
         $controller = new App_Controller();
+        $this->tipo_titulo_seleccionado = "";
+        $this->menciones_seleccionadas = "";
+        $this->especialidad_seleccionada = "";
+        $this->area_seleccionada = "";
+        $this->semestres = "";
+        $this->anio_titulacion = "";
+        $this->modalidad = "";
+        $this->tipo_titulo = "";
+        $this->tipo_institucion = "";
+        $this->especialidades = "";
         $this->tipo_titulo = $controller->get_user_type_titles($this->titulo_seleccionado);
 
     }
@@ -78,27 +63,10 @@ class FormularioEstudios extends Component
         $this->especialidades = $controller->get_user_specialty($this->tipo_titulo_seleccionado);
     }
     public function validar_campos(){
-        $titulo = $this->titulo_seleccionado;
-        $tipo_titulo = $this->tipo_titulo_seleccionado;
-        $area_titulo = $this->area_seleccionada;
+        $anio_titulacion = $this->anio_titulacion;
         $this->btn_disabled = "disabled";
-        $this->anio_disabled = "";
-        $this->modalidad_disabled = "";
-        $this->duracion_disabled = "";
-        if($titulo != ""){
-            if($titulo == "No Titulado"){
-                $this->anio_disabled = "hidden";
-                $this->modalidad_disabled = "hidden";
-                $this->duracion_disabled = "hidden";
-            }
-            if($titulo == "Titulado en Otras Áreas"){
-                if($area_titulo != "" && $tipo_titulo != "" ){
-                    $this->btn_disabled = "";
-                }
-            }
-            if($tipo_titulo != ""){
-                $this->btn_disabled = "";
-            }
+        if($anio_titulacion > 1900 && $anio_titulacion <= date("Y")){
+             $this->btn_disabled = "";
         }
     }
     public function updated(){
@@ -106,16 +74,11 @@ class FormularioEstudios extends Component
     }
     public function mount(){
         $controller = new App_Controller();
-        
         $this->titulos = $controller->get_user_degree_titles();
         $this->area_titulo = $controller->get_user_degree_area();
         $this->basic_mentions = $controller->get_user_basic_mentions();
-
         $this->btn_disabled = "disabled";
         $this->validar_campos();
-
-
-
     }
     public function render(){
         return view('livewire.staff.formulario-estudios');
