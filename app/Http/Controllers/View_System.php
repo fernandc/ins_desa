@@ -38,7 +38,7 @@ class View_System extends Controller {
                     }
                 case "adm_users":
                     if($this->isAdmin()){
-                        $staff = $this->staff();
+                        $staff = $this->get_personal();
                         return view('adm_users')->with("staff",$staff);
                     }else{
                         return redirect('');
@@ -649,6 +649,16 @@ class View_System extends Controller {
             Session::put(['period' => null] );
         }
         return $data;       
+    }
+    private function get_personal(){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_all_personal'
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
+        return $data;      
     }
     private function staff(){
         $arr = array(
