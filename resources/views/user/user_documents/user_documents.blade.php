@@ -13,9 +13,6 @@
         <a class="nav-link"  data="3" id="nav-isapre-tab"  href="my_info?section=3&cert=3" >CERTIFICADO DE ISAPRE</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link"  data="4" id="nav-titulo-tab"  href="my_info?section=3&cert=4" >CERTIFICADO DE TÍTULO</a>
-    </li>
-    <li class="nav-item">
         <a class="nav-link"  data="5" id="nav-docente-tab"  href="my_info?section=3&cert=5" >CERTIFICADO DE IDONEIDAD DOCENTE</a>
     </li>
     <li class="nav-item">
@@ -40,9 +37,6 @@
             }elseif ($active == 3) {
                 $cert_name = 'Isapre';   
                 $cert_id = 'certificado_isapre'; 
-            }elseif ($active == 4) {
-                $cert_name = 'Titulo';  
-                $cert_id = 'certificado_titulo';         
             }elseif ($active == 5) {
                 $cert_name = 'Idoneidad docente'; 
                 $cert_id = 'certificado_idoneidad_docente';         

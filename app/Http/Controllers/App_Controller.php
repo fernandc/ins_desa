@@ -1406,18 +1406,80 @@ class App_Controller extends Controller {
         $data = json_decode($response->body(), true);        
         return $data;
     }
-    public function send_user_formation_info($get){
-        dd($get);
+    public function send_user_formation_info($gets){
+        $menciones = '';
+        $area_titulo = '';
+        $id_staff = Session::get('account')['dni'];
+        if(isset($gets['area_seleccionada'])){
+            $area_titulo = $gets['area_seleccionada'];
+        }
+        if($gets["menciones_seleccionadas"] != '' || $gets["menciones_seleccionadas"] != null){
+            foreach ($gets["menciones_seleccionadas"] as $mencion) {
+                if($mencion != false){
+                    if($menciones == ''){
+                        $menciones = $mencion;                    
+                    }
+                    else{
+                        $menciones = $menciones.','.$mencion;
+                    }
+                }
+            }
+        }
+        // dd($gets);
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => '',
-            'data' => ["tipo_titulo" =>$type_title ]
-        );
+            'method' => 'upsert_formation_data',
+            'data' => [
+                "dni" => $id_staff,
+                "degree" =>$gets['titulo_seleccionado'],
+                "degree_type" =>$gets['tipo_titulo_seleccionado'],
+                "specialty" =>$gets['especialidad_seleccionada'],
+                "mentions" =>$menciones,
+                "degree_area" =>$area_titulo,
+                "semester" =>$gets['semestres'],
+                "degree_year" =>$gets['anio_titulacion'],
+                "modality" =>$gets['modalidad'],
+                "institution_type" =>$gets['tipo_institucion'],
+                "path_file" =>$gets['certificado'],
+                ]
+            );
+        
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);  
         return $data;
+    }
+    public function delete_degree_user(Request $request){
+        $gets = $request->input();
+        $dni = Session::get('account')['dni'];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'del_formation_data',
+            'data' => [                 
+                "dni" =>  Session::get('account')['dni'],
+                "id_degree" => $gets['id']
+                ]
+        );
+        // dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);
         return back();
     }
+    // Return las id from 
+    public function get_added_files(){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_added_files',
+            'data' => [
+                'dni'=> Session::get('account')['dni']
+            ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);        
+        return $data;
+    }
+
     
 }

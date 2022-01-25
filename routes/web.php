@@ -81,6 +81,7 @@ Route::post('/save_user_info', [App_Controller::class, 'save_user_info']);
 Route::post('/user_bank_data', [App_Controller::class, 'user_bank_data']);
 Route::post('/user_add_cert', [App_Controller::class, 'user_add_cert']);
 Route::get('/user_del_cert', [App_Controller::class, 'user_del_cert']);
+Route::get('/delete_degree_user', [App_Controller::class, 'delete_degree_user']);
 Route::view('/ejemplos_livewire','ejemplos_livewire');
 Route::get('/{param}',[View_System::class, 'main']);
 
