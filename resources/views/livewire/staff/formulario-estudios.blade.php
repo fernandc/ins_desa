@@ -3,7 +3,7 @@
     <div class="card-header">
         Ingresar Nueva Formación
     </div>
-
+    
     <div class="form-row card-body"  >
         {{-- izq --}}
         <div class="form-group col-md-6" >
@@ -109,30 +109,70 @@
                             </div>
                             @if($tipo_institucion != "")
                                 <div class="form-group col-md-4" >
-                                    <label  for="user_semestres">Duración de la carrera (en semestres)</label>
-                                    <input wire:model="semestres" type="number"class="form-control" name="user_semestres" id="user_semestres" aria-describedby="helpId" placeholder="Ejemplo: 6">
+                                    <label  for="user_semestres">Semestres de la carrera</label>
+                                    <input wire:model="semestres" type="number"class="form-control" name="user_semestres" min="1" id="user_semestres" aria-describedby="helpId" placeholder="Ejemplo: 6">
                                 </div>
                                 @if ($semestres != "")
                                     <div class="form-group col-md-4" >                            
                                         <label for="user_anio_titulacion_id">Año Titulación</label>
                                         <input wire:model="anio_titulacion" type="number"class="form-control" name="user_anio_titulacion_id" id="user_anio_titulacion_id" min="1930" max="3000" aria-describedby="helpId" placeholder="Ejemplo: 2021">                                
                                     </div>
+                                    @if ($anio_titulacion != '')
+                                        <div class="col-md-12">
+                                            <hr>                                            
+                                            <input wire:model="certificado" type="file" onchange="loadFile(event)" class="custom-file-input" id="input_cert_degree" name="input_cert_degree" accept=".pdf*" autocomplete="off">
+                                            <label wire:ignore class="custom-file-label" id="input_cert_degree_label" for="input_cert_degree" data-browse="Buscar">Subir archivo...</label>     
+                                            @error('certificado') <span class="error">{{ $message }}</span> @enderror                                                 
+                                            <embed wire:ignore src="" id="output" width="100%" height="500px" hidden type="application/pdf">                                                                                                                                                                                        
+                                            <script>
+                                                function file_extension(filename){
+                                                    return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename)[0] : undefined;
+                                                }                                                
+                                                $("#input_cert_degree").change(function() {
+                                                    var i = $(this).prev('label').clone();
+                                                    var file = $('#input_cert_degree')[0].files[0].name;
+                                                    console.log(file);
+                                                    var extension = file_extension(file);
+                                                    if(extension == "pdf" ){
+                                                        $("#input_cert_degree_label").html(file);
+                                                        $("#output").attr("hidden",false);
+                                                    }else{
+                                                        Swal.fire('Error!', 'el archivo no es válido.', 'error');
+                                                        file = null;
+                                                    }  
+                                                });                                                    
+                                            </script>                                       
+                                        </div>                                        
+                                    @endif
                                 @endif
                             @endif
                         @endif
-                    @endif
-                    
+                    @endif                    
                 @endif
-                
-                
-                
             @endif
-            
         @endif
     </div>
     <div class="card-footer">
         <div class="text-center">
             <button wire:click="enviar_datos()" {{$btn_disabled}} type="button" id="send_user_formation" class="btn btn-lg btn-success">Guardar</button>
+            <script>                
+                $("#send_user_formation").click(function(){
+                    Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'La información se ha guardado exitosamente.',
+                    showConfirmButton: false,
+                    // timer: 4500
+                    })
+                })                
+                var loadFile = function(event) {
+                    var output = document.getElementById('output');
+                    output.src = URL.createObjectURL(event.target.files[0]);
+                    output.onload = function() {
+                    URL.revokeObjectURL(output.src) // free memory
+                    }
+                };
+            </script>
         </div>
     </div>
 </div>                
