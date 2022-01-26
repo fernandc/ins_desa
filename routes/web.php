@@ -84,6 +84,7 @@ Route::get('/user_del_cert', [App_Controller::class, 'user_del_cert']);
 Route::get('/delete_degree_user', [App_Controller::class, 'delete_degree_user']);
 Route::post('/add_staff_documents_from_adm', [App_Controller::class, 'add_staff_documents_from_adm']);
 Route::get('/btn_del_document_adm', [App_Controller::class, 'btn_del_document_adm']);
+Route::get('/staff_add_cargo', [App_Controller::class, 'staff_add_cargo']);
 Route::view('/ejemplos_livewire','ejemplos_livewire');
 Route::get('/{param}',[View_System::class, 'main']);
 

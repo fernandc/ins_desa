@@ -37,10 +37,7 @@
                                 @php                                
                                     $file_Path = str_replace("/","-",$file_Path);
                                 @endphp  
-                                <embed src="get_file/{{$file_Path}}" id="output{{$id_user}}{{$tipo_doc}}" width="100%" height="500px" type="application/pdf">
-                                <script>                                   
-                                    $("del_btn_doc{{$id_user}}{{$tipo_doc}}").removeAttr("disabled");                                                                          
-                                </script>        
+                                <embed src="get_file/{{$file_Path}}" id="output{{$id_user}}{{$tipo_doc}}" width="100%" height="500px" type="application/pdf">        
                             @else
                                 <div style="font-size: xxx-large">
                                     <i class="fas fa-file-pdf fx-9" style="background:" id="i_output{{$id_user}}{{$tipo_doc}}"></i>
@@ -66,7 +63,9 @@
                     </div>
                     <div class="card-footer">                        
                         <button type="submit" disabled id="btn_save_cert{{$id_user}}{{$tipo_doc}}" class="btn btn-sm btn-success">Guardar archivo</button>
-                        <a href="btn_del_document_adm?dni={{$row['rut']}}&doc={{$tipo_doc}}&path={{$file_Path}}" disabled type="button" class="btn btn-sm btn-danger" id="del_btn_doc{{$id_user}}{{$tipo_doc}}">Eliminar archivo</a>                        
+                        @if ($file_Path != '')
+                            <a href="btn_del_document_adm?dni={{$row['rut']}}&doc={{$tipo_doc}}&path={{$file_Path}}" type="button" class="btn btn-sm btn-danger" id="del_btn_doc{{$id_user}}{{$tipo_doc}}">Eliminar archivo</a>                                                    
+                        @endif
                     </div>                
                 </div>
             </div>

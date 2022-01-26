@@ -1546,10 +1546,25 @@ class App_Controller extends Controller {
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         if($response->body() == 'DELETED'){
             Storage::delete($path);
-        }
-                
-        return back();
+        }                
+        return redirect('adm_users?documents=true');
     }
-
-    
+    public function staff_add_cargo(Request $request){
+        if($this->isAdmin()){
+            $gets = $request->input();
+            $id_staff = $gets['id_staff'];
+            $cargo = $gets["cargo"];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'add_staff_adm_cargo',
+                'data' => [
+                    'id_staff'=> $id_staff,
+                    'cargo' => $cargo
+                    ]
+                );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            return $response->body();
+        }else{return redirect('/');}
+    }
 }

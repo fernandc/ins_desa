@@ -52,24 +52,31 @@ Administrar Usuarios
             </form>
         </div>
         <hr>
+        @php
+            $documents = false;
+            if(isset($_GET['documents'])){
+                $documents = true;
+            }
+        @endphp
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="false">Informacion detallada de Personal</a>
+                <a class="nav-link @if(!$documents) active @endif" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="false">Informacion detallada de Personal</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link " id="privileges-tab" data-toggle="tab" href="#privileges" role="tab" aria-controls="privileges" aria-selected="true">Administrar Privilegios</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="true">Administrar documentos de usuarios</a>
+                <a class="nav-link @if($documents) active @endif " id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="true">Administrar documentos y cargos de usuarios</a>
             </li>
         </ul>
         <div class="tab-content mt-2" id="myTabContent">
-            <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+            <div class="tab-pane fade @if(!$documents) show active @endif" id="details" role="tabpanel" aria-labelledby="details-tab">
                 <table class="table display responsive nowrap"style="width: 100%;" id="lista_staff_detail">
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">Rut</th>
                             <th scope="col">Nombre</th>
+                            <th scope="col">Cargo</th>
                             <th scope="col">Fecha Nacimiento</th>
                             <th scope="col">Sexo</th>
                             <th scope="col">Nacionalidad</th>
@@ -91,6 +98,7 @@ Administrar Usuarios
                                 <tr>
                                     <td>{{$row["rut"]}}</td>
                                     <td>{{$row["nombre_completo"]}}</td>
+                                    <td>{{$row["cargo"]}}</td>
                                     <td>{{$row["fecha_nacimiento"]}}</td>
                                     <td>{{$row["sexo"]}}</td>
                                     <td>{{$row["nacionalidad"]}}</td>
@@ -181,12 +189,14 @@ Administrar Usuarios
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+            <div class="tab-pane fade @if($documents) show active @endif" id="documents" role="tabpanel" aria-labelledby="documents-tab">
                 <div class="table-responsive">
                     <table class="table " style="text-align: center;" id="lista_staff_documents">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">Nombre</th>
+                                <th scope="col">Cargo</th>
+                                <th scope="col">Ficha</th>
                                 <th scope="col">Contrato</th>
                                 <th scope="col">Horario</th>
                                 <th scope="col">Anexo Reloj</th>
@@ -196,39 +206,95 @@ Administrar Usuarios
                         </thead>
                         <tbody>           
                             @foreach ($staff as $row)
-                            <tr>
-                                <td>{{$row['nombre_completo']}}</td>                               
-                                <td>
-                                    @if (isset($row['contrato']))
-                                        @include('admin_views.modal_documents_staff', ['file_Path'=>$row['contrato'], 'tipo_doc'=>"contrato", 'id_user'=> $row['id_staff'], "nombreDoc" => "Contrato" ])
-                                    @else
-                                        @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"contrato", 'id_user'=> $row['id_staff'], "nombreDoc" => "Contrato" ])
-                                    @endif
-                                </td>
-                                <td>
-                                    @if (isset($row['horario']))
-                                        @include('admin_views.modal_documents_staff', ['file_Path'=>$row['horario'], 'tipo_doc'=>"horario", 'id_user'=> $row['id_staff'], "nombreDoc" => "Horario"])
-                                    @else
-                                        @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"horario", 'id_user'=> $row['id_staff'], "nombreDoc" => "Horario"])
-                                    @endif
-                                </td>                               
-                                <td>
-                                    @if (isset($row['anexo_reloj']))
-                                        @include('admin_views.modal_documents_staff', ['file_Path'=>$row['anexo_reloj'], 'tipo_doc'=>"anexo_reloj", 'id_user'=> $row['id_staff'], "nombreDoc" => "Anexo Reloj"])
-                                    @else                                        
-                                        @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"anexo_reloj", 'id_user'=> $row['id_staff'], "nombreDoc" => "Anexo Reloj"])
-                                    @endif    
-                                </td>                               
-                                <td>
-                                    @if (isset($row['liquidacion_marzo']))                                    
-                                        @include('admin_views.modal_documents_staff', ['file_Path'=>$row['liquidacion_marzo'], 'tipo_doc'=>"liquidacion_marzo", 'id_user'=> $row['id_staff'], "nombreDoc" => "Liquidación Marzo"])</td>                                                            
-                                    @else                                        
-                                        @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"liquidacion_marzo", 'id_user'=> $row['id_staff'], "nombreDoc" => "Liquidación Marzo"])</td>                                                            
-                                    @endif    
-                                <td>
-                                    @include('admin_views.modal_documents_staff', ['file_Path'=>'', "otros"=>"otros", 'tipo_doc'=>"otros", 'id_user'=> $row['id_staff'], "nombreDoc" => "Otros"])
-                                </td>                                                            
-                            </tr>                                                                            
+                                @if ($row["estado"] == 1)
+                                    <tr>
+                                        <td>{{$row['nombre_completo']}}</td>
+                                        <td>
+                                            <input type="text" value="{{$row['cargo']}}" style="min-width: 120px;" class="form-control" placeholder="Cargo" id="input_cargo_{{$row['id_staff']}}" >                                                                                      
+                                            <script>
+                                                $("#input_cargo_{{$row['id_staff']}}").focus(function(){
+                                                    Toast.fire({
+                                                        icon: 'info', 
+                                                        title: 'Para guardar presione enter.'
+                                                    })
+                                                });
+                                                $("#input_cargo_{{$row['id_staff']}}").on('keypress', function (e){
+                                                    var input= $(this).val();
+                                                    if(e.which == 13) {
+                                                    //   alert('You pressed enter!');
+                                                        $("#input_cargo_{{$row['id_staff']}}").removeClass('is-invalid');
+                                                        $("#input_cargo_{{$row['id_staff']}}").addClass('is-valid');
+
+                                                        if(input != ''){
+                                                            $.ajax({
+                                                                type: "GET",
+                                                                url: "staff_add_cargo",
+                                                                data:{
+                                                                    id_staff: "{{$row['id_staff']}}" ,
+                                                                    cargo:input,                                                                                                                                    
+                                                                },
+                                                                success: function (data)
+                                                                {
+                                                                    if(data == "UPDATED"){
+                                                                        Toast.fire({
+                                                                            icon: 'success', 
+                                                                            title: 'Completado'
+                                                                        });
+                                                                    }else{
+                                                                        $("#input_cargo_{{$row['id_staff']}}").removeClass('is-valid');
+                                                                        $("#input_cargo_{{$row['id_staff']}}").addClass('is-invalid');
+                                                                        Toast.fire({
+                                                                            icon: 'error', 
+                                                                            title: data
+                                                                        });
+                                                                    }
+                                                                }
+                                                            }); 
+                                                        }
+                                                    }
+                                                });
+                                            </script>
+                                        </td>
+                                        <td>
+                                            @if ($row['isapre'] != '' && $row['numero_cuenta'] != '')
+                                                <span class="badge badge-success">Completado</span>
+                                            @else
+                                                <span class="badge badge-secondary">No Completado</span>
+                                            @endif    
+                                        </td>                             
+                                        <td>
+                                            @if (isset($row['contrato']))
+                                                @include('admin_views.modal_documents_staff', ['file_Path'=>$row['contrato'], 'tipo_doc'=>"contrato", 'id_user'=> $row['id_staff'], "nombreDoc" => "Contrato" ])
+                                            @else
+                                                @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"contrato", 'id_user'=> $row['id_staff'], "nombreDoc" => "Contrato" ])
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (isset($row['horario']))
+                                                @include('admin_views.modal_documents_staff', ['file_Path'=>$row['horario'], 'tipo_doc'=>"horario", 'id_user'=> $row['id_staff'], "nombreDoc" => "Horario"])
+                                            @else
+                                                @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"horario", 'id_user'=> $row['id_staff'], "nombreDoc" => "Horario"])
+                                            @endif
+                                        </td>                               
+                                        <td>
+                                            @if (isset($row['anexo_reloj']))
+                                                @include('admin_views.modal_documents_staff', ['file_Path'=>$row['anexo_reloj'], 'tipo_doc'=>"anexo_reloj", 'id_user'=> $row['id_staff'], "nombreDoc" => "Anexo Reloj"])
+                                            @else                                        
+                                                @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"anexo_reloj", 'id_user'=> $row['id_staff'], "nombreDoc" => "Anexo Reloj"])
+                                            @endif    
+                                        </td>                               
+                                        <td>
+                                            @if (isset($row['liquidacion_marzo']))                                    
+                                                @include('admin_views.modal_documents_staff', ['file_Path'=>$row['liquidacion_marzo'], 'tipo_doc'=>"liquidacion_marzo", 'id_user'=> $row['id_staff'], "nombreDoc" => "Liquidación Marzo"])</td>                                                            
+                                            @else                                        
+                                                @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"liquidacion_marzo", 'id_user'=> $row['id_staff'], "nombreDoc" => "Liquidación Marzo"])</td>                                                            
+                                            @endif
+        
+                                        <td>
+                                            @include('admin_views.modal_documents_staff', ['file_Path'=>'', "otros"=>"otros", 'tipo_doc'=>"otros", 'id_user'=> $row['id_staff'], "nombreDoc" => "Otros"])
+                                        </td>                                                            
+                                        @endif
+                                    </tr>                                                                                                        
                             @endforeach                 
                         </tbody>
                     </table>

@@ -21,36 +21,37 @@
         
                 <div id="collapse{{$idDoc}}{{$i}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">                                    
-                        <embed src="get_file/{{$filePath}}#toolbar=0&navpanes=0&scrollbar=0" id="output_{{$id_user}}_{{$tipo_doc}}" width="100%" height="450px" type="application/pdf">                                    
+                        <embed src="get_file/{{$filePath}}" id="output_{{$id_user}}_{{$tipo_doc}}" width="100%" height="450px" type="application/pdf">                                    
                     </div>
                 </div>
             </div>
         @endfor
     @else
-        @for ($j = 1; $j <= $documento; $j++)
+        @php            
+            $titulos = explode(";",$row['certificados_titulo']);
+            $cont = 0;
+        @endphp
+
+        @foreach ($titulos as $titulo)
             @php
-                $rut = $row["rut"];
-                $rut = str_replace(".","", $rut);
-                $rut = str_replace("-","",$rut);
-                $filePath = "public-staff-".$rut."-2022-";
-                $filePath = $filePath.$idDoc."_".$j."pdf";            
+                $filePath = $titulo;
+                $cont++;
             @endphp
             <div class="card">
                 <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
-                    <button class="btn btn-link btn-sm collapsed" type="button" data-toggle="collapse" data-target="#collapse{{$idDoc}}" aria-expanded="false" aria-controls="collapse{{$idDoc}}">
-                        {{$nombreDoc}}
+                    <button class="btn btn-link btn-sm collapsed" type="button" data-toggle="collapse" data-target="#collapse{{$idDoc}}{{$cont}}" aria-expanded="false" aria-controls="collapse{{$idDoc}}{{$cont}}">
+                        {{$nombreDoc}} {{$cont}}
                     </button>
                 </h2>
-                </div>
-        
-                <div id="collapse{{$idDoc}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                </div>        
+                <div id="collapse{{$idDoc}}{{$cont}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">                                    
-                        <embed src="get_file/{{$filePath}}#toolbar=0&navpanes=0&scrollbar=0" id="output_{{$id_user}}_{{$tipo_doc}}" width="100%" height="450px" type="application/pdf">                                    
+                        <embed src="get_file/{{$filePath}}" id="output_{{$id_user}}_{{$tipo_doc}}" width="100%" height="450px" type="application/pdf">                                    
                     </div>
                 </div>
             </div>
-        @endfor
+        @endforeach
     @endif
 @else
     
@@ -69,7 +70,7 @@
 
         <div id="collapse{{$idDoc}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">                                    
-                <embed src="get_file/{{$filePath}}#toolbar=0&navpanes=0&scrollbar=0" id="output_{{$id_user}}_{{$tipo_doc}}" width="100%" height="450px" type="application/pdf">                                    
+                <embed src="get_file/{{$filePath}}" id="output_{{$id_user}}_{{$tipo_doc}}" width="100%" height="450px" type="application/pdf">                                    
             </div>
         </div>
     </div>
