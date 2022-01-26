@@ -66,7 +66,7 @@
                     </div>
                     <div class="card-footer">                        
                         <button type="submit" disabled id="btn_save_cert{{$id_user}}{{$tipo_doc}}" class="btn btn-sm btn-success">Guardar archivo</button>
-                        <a href="btn_del_document_adm?dni={{$row['rut']}}&doc={{$tipo_doc}}" disabled type="button" class="btn btn-sm btn-danger" id="del_btn_doc{{$id_user}}{{$tipo_doc}}">Eliminar archivo</a>                        
+                        <a href="btn_del_document_adm?dni={{$row['rut']}}&doc={{$tipo_doc}}&path={{$file_Path}}" disabled type="button" class="btn btn-sm btn-danger" id="del_btn_doc{{$id_user}}{{$tipo_doc}}">Eliminar archivo</a>                        
                     </div>                
                 </div>
             </div>

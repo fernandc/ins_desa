@@ -1530,20 +1530,24 @@ class App_Controller extends Controller {
     }
     public function btn_del_document_adm(Request $request){
         $gets = $request->input();
+        $path = $gets['path'];
+        $path = str_replace("-","/",$path);
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => '',
+            'method' => 'del_staff_adm_doc',
             'data' => [
                 'dni'=> $gets['dni'],
                 'name' => $gets['doc'].".pdf",
                 'year' => Session::get('period')
                 ]
             );
-        dd($arr);
+        // dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
-        $data = json_decode($response->body(), true);        
-        return $data;
+        if($response->body() == 'DELETED'){
+            Storage::delete($path);
+        }
+                
         return back();
     }
 
