@@ -54,7 +54,7 @@
                     @if ($foto != '')
                         <img class="rounded my-2" id="output" style="max-height:334px; max-width:100%;"  src="get_file/{{$foto}}"/>                    
                     @else                    
-                        <img class="rounded my-2" id="output" style="max-height:334px; max-width:100%" onchange="loadFile(event)" src="images/dni-ejemplo.png"/>
+                        <img class="rounded my-2" id="output" style="max-height:334px; max-width:100%" onchange="loadFile(event)" src="public/images/dni-ejemplo.png"/>
                     @endif
                 </div>                    
                 <div class="custom-file" style="position: absolute;bottom: 16px;left: 5px;width: 98%;">
