@@ -38,6 +38,34 @@ Inicio
             <script>PDFObject.embed("https://saintcharlescollege.cl/pdf/plan_funcionamiento.pdf", "#planfuncionamiento");</script>
         </div>
     </div>
+    <script>
+        const Message = Swal.mixin({
+            customClass: {
+                container: 'mt-5',
+                popup: 'bg-warning',
+                icon: 'text-primary bg-white',
+                title: 'text-dark'
+            },
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 10000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Message.fire({
+            icon: 'info',
+            title: 'Recuerda Actualizar tu Información haciendo click en el botón: ',
+            html: `<a class="btn btn-light mr-2" href="my_info" >
+                    <img class="rounded-circle" src="{{ Session::get('account')["url_img"]}}" rel="Profile" height="22px" style="margin-top: -6px;margin-left: -4px;margin-right: 2px;">
+                    {{ Session::get('account')["full_name"]}}
+                </a> `
+        });
+    </script>
 </div>
 
 

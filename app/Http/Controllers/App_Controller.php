@@ -1567,4 +1567,17 @@ class App_Controller extends Controller {
             return $response->body();
         }else{return redirect('/');}
     }
+    public function get_user_formation(Request $request){
+        $gets = $request->input();
+        $id_staff = $gets['dni'];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_formation_data',
+            'data' => ["dni" => $id_staff]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);  
+        return $data;
+    }
 }
