@@ -59,6 +59,9 @@ Administrar Usuarios
             <li class="nav-item">
                 <a class="nav-link " id="privileges-tab" data-toggle="tab" href="#privileges" role="tab" aria-controls="privileges" aria-selected="true">Administrar Privilegios</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link " id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="true">Administrar documentos de usuarios</a>
+            </li>
         </ul>
         <div class="tab-content mt-2" id="myTabContent">
             <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
@@ -178,7 +181,59 @@ Administrar Usuarios
                     </div>
                 </div>
             </div>
-            
+            <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+                <div class="table-responsive">
+                    <table class="table " style="text-align: center;" id="lista_staff_documents">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Contrato</th>
+                                <th scope="col">Horario</th>
+                                <th scope="col">Anexo Reloj</th>
+                                <th scope="col">Liquidación Marzo</th>                               
+                                <th scope="col">Otros</th>                               
+                            </tr>
+                        </thead>
+                        <tbody>           
+                            @foreach ($staff as $row)
+                            <tr>
+                                <td>{{$row['nombre_completo']}}</td>                               
+                                <td>
+                                    @if (isset($row['contrato']))
+                                        @include('admin_views.modal_documents_staff', ['file_Path'=>$row['contrato'], 'tipo_doc'=>"contrato", 'id_user'=> $row['id_staff'], "nombreDoc" => "Contrato" ])
+                                    @else
+                                        @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"contrato", 'id_user'=> $row['id_staff'], "nombreDoc" => "Contrato" ])
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (isset($row['horario']))
+                                        @include('admin_views.modal_documents_staff', ['file_Path'=>$row['horario'], 'tipo_doc'=>"horario", 'id_user'=> $row['id_staff'], "nombreDoc" => "Horario"])
+                                    @else
+                                        @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"horario", 'id_user'=> $row['id_staff'], "nombreDoc" => "Horario"])
+                                    @endif
+                                </td>                               
+                                <td>
+                                    @if (isset($row['anexo_reloj']))
+                                        @include('admin_views.modal_documents_staff', ['file_Path'=>$row['anexo_reloj'], 'tipo_doc'=>"anexo_reloj", 'id_user'=> $row['id_staff'], "nombreDoc" => "Anexo Reloj"])
+                                    @else                                        
+                                        @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"anexo_reloj", 'id_user'=> $row['id_staff'], "nombreDoc" => "Anexo Reloj"])
+                                    @endif    
+                                </td>                               
+                                <td>
+                                    @if (isset($row['liquidacion_marzo']))                                    
+                                        @include('admin_views.modal_documents_staff', ['file_Path'=>$row['liquidacion_marzo'], 'tipo_doc'=>"liquidacion_marzo", 'id_user'=> $row['id_staff'], "nombreDoc" => "Liquidación Marzo"])</td>                                                            
+                                    @else                                        
+                                        @include('admin_views.modal_documents_staff', ['file_Path'=>'', 'tipo_doc'=>"liquidacion_marzo", 'id_user'=> $row['id_staff'], "nombreDoc" => "Liquidación Marzo"])</td>                                                            
+                                    @endif    
+                                <td>
+                                    @include('admin_views.modal_documents_staff', ['file_Path'=>'', "otros"=>"otros", 'tipo_doc'=>"otros", 'id_user'=> $row['id_staff'], "nombreDoc" => "Otros"])
+                                </td>                                                            
+                            </tr>                                                                            
+                            @endforeach                 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
 
@@ -242,6 +297,9 @@ Administrar Usuarios
                             "previous": "Anterior"
                             }
                     },
+                });
+                $('#lista_staff_documents').DataTable({
+
                 });
             } );
         </script>

@@ -1128,9 +1128,10 @@ class App_Controller extends Controller {
     }
     // Recuperar archivo con Path  
     public function get_file_FM($path){
-        if(Session::has('account')){
+        if(Session::has('account') || $this->isAdmin()){
             $path = str_replace("-","/",$path);
             $pathVerify = explode("/",$path);
+            // dd($path);
             $foto_perfil = $pathVerify[3];
             $foto_perfil = explode(".",$foto_perfil);
             if($foto_perfil[0] == "foto_perfil"){            
@@ -1210,6 +1211,7 @@ class App_Controller extends Controller {
         $dniSession = str_replace(".","", $dniSession);
         $dniSession = str_replace("-","",$dniSession);
         // dd($dniSession);
+        
         $pathfile = "public/staff/$dniSession";
         $path = "";
         $extension = "";
@@ -1288,7 +1290,8 @@ class App_Controller extends Controller {
         $dniSession = Session::get('account')['dni'];
         $dniSession = str_replace(".","", $dniSession);
         $dniSession = str_replace("-","",$dniSession);
-        $pathfile = "public/staff/$dniSession";
+        $year = Session::get('period');
+        $pathfile = "public/staff/$dniSession/$year";
         $path = "";
         $extension = "";
         $name = ""; 
@@ -1466,7 +1469,7 @@ class App_Controller extends Controller {
         $data = json_decode($response->body(), true);
         return back();
     }
-    // Return las id from 
+    // Return last id from table 
     public function get_added_files(){
         $arr = array(
             'institution' => getenv("APP_NAME"),
@@ -1479,6 +1482,69 @@ class App_Controller extends Controller {
         $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
         $data = json_decode($response->body(), true);        
         return $data;
+    }
+    public function add_staff_documents_from_adm(Request $request){
+        if($this->isAdmin()){
+            $gets = $request->input();
+            $file = $request->file();
+            $id_user = $gets['id_user_staff'];
+            $name = $gets['tipo_doc'];
+            $dni = $gets['rut_user'];
+            $dni_user = $gets['rut_user'];
+            $dni = str_replace(".","", $dni);
+            $dni = str_replace("-","",$dni);
+            $year = Session::get('period');
+            $path_file = "public/staff/$dni/$year";
+            // dd($path_file);
+            if(isset($file)){
+                foreach ($file as $fil) {
+                    $extension = $fil->extension();
+                    $name =$name.'.'.$extension;                   
+                    $duplicated = $this->duplicated_items($path_file,$name,"file");
+                    if($duplicated){
+                        return back();
+                    }
+                    if($extension == "pdf"){
+                        $path = $fil->storeAs("$path_file", $name);                    
+                    }else{
+                        return back();
+                    }
+                }
+            }
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'upsert_user_documents',
+                'data' => [
+                    'dni'=> $dni_user,
+                    'path' => $path,
+                    'name' => $name
+                ]
+            );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $data = json_decode($response->body(), true);        
+            return redirect('adm_users?documents=true');
+        }else{
+            return redirect('/');
+        }        
+    }
+    public function btn_del_document_adm(Request $request){
+        $gets = $request->input();
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => '',
+            'data' => [
+                'dni'=> $gets['dni'],
+                'name' => $gets['doc'].".pdf",
+                'year' => Session::get('period')
+                ]
+            );
+        dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $data = json_decode($response->body(), true);        
+        return $data;
+        return back();
     }
 
     
