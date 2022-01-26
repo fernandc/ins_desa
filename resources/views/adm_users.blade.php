@@ -210,50 +210,54 @@ Administrar Usuarios
                                     <tr>
                                         <td>{{$row['nombre_completo']}}</td>
                                         <td>
-                                            <input type="text" value="{{$row['cargo']}}" style="min-width: 120px;" class="form-control" placeholder="Cargo" id="input_cargo_{{$row['id_staff']}}" >                                                                                      
-                                            <script>
-                                                $("#input_cargo_{{$row['id_staff']}}").focus(function(){
-                                                    Toast.fire({
-                                                        icon: 'info', 
-                                                        title: 'Para guardar presione enter.'
-                                                    })
-                                                });
-                                                $("#input_cargo_{{$row['id_staff']}}").on('keypress', function (e){
-                                                    var input= $(this).val();
-                                                    if(e.which == 13) {
-                                                    //   alert('You pressed enter!');
-                                                        $("#input_cargo_{{$row['id_staff']}}").removeClass('is-invalid');
-                                                        $("#input_cargo_{{$row['id_staff']}}").addClass('is-valid');
+                                            @if ($row['isapre'] != '' && $row['numero_cuenta'] != '')
+                                                <input type="text" value="{{$row['cargo']}}" style="min-width: 120px;" class="form-control" placeholder="Cargo" id="input_cargo_{{$row['id_staff']}}" >                                                                                      
+                                                <script>
+                                                    $("#input_cargo_{{$row['id_staff']}}").focus(function(){
+                                                        Toast.fire({
+                                                            icon: 'info', 
+                                                            title: 'Para guardar presione enter.'
+                                                        })
+                                                    });
+                                                    $("#input_cargo_{{$row['id_staff']}}").on('keypress', function (e){
+                                                        var input= $(this).val();
+                                                        if(e.which == 13) {
+                                                        //   alert('You pressed enter!');
+                                                            $("#input_cargo_{{$row['id_staff']}}").removeClass('is-invalid');
+                                                            $("#input_cargo_{{$row['id_staff']}}").addClass('is-valid');
 
-                                                        if(input != ''){
-                                                            $.ajax({
-                                                                type: "GET",
-                                                                url: "staff_add_cargo",
-                                                                data:{
-                                                                    id_staff: "{{$row['id_staff']}}" ,
-                                                                    cargo:input,                                                                                                                                    
-                                                                },
-                                                                success: function (data)
-                                                                {
-                                                                    if(data == "UPDATED"){
-                                                                        Toast.fire({
-                                                                            icon: 'success', 
-                                                                            title: 'Completado'
-                                                                        });
-                                                                    }else{
-                                                                        $("#input_cargo_{{$row['id_staff']}}").removeClass('is-valid');
-                                                                        $("#input_cargo_{{$row['id_staff']}}").addClass('is-invalid');
-                                                                        Toast.fire({
-                                                                            icon: 'error', 
-                                                                            title: data
-                                                                        });
+                                                            if(input != ''){
+                                                                $.ajax({
+                                                                    type: "GET",
+                                                                    url: "staff_add_cargo",
+                                                                    data:{
+                                                                        id_staff: "{{$row['id_staff']}}" ,
+                                                                        cargo:input,                                                                                                                                    
+                                                                    },
+                                                                    success: function (data)
+                                                                    {
+                                                                        if(data == "UPDATED"){
+                                                                            Toast.fire({
+                                                                                icon: 'success', 
+                                                                                title: 'Completado'
+                                                                            });
+                                                                        }else{
+                                                                            $("#input_cargo_{{$row['id_staff']}}").removeClass('is-valid');
+                                                                            $("#input_cargo_{{$row['id_staff']}}").addClass('is-invalid');
+                                                                            Toast.fire({
+                                                                                icon: 'error', 
+                                                                                title: data
+                                                                            });
+                                                                        }
                                                                     }
-                                                                }
-                                                            }); 
+                                                                }); 
+                                                            }
                                                         }
-                                                    }
-                                                });
-                                            </script>
+                                                    });
+                                                </script>
+                                            @else
+                                                <span class="badge badge-secondary">No Completado</span>
+                                            @endif
                                         </td>
                                         <td>
                                             @if ($row['isapre'] != '' && $row['numero_cuenta'] != '')
