@@ -446,6 +446,7 @@ Administrar Usuarios
                                                             },
                                                             success: function (data)
                                                             {
+                                                                console.log(data);
                                                                 var htmldata = ``;
                                                                 data.forEach(function (obj) {
                                                                     var degreearea = ``;
@@ -459,7 +460,7 @@ Administrar Usuarios
                                                                         }
                                                                     }
                                                                     if(obj.degree_area != ''){
-                                                                        degreearea = `<span class="badge badge-info" style="font-weight: 400 !important;font-size: small;">`+obj.degree_area+`</span>`;
+                                                                        degreearea = `<span style="font-weight: 400;">Area: </span><span class="badge badge-info" style="font-weight: 400 !important;font-size: small;">`+obj.degree_area+`</span>`;
                                                                     }
                                                                     if(obj.specialty){
                                                                         degreespeciality = `<p class="card-text" style="font-size: large;"><span style="font-weight: 500;">Especialidad: </span>`+obj.specialty+`</p>`
@@ -469,8 +470,10 @@ Administrar Usuarios
                                                                                             <div class="row">
                                                                                                 <div class="col-md-6">
                                                                                                     <h6 class="card-subtitle mb-2 text-muted">`+obj.degree+`</h6>
-                                                                                                    <h5 class="card-title">
-                                                                                                        Tipo de titulo: <span class="text-primary">`+obj.degree_type+`</span>
+                                                                                                    <h5 class="card-title mt-3">
+                                                                                                        Tipo de titulo: 
+                                                                                                        <br>
+                                                                                                        <span class="text-primary">`+obj.degree_type+`</span>
                                                                                                         <br> 
                                                                                                         `+ degreearea+`
                                                                                                     </h5>
@@ -478,7 +481,7 @@ Administrar Usuarios
                                                                                                     `+mentions+`
                                                                                                 </div>
                                                                                                 <div class="col-md-6">
-                                                                                                    <p class="card-text mt-3" style="font-size: large;"><span style="font-weight: 500;">Duración de la carrera: </span> `+obj.semester+` Semestres</p>
+                                                                                                    <p class="card-text mt-4" style="font-size: large;"><span style="font-weight: 500;">Duración de la carrera: </span> `+obj.semester+` Semestres</p>
                                                                                                     <p class="card-text " style="font-size: large;"><span style="font-weight: 500;">Año de titulación: </span> `+obj.degree_year+`</p>
                                                                                                     <p class="card-text " style="font-size: large;"><span style="font-weight: 500;">Modalidad de estudio: </span> `+obj.modality+`</p>
                                                                                                 </div>
