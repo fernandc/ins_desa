@@ -75,7 +75,9 @@ Administrar Usuarios
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">Rut</th>
-                            <th scope="col">Nombre</th>
+                            <th scope="col">Nombres</th>
+                            <th scope="col">Apellido Paterno</th>
+                            <th scope="col">Apellido Materno</th>
                             <th scope="col">Cargo</th>
                             <th scope="col">Fecha Nacimiento</th>
                             <th scope="col">Sexo</th>
@@ -97,7 +99,9 @@ Administrar Usuarios
                             @if ($row["estado"] == 1)
                                 <tr>
                                     <td>{{$row["rut"]}}</td>
-                                    <td>{{$row["nombre_completo"]}}</td>
+                                    <td>{{$row["nombres"]}}</td>
+                                    <td>{{$row["apellido_paterno"]}}</td>
+                                    <td>{{$row["apellido_materno"]}}</td>
                                     <td>{{$row["cargo"]}}</td>
                                     <td>{{$row["fecha_nacimiento"]}}</td>
                                     <td>{{$row["sexo"]}}</td>
@@ -124,7 +128,7 @@ Administrar Usuarios
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">Rut</th>
-                                <th scope="col">Nombre</th>
+                                <th scope="col">Nombre Completo</th>
                                 <th scope="col">Email Institucional</th>
                                 <th scope="col">Administrador</th>
                                 <th scope="col">Estado</th>
@@ -135,7 +139,7 @@ Administrar Usuarios
                             @foreach($staff as $row)
                                 <tr>
                                     <td>{{$row["rut"]}}</td>
-                                    <td>{{$row["nombre_completo"]}}</td>
+                                    <td>{{$row["nombres"]}} {{$row["apellido_paterno"]}} {{$row["apellido_materno"]}}</td>
                                     <td>{{$row["email_institucional"]}}</td>
                                     <td>
                                         @if($row["administrador"]=="YES")
@@ -194,7 +198,7 @@ Administrar Usuarios
                     <table class="table " style="text-align: center;" id="lista_staff_documents">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col">Nombre</th>
+                                <th scope="col">Nombre Completo</th>
                                 <th scope="col">Cargo</th>
                                 <th scope="col">Ficha</th>
                                 <th scope="col">Contrato</th>
@@ -208,7 +212,7 @@ Administrar Usuarios
                             @foreach ($staff as $row)
                                 @if ($row["estado"] == 1)
                                     <tr>
-                                        <td>{{$row['nombre_completo']}}</td>
+                                        <td>{{$row["nombres"]}} {{$row["apellido_paterno"]}} {{$row["apellido_materno"]}}</td>
                                         <td>
                                             @if ($row['isapre'] != '' && $row['numero_cuenta'] != '')
                                                 <input type="text" value="{{$row['cargo']}}" style="min-width: 120px;" class="form-control" placeholder="Cargo" id="input_cargo_{{$row['id_staff']}}" >                                                                                      
@@ -269,7 +273,7 @@ Administrar Usuarios
                                                 <div class="modal fade" id="ficha{{$row["id_staff"]}}" tabindex="-1" role="dialog" aria-labelledby="ficha{{$row["id_staff"]}}Label" aria-hidden="true">
                                                     <div class="modal-dialog modal-lg" role="document">
                                                         <div class="modal-content" id="modalContentFicha"><div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalCenterTracingTitle"><fieldset>Ficha de {{$row["nombre_completo"]}}</fieldset></h5>
+                                                            <h5 class="modal-title" id="exampleModalCenterTracingTitle"><fieldset>Ficha de {{$row["nombres"]}} {{$row["apellido_paterno"]}} {{$row["apellido_materno"]}}</fieldset></h5>
                                                             <button id="imprimir" class="btn btn-outline-info btn-sm ml-2">Imprimir</button>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                               <span aria-hidden="true">×</span>
@@ -290,16 +294,12 @@ Administrar Usuarios
                                                                   </div>
                                                                   <div class="">
                                                                       <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Funcionario {{Session::get('period')}} </p>
-                                                                      <p class="text-info" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; {{$row["nombre_completo"]}} </p>
+                                                                      <p class="text-info" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; {{$row["nombres"]}} {{$row["apellido_paterno"]}} {{$row["apellido_materno"]}} </p>
                                                                   </div>
                                                                   <div>
                                                                       <div class="my-3 mt-5">
                                                                           <h3>Datos Personales</h3>
                                                                         <div class="form-group row">
-                                                                            <label class="col-sm-4 col-form-label text-left">Nombre completo</label>
-                                                                            <div class="col-sm-8 mb-3">
-                                                                                <input type="text" class="form-control bg-white" readonly="" value="{{$row["nombre_completo"]}}">
-                                                                            </div>
 
                                                                             <label class="col-sm-4 col-form-label text-left">Cargo</label>
                                                                             <div class="col-sm-8 mb-3">
@@ -429,7 +429,7 @@ Administrar Usuarios
                                                               var element = document.getElementById('content');
                                                               var opt = {
                                                                 margin:       0.5,
-                                                                filename:     'Ficha {{$row["nombre_completo"]}}.pdf',
+                                                                filename:     'Ficha {{$row["nombres"]}} {{$row["apellido_paterno"]}} {{$row["apellido_materno"]}}.pdf',
                                                                 image:        { type: 'jpg', quality: 0.98 },
                                                                 html2canvas:  { scale: 2 },
                                                                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
