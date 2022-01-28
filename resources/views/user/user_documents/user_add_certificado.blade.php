@@ -1,11 +1,11 @@
 @php
     $certificado = '';
     $filePath = '';
-    if (isset($certificados) && $active!=6) {
+    if (isset($certificados) && $active!=6 && $active!=5) {
         foreach ($certificados as $certificado) {
-            $name = $certificado['name'];            
-            $name = explode(".",$name);
-            if ($name[0] == $cert_id) {
+            $name = $certificado['name'];                     
+            $name = explode(".",$name);            
+            if ($name[0] == $cert_id) {                
                 $filePath = $certificado["path"];
                 $filePath = str_replace("/","-",$filePath);
             }                        
@@ -22,7 +22,7 @@
                 <input id="cert_name_input_{{$cert_id}}" class="form-control is-invalid" value="{{$cert_id}}" name="cert_name_input" hidden="">
                 <div class="card">
                     <div class="card-header" style="font-weight: bold">                    
-                        Certificado de {{$cert_name}} / <a href="{{$link}}" target="_blank">Puedes encontrarlo aqui.</a>                             
+                        Certificado de {{$cert_name}} @if($link != '')  / <a href="{{$link}}" target="_blank">Puedes encontrarlo aquí.</a> @endif                             
                     </div>
                     <div class="card-body">                    
                         <div class="custom-file" style="margin-bottom: 50px;">

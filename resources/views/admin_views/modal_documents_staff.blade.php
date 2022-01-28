@@ -1,12 +1,14 @@
 <!-- Button trigger modal -->
 
-<button type="button" class="btn btn-sm @if($file_Path != '') btn-success @else btn-outline-secondary  @endif" data-toggle="modal" data-target="#documentosModal_{{$id_user}}_{{$tipo_doc}}">
-    @if (isset($otros))
+@if (isset($otros))
+  <button type="button" class="btn btn-sm @if(($row['certificado_antecedentes'] != '' && $row['certificado_afp'] != '' && $row['certificado_isapre'] != '' ) && ( ($row['certificado_idoneidad_docente'] != '' && $row['certificados_titulo'] != '') || ($row['certificado_inhabilidad'] != '') ) ) btn-success @else btn-outline-secondary  @endif" data-toggle="modal" data-target="#documentosModal_{{$id_user}}_{{$tipo_doc}}">
+          Ver Archivos        
+  </button>
+@else
+  <button type="button" class="btn btn-sm @if($row[$tipo_doc] != '') btn-success @else btn-outline-secondary  @endif" data-toggle="modal" data-target="#documentosModal_{{$id_user}}_{{$tipo_doc}}">
         Ver Archivos        
-    @else
-        Ver Archivo
-    @endif
-</button>
+  </button>
+@endif
   
   <!-- Modal -->
   <div class="modal fade" id="documentosModal_{{$id_user}}_{{$tipo_doc}}" tabindex="-1" role="dialog" aria-labelledby="documentosModal_{{$id_user}}_{{$tipo_doc}}Label" aria-hidden="true">

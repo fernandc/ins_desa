@@ -53,9 +53,9 @@ if(isset($data)){
         <label for="output" style="font-weight: bold;">Foto de carnet (frontal)</label>
         <div class="text-center">
             @if ($foto != '')
-                <img class="rounded mt-2" id="output" style="max-height:334px; max-width:97%;"  src="get_file/{{$foto}}"/>                    
+                <img class="rounded mt-2" id="output" style="max-height:232px; max-width:90%;"  src="get_file/{{$foto}}"/>                    
             @else                    
-                <img class="rounded mb-3" id="output" style="max-height:334px; max-width:97%" onchange="loadFile(event)" src="images/dni-ejemplo.png"/>
+                <img class="rounded mb-3" id="output" style="max-height:232px; max-width:90%" onchange="loadFile(event)" src="images/dni-ejemplo.png"/>
             @endif
         </div>                    
         <div class="custom-file" style="position: absolute;bottom: 0px;left: 10px;width: 95%;"">

@@ -617,7 +617,27 @@ Administrar Usuarios
                     },
                 });
                 $('#lista_staff_documents').DataTable({
-
+                    order: [0, "desc" ],
+                    language: {
+                        "decimal": "",
+                        "emptyTable": "No hay información",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Filas",
+                        "infoEmpty": "Mostrando 0 to 0 of 0 Filas",
+                        "infoFiltered": "(Filtrado de MAX total Filas)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Filas",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscar:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                            }
+                    }
                 });
             } );
         </script>

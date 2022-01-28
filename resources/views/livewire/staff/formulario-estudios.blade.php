@@ -118,12 +118,12 @@
                                         <input wire:model="anio_titulacion" type="number"class="form-control" name="user_anio_titulacion_id" id="user_anio_titulacion_id" min="1930" max="3000" aria-describedby="helpId" placeholder="Ejemplo: 2021">                                
                                     </div>
                                     @if ($anio_titulacion != '')
-                                        <div class="col-md-12">
-                                            <hr>                                            
+                                        <div class="form-group col-md-12">                                            
+                                            <label for="">Certificado de Título</label>
                                             <input wire:model="certificado" type="file" onchange="loadFile(event)" class="custom-file-input" id="input_cert_degree" name="input_cert_degree" accept=".pdf*" autocomplete="off">
-                                            <label wire:ignore class="custom-file-label" id="input_cert_degree_label" for="input_cert_degree" data-browse="Buscar">Subir archivo...</label>     
+                                            <label wire:ignore class="custom-file-label" id="input_cert_degree_label" for="input_cert_degree" data-browse="Buscar"  style="margin-top: 30px;">Subir archivo...</label>     
                                             @error('certificado') <span class="error">{{ $message }}</span> @enderror                                                 
-                                            <embed wire:ignore src="" id="output" width="100%" height="500px" hidden type="application/pdf">                                                                                                                                                                                        
+                                            <embed wire:ignore src=""  id="output" width="100%" height="500px" hidden type="application/pdf">                                                                                                                                                                                        
                                             <script>
                                                 function file_extension(filename){
                                                     return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename)[0] : undefined;
