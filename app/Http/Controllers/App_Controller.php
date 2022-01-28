@@ -1241,7 +1241,9 @@ class App_Controller extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'upsert_user_data',
             'data' => [
-                "full_name" => $gets['inputFullName'],
+                "names" => $gets['inputNameStaff'],
+                "f_last_name" => $gets['input_ln_f'],
+                "m_last_name" => $gets['input_ln_m'],
                 "rut" => $gets['inputDni'],
                 "dni" => Session::get('account')['dni'], 
                 "sex" => $gets['sex_opt'],

@@ -12,7 +12,7 @@
         }
     }
 @endphp
-@if ($active == 6)
+@if ($active == 5 || $active == 6 )
     @include('user.user_documents.user_add_cert_bono_hijo')
  @else
     <form action="user_add_cert" method="post" class="was-validated" enctype="multipart/form-data">
@@ -21,12 +21,8 @@
             <div class="form-group">
                 <input id="cert_name_input_{{$cert_id}}" class="form-control is-invalid" value="{{$cert_id}}" name="cert_name_input" hidden="">
                 <div class="card">
-                    <div class="card-header" style="font-weight: bold">
-                        @if ($active == 7)
-                            Documento de {{$cert_name}}
-                        @else
-                            Certificado de {{$cert_name}}                            
-                        @endif
+                    <div class="card-header" style="font-weight: bold">                    
+                        Certificado de {{$cert_name}} / <a href="{{$link}}" target="_blank">Puedes encontrarlo aqui.</a>                             
                     </div>
                     <div class="card-body">                    
                         <div class="custom-file" style="margin-bottom: 50px;">

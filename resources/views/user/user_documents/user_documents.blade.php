@@ -13,14 +13,15 @@
         <a class="nav-link"  data="3" id="nav-isapre-tab"  href="my_info?section=3&cert=3" >CERTIFICADO DE ISAPRE</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link"  data="5" id="nav-docente-tab"  href="my_info?section=3&cert=5" >CERTIFICADO DE IDONEIDAD DOCENTE</a>
+        <a class="nav-link"  data="4" id="nav-docente-tab"  href="my_info?section=3&cert=4" >CERTIFICADO DE EVALUACIÓN DOCENTE</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link"  data="7" id="nav-hijo-tab"  href="my_info?section=3&cert=7" >DOCUMENTO DE EVALUACIÓN DOCENTE</a>
+        <a class="nav-link"  data="5" id="nav-hijo-tab"  href="my_info?section=3&cert=5" >CERTIFICADO NACIMIENTO HIJO</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link"  data="6" id="nav-hijo-tab"  href="my_info?section=3&cert=6" >CERTIFICADO DE BONO ESCOLAR - NACIMIENTO HIJO</a>
+        <a class="nav-link"  data="6" id="nav-hijo-tab"  href="my_info?section=3&cert=6" >CERTIFICADO CARGA FAMILIAR</a>
     </li>
+
     @php
         $active = 0;
         $cert_name = '';
@@ -31,23 +32,27 @@
             if ($active == 1) {
                 $cert_name = 'Antecedentes';
                 $cert_id = 'certificado_antecedentes';
+                $link = 'https://www.registrocivil.cl/principal/servicios-en-linea/certificado-de-antecedentes';
             }elseif ($active == 2) {
                 $cert_name = 'AFP';       
                 $cert_id = 'certificado_afp';
+                $link = 'https://www.chileatiende.gob.cl/fichas/3310-certificado-de-afiliacion-a-una-afp';
             }elseif ($active == 3) {
                 $cert_name = 'Isapre';   
                 $cert_id = 'certificado_isapre'; 
-            }elseif ($active == 5) {
-                $cert_name = 'Idoneidad docente'; 
-                $cert_id = 'certificado_idoneidad_docente';         
-            }elseif ($active == 7) {
+                $link = 'https://www.chileatiende.gob.cl/fichas/3505-certificado-de-afiliacion-al-sistema-de-isapres';
+            }elseif ($active == 4) {
                 $cert_name = 'Evaluación docente'; 
                 $cert_id = 'documento_evaluación_docente';         
-            }elseif ($active == 6) {
-                $cert_name = 'Bono escolar - certificado de nacimiento (hij@)';
+                $link = '';
+            }elseif ($active == 5) {
+                $cert_name = 'nacimiento hijo o hija ';
                 $cert_id = 'certificado_nacimiento_hijo';
-                $cert_id_hijo = 'certificado_nacimiento_hijo';
-                $cert_id_bono = 'certificado_bono_escolar';
+                $link = 'https://www.registrocivil.cl/principal/servicios-en-linea/certificado-de-nacimiento';
+            }elseif ($active == 6) {
+                $cert_name = 'carga familiar';
+                $cert_id = 'certificado_carga_familiar';
+                $link = 'https://www.chileatiende.gob.cl/fichas/25878-reconocimiento-de-cargas-para-asignacion-familiar-trabajadores-dependientes';
             }
         @endphp
     @endif

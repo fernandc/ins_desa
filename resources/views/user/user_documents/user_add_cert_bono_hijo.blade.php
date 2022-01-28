@@ -3,7 +3,7 @@
     <div class="form-group">
         <div class="card">
             <div class="card-header" style="font-weight: bold">
-                Certificado de {{$cert_name}}
+                Certificado de {{$cert_name}}/ <a href="{{$link}}" target="_blank">Puedes encontrarlo aqui.</a> 
             </div>
             <div class="card-body">
                 @php
@@ -12,12 +12,12 @@
                     $index = 0;
                     $flag = false;
                     foreach($certificados as $row){
-                        if(substr($row["name"],0,27) == "certificado_nacimiento_hijo"){
+                        if(substr($row["name"],0,27) == $cert_id || substr($row["name"],0,26) == $cert_id){
                             $filePath[$index] = str_replace("/","-",$row["path"]);
                             $fileId[$index] = $row["id"];
                             $index++;
                             $flag = true;
-                        }
+                        }                                        
                     }
                     $index++;
                 @endphp
@@ -32,6 +32,7 @@
                             <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Nuevo Certificado</a>
                         </li>
                     </ul>
+                    {{--  --}}
                     <div class="tab-content" id="myTabContent">
                         @for ($i = 0; $i < $index-1; $i++)
                             <div class="tab-pane fade @if($i == 0) show active @endif" id="certificado-nac-{{$i+1}}" role="tabpanel" aria-labelledby="certificado-nac-{{$i+1}}-tab">
