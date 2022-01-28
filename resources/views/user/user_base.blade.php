@@ -34,10 +34,10 @@ My Info
                             <span>
                                 No docentes:
                             </span>
-                            <a class="nav-link"  data="7" id="nav-hijo-tab"  href="my_info?section=3&cert=7" >CERTIFICADO DE INHABILIDADES PARA TRABAJAR CON MENORES DE EDAD @if($data[0]['certificado_inhabilidad'] != '') <span class="text-success">[Completado]</span>@else <span class="text-secondary">[Opcional]</span>@endif</a>
+                            <a class="nav-link"  data="7" id="nav-hijo-tab"  href="my_info?section=3&cert=7" >CERTIFICADO DE INHABILIDADES PARA TRABAJAR CON MENORES DE EDAD @if($data[0]['certificado_inhabilidad'] != '') <span class="text-success">[Completado]</span>@else <span class="text-danger">[No completado]</span>@endif</a>
                             <hr>
                             <span>Docentes:</span>
-                            <a class="nav-link"  data="8" id="nav-docente-tab"  href="my_info?section=3&cert=8" >CERTIFICADO DE IDONEIDAD DOCENTE @if($data[0]['certificado_idoneidad_docente'] != '') <span class="text-success">[Completado]</span>@else <span class="text-secondary">[Opcional]</span>@endif</a>
+                            <a class="nav-link"  data="8" id="nav-docente-tab"  href="my_info?section=3&cert=8" >CERTIFICADO DE IDONEIDAD DOCENTE @if($data[0]['certificado_idoneidad_docente'] != '') <span class="text-success">[Completado]</span>@else <span class="text-danger">[No completado]</span>@endif</a>
                             <a class="nav-link"  data="4" id="nav-docente-tab"  href="my_info?section=3&cert=4" >CERTIFICADO DE EVALUACIÓN DOCENTE @if($data[0]['certificado_evaluacion_docente'] != '') <span class="text-success">[Completado]</span>@else <span class="text-secondary">[Opcional]</span>@endif</a>
                         </div>
                     </div>
