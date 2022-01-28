@@ -288,8 +288,9 @@ Administrar Usuarios
                                                                 <div class="float-left" style="width: 80px; heigth:80px;">
                                                                     <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://scc.cloupping.com/public/scc_logo.png')); ?>" alt="" class="img-fluid">
                                                                   </div>
-                                                                  <div class="d-flex">
-                                                                      <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; Ficha Funcionario {{Session::get('period')}} </p>
+                                                                  <div class="">
+                                                                      <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Funcionario {{Session::get('period')}} </p>
+                                                                      <p class="text-info" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; {{$row["nombre_completo"]}} </p>
                                                                   </div>
                                                                   <div>
                                                                       <div class="my-3 mt-5">
@@ -416,6 +417,15 @@ Administrar Usuarios
                                                           </div>
                                                           <script>
                                                             $('#imprimir').click(function() {
+                                                                Swal.fire({
+                                                                    title: 'Generando PDF...',
+                                                                    timer: 2000,
+                                                                    showConfirmButton: false,
+                                                                    timerProgressBar: true,
+                                                                    didOpen: () => {
+                                                                        Swal.showLoading();
+                                                                    }
+                                                                })
                                                               var element = document.getElementById('content');
                                                               var opt = {
                                                                 margin:       0.5,
@@ -584,7 +594,7 @@ Administrar Usuarios
                             { extend: 'excel', className: 'bg-primary mb-2', text: "Descargar Excel (xlsx)" }
                         ]
                     },
-                    order: [3, "desc" ],
+                    order: [2, "desc" ],
                     language: {
                         "decimal": "",
                         "emptyTable": "No hay información",
