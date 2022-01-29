@@ -188,7 +188,7 @@ class View_System extends Controller {
                                 'method' => 'assistance_student_lite',
                                 'data' => [ 'year' => $year, 'id_grade' => $curso ]
                             );
-                            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
                             $data = json_decode($response->body(), true);
                             foreach ($data as $row) {
                                 $exploded = explode("_",$row["a"]);
@@ -342,7 +342,7 @@ class View_System extends Controller {
                             'method' => 'list_schedule_course',
                             'data' => ['id' => 0]
                         );
-                        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
                         $data = json_decode($response->body(), true);
                         return view("info_horario_clases")->with("cursos",$cursos)->with("horarios",$data);
                     }
@@ -486,7 +486,7 @@ class View_System extends Controller {
                         'method' => 'get_tickets',
                         'data' => ['dni' => Session::get('account')['dni']]
                     );
-                    $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                    $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
                     $data = json_decode($response->body(), true);
                     $view_all = false;
                     foreach ($privileges as $row) {
@@ -500,7 +500,7 @@ class View_System extends Controller {
                             'public_key' => getenv("APP_PUBLIC_KEY"),
                             'method' => 'get_tickets'
                         );
-                        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
                         $all_tickets = json_decode($response->body(), true);
                         
                     }
@@ -551,7 +551,7 @@ class View_System extends Controller {
             'data' => ['dni' => Session::get('account')['dni']]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -564,7 +564,7 @@ class View_System extends Controller {
             'data' => [ "id_curso" => $id_curso ]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -577,7 +577,7 @@ class View_System extends Controller {
             'data' => [ "id_curso" => $id_curso ]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -588,7 +588,7 @@ class View_System extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'list_news'
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         return $data;       
     }
@@ -599,7 +599,7 @@ class View_System extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'val_session_staff',
                 'data' => ['dni' => Session::get('account')['dni']]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
             $status = $response->json()['status'];
             if($status == false){
                 return false;
@@ -617,7 +617,7 @@ class View_System extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'check_is_admin',
                 'data' => ['dni' => Session::get('account')['dni']]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
             $status = $response->json()['status'];
             if($status == false){
                 return false;
@@ -643,7 +643,7 @@ class View_System extends Controller {
             'method' => 'list_periods'
         );
 
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         if($data["active_period"] != ''){
             Session::put(['period' => $data["active_period"]] );
@@ -659,7 +659,7 @@ class View_System extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'get_all_personal'
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         return $data;      
     }
@@ -669,7 +669,7 @@ class View_System extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'list_staff'
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         return $data;       
     }
@@ -679,7 +679,7 @@ class View_System extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'list_grades'
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;       
@@ -691,7 +691,7 @@ class View_System extends Controller {
             'method' => 'list_students_matriculated'
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;       
@@ -704,7 +704,7 @@ class View_System extends Controller {
             'data' => [ "id_curso" => $id_curso ]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;       
@@ -715,7 +715,7 @@ class View_System extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'list_all_matters'
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;       
@@ -726,7 +726,7 @@ class View_System extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'list_matters_in'
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -752,7 +752,7 @@ class View_System extends Controller {
                 'data' => ['id' => $id_curso]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
             $data = json_decode($response->body(), true);
             //dd($data);  
             $arr2 = array(
@@ -762,7 +762,7 @@ class View_System extends Controller {
                 'data' => ['id_curso' => $id_curso]
             );
             //dd($arr);
-            $response2 = Http::withBody(json_encode($arr2), 'application/json')->post("https://cloupping.com/api-ins");
+            $response2 = Http::withBody(json_encode($arr2), 'application/json')->post(getenv("API_ENDPOINT"));
             $data2 = json_decode($response2->body(), true);
             return view("/includes/schedule/sch_course")->with("active", $active)->with("id_curso",$id_curso)->with("sched_course",$data)->with("clase_curso",$data2); 
         }else{
@@ -780,7 +780,7 @@ class View_System extends Controller {
                 'method' => 'list_teachers_course',
                 'data' => [ "id_curso" => $id_curso ]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
             $data = json_decode($response->body(), true);
             $arr2 = array(
                 'institution' => getenv("APP_NAME"),
@@ -789,7 +789,7 @@ class View_System extends Controller {
                 'data' => ['id' => $id_curso,]
             );
             //dd($arr);
-            $response2 = Http::withBody(json_encode($arr2), 'application/json')->post("https://cloupping.com/api-ins");
+            $response2 = Http::withBody(json_encode($arr2), 'application/json')->post(getenv("API_ENDPOINT"));
             $data2 = json_decode($response2->body(), true);
             //dd($data);
             return view("/includes/schedule/sch_teachers")->with("active", $active)->with("id_curso",$id_curso)->with("teacherList",$data)->with("sched_course_t",$data2);
@@ -829,7 +829,7 @@ class View_System extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'all_privileges'
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -841,7 +841,7 @@ class View_System extends Controller {
             'method' => 'user_privileges',
             'data' => ['dni' => $dni]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -853,7 +853,7 @@ class View_System extends Controller {
             'method' => 'proxy_info',
             'data' => ['dni' => $dni]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -866,7 +866,7 @@ class View_System extends Controller {
             'method' => 'mails_sended',
             'data' => ['filter' => $filter]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -880,7 +880,7 @@ class View_System extends Controller {
             'method' => 'mails_sended_to',
             'data' => ['id_mail' => $id_mail]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return view('includes/mdl_sent_mails')->with('correos',$data);
@@ -915,7 +915,7 @@ class View_System extends Controller {
             ]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -930,7 +930,7 @@ class View_System extends Controller {
             ]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;  
@@ -942,7 +942,7 @@ class View_System extends Controller {
             'method' => 'list_mail_groups'
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;       
@@ -954,7 +954,7 @@ class View_System extends Controller {
             'method' => 'list_students_groups'
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;       
@@ -978,7 +978,7 @@ class View_System extends Controller {
             'data' => [ "id_grupo" => $id_grupo ]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -991,7 +991,7 @@ class View_System extends Controller {
             'data' => [ "id_class" => $id_class , "id_grade" => $id_grade , "year" => $year ]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -1004,7 +1004,7 @@ class View_System extends Controller {
             'data' => [ "id_class" => $id_class , "id_grade" => $id_grade ]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         //dd($data);
         return $data;
@@ -1017,7 +1017,7 @@ class View_System extends Controller {
             'method' => 'list_schedule_course',
             'data' => ['id' => $id_curso_periodo]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         return $data;
     }
@@ -1029,7 +1029,7 @@ class View_System extends Controller {
             'method' => 'list_schedule_course_by_user',
             'data' => ['dni' => Session::get('account')['dni']]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         return $data;
     }
@@ -1041,7 +1041,7 @@ class View_System extends Controller {
             'method' => 'list_filemanager',
             'data' => ["path" => $path, "app_status" => $app_status]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         return $data;
     }
@@ -1053,7 +1053,7 @@ class View_System extends Controller {
             'method' => 'validate_filemanager_path',
             'data' => ["path" => $path, "app_status" => $app_status ]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         return $data;
     }
@@ -1064,7 +1064,7 @@ class View_System extends Controller {
             'method' => 'get_user_data',
             'data' => ["dni" => $dni ]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);
         return $data;
     }
@@ -1081,7 +1081,7 @@ class View_System extends Controller {
             'method' => 'get_user_documents',
             'data' => ["dni" => $dni ]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);        
         return $data;
     }
@@ -1093,7 +1093,7 @@ class View_System extends Controller {
             'method' => 'get_formation_data',
             'data' => ["dni" => $id_staff]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         $data = json_decode($response->body(), true);  
         return $data;
     }

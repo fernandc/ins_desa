@@ -104,7 +104,7 @@ class Google_api extends Controller {
             'method' => 'auth',
             'data' => ['email' => $google_email]);
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
         //dd($response);
         $data = json_decode($response->body(), true);
         //dd($data);
