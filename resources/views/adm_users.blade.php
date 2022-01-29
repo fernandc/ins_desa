@@ -212,7 +212,14 @@ Administrar Usuarios
                             @foreach ($staff as $row)
                                 @if ($row["estado"] == 1)
                                     <tr>
-                                        <td>{{$row["nombres"]}} {{$row["apellido_paterno"]}} {{$row["apellido_materno"]}}</td>
+                                        <td>
+                                            @if ($row["nombres"] != '')
+                                                {{$row["nombres"]}} {{$row["apellido_paterno"]}} {{$row["apellido_materno"]}}
+                                            @else
+                                                Nombre sin Completar <br>(Rut: {{$row["rut"]}})
+                                            @endif
+                                            
+                                        </td>
                                         <td>
                                             @if ($row['isapre'] != '' && $row['numero_cuenta'] != '')
                                                 <input type="text" value="{{$row['cargo']}}" style="min-width: 120px;" class="form-control" placeholder="Cargo" id="input_cargo_{{$row['id_staff']}}" >                                                                                      
@@ -617,7 +624,7 @@ Administrar Usuarios
                     },
                 });
                 $('#lista_staff_documents').DataTable({
-                    order: [0, "desc" ],
+                    order: [2, "asc" ],
                     language: {
                         "decimal": "",
                         "emptyTable": "No hay información",

@@ -210,6 +210,8 @@ class View_System extends Controller {
                     }else{
                         return back();
                     }
+                case "plan_de_funcionamiento":
+                    return view('info_plan_de_funcionamiento');
                 case "noticias":            
                     if($this->isAdmin()){
                         $noticias = $this->listar_noticias();

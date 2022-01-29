@@ -32,11 +32,6 @@ Inicio
             @include('includes/info/today_list_scheduler')
         @endif
         <div class="col-md-6"></div>
-        <div class="col-md-12 mt-3">
-            <h2>PLAN DE FUNCIONAMIENTO</h2>
-            <div id="planfuncionamiento" style="height: 720px;"></div>
-            <script>PDFObject.embed("https://saintcharlescollege.cl/pdf/plan_funcionamiento.pdf", "#planfuncionamiento");</script>
-        </div>
     </div>
     <script>
         const Message = Swal.mixin({

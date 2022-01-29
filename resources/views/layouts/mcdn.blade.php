@@ -123,6 +123,8 @@ if(Session::has('period')){
                             @if (in_array(4,$privileges))
                             <a class="dropdown-item" href="info_request_1">Descarga Listado de Alumnos</a>
                             @endif
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="plan_de_funcionamiento">Plan de funcionamiento</a>
                         </div>
                     </li>
                     @endif
