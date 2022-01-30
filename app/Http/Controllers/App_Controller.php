@@ -24,7 +24,7 @@ class App_Controller extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'update_reader',
                 'data' => ['hash' => $hash, 'id' => $id]);
-            Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         }
         $img = $contents = Storage::get('public/ins_logo.png');
         return response($img)->header('Content-type','image/png');
@@ -48,7 +48,7 @@ class App_Controller extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'change_period',
                 'data' => ['period' => $gets["year"]]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return back();
         }
         else{
@@ -63,7 +63,7 @@ class App_Controller extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'add_period',
                 'data' => ['period' => $gets["year"]]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             if($response->status() == 400){
                 return redirect('adm_periods')->with('message', 'Este periodo ya existe!');
             }
@@ -89,7 +89,7 @@ class App_Controller extends Controller {
                     'url' => $gets["url"],
                     'textlink' => $gets["textlink"]
                 ]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return back();
         }
         else{
@@ -104,7 +104,7 @@ class App_Controller extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'change_staff_status',
                 'data' => ['dni' => $gets["dni"]]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return back();
         }
         else{
@@ -119,7 +119,7 @@ class App_Controller extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'change_staff_admin',
                 'data' => ['dni' => $gets["dni"]]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             if($gets["dni"] == Session::get('account')['dni']){
                 $data = Session::get('account');
                 $data['is_admin'] = "NO";
@@ -153,7 +153,7 @@ class App_Controller extends Controller {
                         'id_clase'=>$gets["id_clase"]
                     ]
                 );
-                $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+                $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
                 $status = $response->body();
                 //dd($status);
                 Log::debug(json_decode($status,true));
@@ -175,7 +175,7 @@ class App_Controller extends Controller {
                 'method' => 'del_block_course',
                 'data' => ['id' => $id]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         }
     }
     public function add_user(Request $request){
@@ -188,7 +188,7 @@ class App_Controller extends Controller {
                 'method' => 'add_staff',
                 'data' => ['enroller' => $us, 'dni' => $gets["dni"],'full_name' => $gets['full_name'],'email' => $gets['email'],'birth_date' => $gets['birth_date']]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return back();
         }
         else{
@@ -204,7 +204,7 @@ class App_Controller extends Controller {
                 'method' => 'add_grade',
                 'data' => ['grade_id' => $gets["grade_id"],'section' => $gets["letter"]]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             if($response->status() == 400){
                 return redirect('adm_courses')->with('message', 'Este curso ya existe!'); 
             }
@@ -234,7 +234,7 @@ class App_Controller extends Controller {
                     "ethnic" => $gets["ddletina"],
                     ]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             if($response->status()==400){
                 return redirect('adm_students')->with('message', 'Este estudiante ya existe!');
             }            
@@ -256,7 +256,7 @@ class App_Controller extends Controller {
                     ]
             );
             dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return back();
         }
         else{
@@ -279,7 +279,7 @@ class App_Controller extends Controller {
                 "id" => $gets["id"],
                 ]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
         return view("modals/modal_students")->with("stu",$data[0]);
     }
@@ -302,7 +302,7 @@ class App_Controller extends Controller {
                     "ethnic" => $gets["ddletina"],
                     ]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             if($response->status()==400){
                 return redirect('adm_students')->with('message', 'Este estudiante ya existe!');
             }            
@@ -323,7 +323,7 @@ class App_Controller extends Controller {
                     'data' => ['id' => $gets["idMateria"]]
                 );
                 //dd($arr);
-                $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+                $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
                 $data = json_decode($response->body(), true);
                 if($response->status()==400){
                     return redirect('adm_subject')->with('message', 'Esta asignatura ya existe!');
@@ -348,7 +348,7 @@ class App_Controller extends Controller {
                 'method' => 'del_matter',
                 'data' => ['id' => $gets["id"]]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             return back();
         }
@@ -367,7 +367,7 @@ class App_Controller extends Controller {
                 'data' => ['id' => $gets["id"]]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             return back();
@@ -387,7 +387,7 @@ class App_Controller extends Controller {
                 'data' => ['id' => $gets["id_stu"], 'id_matricula' => $gets["id_matricula"] ]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             return back();
@@ -407,7 +407,7 @@ class App_Controller extends Controller {
                 'data' => ['id' => $gets["id_stu"], 'id_matricula' => $gets["id_matricula"] ]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             return back();
@@ -427,7 +427,7 @@ class App_Controller extends Controller {
                 'data' => ['id' => $gets["id_stu"], 'id_matricula' => $gets["id_matricula"] ]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             return back();
@@ -447,7 +447,7 @@ class App_Controller extends Controller {
                 'data' => ['id' => $gets["id"],'dni' =>$gets["dni"]]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             return back();
@@ -467,7 +467,7 @@ class App_Controller extends Controller {
                 'data' => ['dni' =>$gets["dni"],'idCurso' => $gets["idCurso"],'idMateria' => $gets["idMateria"],'method' => $gets["method"],]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             return back();
@@ -486,7 +486,7 @@ class App_Controller extends Controller {
             'method' => 'add_list_mail_groups',
             'data' => ["id_creador" => $id, "nombre_grupo" => $gets["nombre_grupo"]]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true); 
         //dd($data);
         return back();
@@ -502,7 +502,7 @@ class App_Controller extends Controller {
             'data' => ["nombre_grupo" => $gets["nombre"], "id_grupo" => $gets["id_grupo"], "dni" => $dni]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true); 
         //dd($data);
     }
@@ -516,7 +516,7 @@ class App_Controller extends Controller {
             'data' => ["dni_creador" => $dni,"id_grupo" => $gets["id"]]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true); 
         //dd($data);
         return back();
@@ -532,7 +532,7 @@ class App_Controller extends Controller {
             'data' => ["id_grup" => $gets["id_grup"], "id_stu" => $gets["id_stu"], "dni" => $dni]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true); 
         //dd($data);
         return $response->body();
@@ -548,7 +548,7 @@ class App_Controller extends Controller {
             'data' => ["id_grup" => $gets["id_grup"], "id_item" => $gets["id_item"], "dni" => $dni]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true); 
         //dd($data);
         //return $gets["id_item"];
@@ -566,7 +566,7 @@ class App_Controller extends Controller {
                 'data' => ['dni_adm' => $dni_adm,'id_stu' =>$gets["id_stu"], 'section' => $gets["section"],'id_curso' => $gets["id_curso"], 'id_matricula' => $gets["id_matricula"] ]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             return back();
@@ -588,7 +588,7 @@ class App_Controller extends Controller {
                 'data' => ['dni_adm' => $dni_adm,'id_stu' =>$gets["id_stu"],'id_curso' =>$gets["id_curso"], 'id_matricula' => $gets["id_matricula"], 'centro_padres' => $gets["inCp"] ]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             //return back();
@@ -610,7 +610,7 @@ class App_Controller extends Controller {
                 'data' => ['dni_adm' => $dni_adm,'id_stu' =>$gets["id_stu"],'id_curso' =>$gets["id_curso"], 'id_matricula' => $gets["id_matricula"], 'numero_matricula' => $gets["inNM"] ]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             //return back();
@@ -632,7 +632,7 @@ class App_Controller extends Controller {
                 'data' => ['dni_adm' => $dni_adm,'id_stu' =>$gets["id_stu"],'id_curso' =>$gets["id_curso"], 'id_matricula' => $gets["id_matricula"], 'fecha_retiro' => $gets["inNM"] ]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             //return back();
@@ -648,7 +648,7 @@ class App_Controller extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'check_is_admin',
                 'data' => ['dni' => Session::get('account')['dni']]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $status = $response->json()['status'];
             if($status == false){
                 return false;
@@ -684,7 +684,7 @@ class App_Controller extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'enable_assistance_date',
                 'data' => ['id_class' => $id_class, 'date' => $date, 'bloq' => $bloq , 'enable' => $enabled]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return "DONE";
         }else{
             return "SESSION EXPIRED";
@@ -702,7 +702,7 @@ class App_Controller extends Controller {
                 'method' => 'assistance_student',
                 'data' => [ 'year' => $year, 'id_stu' => $id_stu, 'id_grade' => $id_grade ]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true);
             return $data;
         }
@@ -724,7 +724,7 @@ class App_Controller extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'full_asistance',
                 'data' => ['id_class' => $id_class, 'date' => $date, 'bloq' => $bloq , 'enable' => $enabled]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return "DONE";
         }else{
             return "SESSION EXPIRED";
@@ -747,7 +747,7 @@ class App_Controller extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'non_assistance',
                 'data' => ['id_class' => $id_class, 'date' => $date, 'bloq' => $bloq , 'enable' => $enabled]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return "DONE";
         }else{
             return "SESSION EXPIRED";
@@ -769,7 +769,7 @@ class App_Controller extends Controller {
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'save_assistance',
                 'data' => ['dni_staff' => $dni_staff, 'id_student' => $id_student, 'id_class' => $id_class, 'type_a' => $type_a, 'assistance' => $assistance,'bloq' => $bloq , 'justify' => $justify]);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return "DONE";
         }else{
             return "SESSION EXPIRED";
@@ -819,7 +819,7 @@ class App_Controller extends Controller {
                 'data' => ['dni' =>$dni,'lista_destinatarios' => $destinatarios, 'send_when' => $gets["send_when"], 'meet' => $gets["meet"], 'type' => $gets["type"] , 'title'=>$gets["title"], 'body' => $gets["body"], 'files' => $filearray]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true); 
             //dd($data);
             return "DONE";
@@ -837,7 +837,7 @@ class App_Controller extends Controller {
             'data' => ['dni' =>$dni, 'id_mail' => $gets["id_mail"]]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
         
     }
@@ -850,7 +850,7 @@ class App_Controller extends Controller {
             'data' => ['dni' => $gets["dni"], 'id_priv' => $gets["id_priv"], 'method' => $gets["method"]]
         );
         //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
     }
     public function response_ticket(Request $request){
@@ -864,7 +864,7 @@ class App_Controller extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'response_ticket',
             'data' => ['id_request' => $idrequest, 'dni' => $dni_staff, 'status' => $status, 'response_message' => $response_message]);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         return $response->status();
     }
     public function send_ticket(Request $request){
@@ -924,7 +924,7 @@ class App_Controller extends Controller {
                           ]
             );
             $fname = Session::get('account')["full_name"];
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $arr= array(
                 'institution' => getenv("APP_NAME"),
                 'public_key' => getenv("APP_PUBLIC_KEY"),
@@ -938,7 +938,7 @@ class App_Controller extends Controller {
                         ]
                 ]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return "A";
         }else{
             return "C";
@@ -959,7 +959,7 @@ class App_Controller extends Controller {
                 'data' => ['dni' => $dni, 'section' => $sec, 'subsec' => $sub,  'op_a' => $opA,  'op_b' => $opB,  'desc' => $desc]
             );
             //dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true);
         }
     }
@@ -996,7 +996,7 @@ class App_Controller extends Controller {
                 'data' => [ 'name' => $name, "path" => $path, "type" => $extension, "dni" => $dni , "app_status" => $app_status ]
             );
             // dd($arr);
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true);
             return back();
         }else{
@@ -1039,7 +1039,7 @@ class App_Controller extends Controller {
                 'data' => ['name' => $name, "path" => $path, "type" => "folder", "dni" => $dni , "app_status" => $app_status]
             );
             
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true);
             return back();
         }else{
@@ -1056,7 +1056,7 @@ class App_Controller extends Controller {
             'method' => 'list_filemanager',
             'data' => ["path" => $path, "app_status" => $app_status]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
         return $data;
     }
@@ -1090,7 +1090,7 @@ class App_Controller extends Controller {
                 'method' => 'rename_item',
                 'data' => ["path" => $newPath, "name" => $newNameItem , "id" => $id]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true);
             return back(); 
         }else{
@@ -1177,7 +1177,7 @@ class App_Controller extends Controller {
                 'method' => 'delete_item_filemanager',
                 'data' => ["id_item" => $id_item, "dni" => $dni]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true);
             if($data[0]['type'] == 'folder'){            
                 Storage::deleteDirectory($data[0]["path"]);
@@ -1198,7 +1198,7 @@ class App_Controller extends Controller {
             'method' => 'validate_filemanager_path',
             'data' => ["path" => $path, "app_status" => $app_status ]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
         return $data;
     }
@@ -1262,7 +1262,7 @@ class App_Controller extends Controller {
                 ]
         );
         // dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
         // dd($data);
         return back();
@@ -1281,7 +1281,7 @@ class App_Controller extends Controller {
                 "dni" => Session::get('account')['dni']
             ]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
         // dd($data);
         return back();
@@ -1325,7 +1325,7 @@ class App_Controller extends Controller {
                 ]
         );
         // dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
         return back();
 
@@ -1348,7 +1348,7 @@ class App_Controller extends Controller {
                 ]
         );
         // dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
         if($response->body() == 'DELETED'){
             Storage::delete($path);
@@ -1363,7 +1363,7 @@ class App_Controller extends Controller {
             'method' => 'get_degrees',
             'data' => []
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);        
         return $data;
     }
@@ -1374,7 +1374,7 @@ class App_Controller extends Controller {
             'method' => 'get_degrees_type',
             'data' => ['titulo'=> $param]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);        
         return $data;
     }
@@ -1386,7 +1386,7 @@ class App_Controller extends Controller {
             'method' => 'get_degrees_areas',
             'data' => []
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);        
         return $data;
     }
@@ -1397,7 +1397,7 @@ class App_Controller extends Controller {
             'method' => 'get_degrees_specialty',
             'data' => ["tipo_titulo" =>$type_title ]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);  
         return $data;
     }
@@ -1408,7 +1408,7 @@ class App_Controller extends Controller {
             'method' => 'get_degrees_basic_mentions',
             'data' => []
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);        
         return $data;
     }
@@ -1451,7 +1451,7 @@ class App_Controller extends Controller {
                 ]
             );
         
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);  
         return $data;
     }
@@ -1468,7 +1468,7 @@ class App_Controller extends Controller {
                 ]
         );
         // dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
         return back();
     }
@@ -1482,7 +1482,7 @@ class App_Controller extends Controller {
                 'dni'=> Session::get('account')['dni']
             ]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);        
         return $data;
     }
@@ -1524,7 +1524,7 @@ class App_Controller extends Controller {
                     'name' => $name
                 ]
             );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true);        
             return redirect('adm_users?documents=true');
         }else{
@@ -1546,7 +1546,7 @@ class App_Controller extends Controller {
                 ]
             );
         // dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         if($response->body() == 'DELETED'){
             Storage::delete($path);
         }                
@@ -1566,7 +1566,7 @@ class App_Controller extends Controller {
                     'cargo' => $cargo
                     ]
                 );
-            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             return $response->body();
         }else{return redirect('/');}
     }
@@ -1579,7 +1579,7 @@ class App_Controller extends Controller {
             'method' => 'get_formation_data',
             'data' => ["dni" => $id_staff]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT"));
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);  
         return $data;
     }
