@@ -1069,7 +1069,7 @@ class View_System extends Controller {
         return $data;
     }
     public function get_banks(){
-        $response = Http::get('https://cloupping.com/api/getBanks');
+        $response = Http::get(getenv("API_ENDPOINT").'api/getBanks');
         $data = json_decode($response->body(), true);
         
         return $data;

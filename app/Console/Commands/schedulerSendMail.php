@@ -50,7 +50,7 @@ class schedulerSendMail extends Command
                 'public_key' => getenv("APP_PUBLIC_KEY"),
                 'method' => 'mails_sended_load'
             );
-            $response1 = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+            $response1 = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $mails = json_decode($response1->body(), true);
             if(isset($mails)){
                 foreach ($mails as $mail) {
@@ -62,7 +62,7 @@ class schedulerSendMail extends Command
                         'method' => 'mails_sended_attach',
                         'data' => ['id_mail' => $mail["id_mail"]]
                     );
-                    $responseA = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                    $responseA = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
                     $recipentsA = json_decode($responseA->body(), true);
                     if(isset($recipentsA)){
                         $attach=$recipentsA;
@@ -74,7 +74,7 @@ class schedulerSendMail extends Command
                         'method' => 'mails_sended_to',
                         'data' => ['id_mail' => $mail["id_mail"]]
                     );
-                    $response2 = Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                    $response2 = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
                     $recipents = json_decode($response2->body(), true);
                     if(isset($recipents)){
                         $totales = 0;
@@ -130,7 +130,7 @@ class schedulerSendMail extends Command
                                         'method' => 'update_sended',
                                         'data' => ['id' => $to["id"]]
                                     );
-                                    Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                                    Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
                                 }
                             }
                         }
@@ -141,7 +141,7 @@ class schedulerSendMail extends Command
                                 'method' => 'update_all_sended',
                                 'data' => ['id_mail' => $mail["id_mail"]]
                             );
-                            Http::withBody(json_encode($arr), 'application/json')->post("https://cloupping.com/api-ins");
+                            Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
                         }
                     }
                 }
