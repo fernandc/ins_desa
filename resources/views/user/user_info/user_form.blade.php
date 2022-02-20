@@ -31,10 +31,10 @@ if(isset($data)){
     $cellPhone = $data['celular'];
     $civil_status = $data['estado_civil'];
     $bornDate = $data['fecha_nacimiento'];
-
-    $bornDate = explode("-",$bornDate);
-    $newBornDate = $bornDate[2]."-".$bornDate[1]."-".$bornDate[0]; 
-
+    if($bornDate != ""){
+        $bornDate = explode("-",$bornDate);
+        $newBornDate = $bornDate[2]."-".$bornDate[1]."-".$bornDate[0]; 
+    }
     if($data['email_personal'] != '' || $data['email_personal'] != null){
         $personal_email = $data['email_personal'];
     }

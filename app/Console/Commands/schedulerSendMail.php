@@ -44,7 +44,7 @@ class schedulerSendMail extends Command
      */
     public function handle()
     {
-        if(getenv("APP_DEBUG") == false){
+        if(getenv("APP_DEBUG") == 'false'){
             $arr = array(
                 'institution' => getenv("APP_NAME"),
                 'public_key' => getenv("APP_PUBLIC_KEY"),
