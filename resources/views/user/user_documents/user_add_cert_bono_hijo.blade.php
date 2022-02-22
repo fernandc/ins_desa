@@ -90,7 +90,7 @@
                                             var i = $(this).prev('label').clone();
                                             var file = $('#cert_file_{{$cert_id}}_{{$i+1}}')[0].files[0].name;
                                             var extension = file_extension(file);
-                                            if(extension == "pdf" ){
+                                            if(extension == "pdf" || extension == "PDF"){
                                                 $("#cert_file_{{$cert_id}}_label_{{$i+1}}").html(file);
                                                 $("#output_{{$i+1}}").attr("hidden",false);
                                                 $("#i_output_{{$i+1}}").attr("hidden",true);

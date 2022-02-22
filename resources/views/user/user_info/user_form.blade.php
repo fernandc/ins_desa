@@ -337,7 +337,7 @@ $('#inputImgFile').change(function() {
     var i = $(this).prev('label').clone();
     var file = $('#inputImgFile')[0].files[0].name;
     var extension = file_extension(file);
-    if(extension == "pdf" || extension == "jpg" || extension == "png" || extension == "jpeg"){
+    if(extension == "pdf" || extension == "PDF" || extension == "jpg" || extension == "png" || extension == "jpeg"){
         $("#inputImgFileLabel").html(file);
     }else{
         Swal.fire('Error!', 'el archivo no es válido.', 'error');

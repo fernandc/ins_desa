@@ -133,7 +133,7 @@
                                                     var file = $('#input_cert_degree')[0].files[0].name;
                                                     console.log(file);
                                                     var extension = file_extension(file);
-                                                    if(extension == "pdf" ){
+                                                    if(extension == "pdf" || extension == "PDF"){
                                                         $("#input_cert_degree_label").html(file);
                                                         $("#output").attr("hidden",false);
                                                     }else{

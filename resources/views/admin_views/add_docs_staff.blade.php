@@ -21,7 +21,7 @@
                                 var i = $(this).prev('label').clone();
                                 var file = $('#cert_file_documento_{{$id_user}}_{{$tipo_doc}}')[0].files[0].name;
                                 var extension = file_extension(file);
-                                if(extension == "pdf" ){
+                                if(extension == "pdf" || extension == "PDF"){
                                     $("#cert_file_documento_{{$id_user}}_{{$tipo_doc}}_label").html(file);
                                     $("#output{{$id_user}}{{$tipo_doc}}").attr("hidden",false);
                                     $("#i_output{{$id_user}}{{$tipo_doc}}").attr("hidden",true);
