@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class Google_api extends Controller {
 
@@ -98,16 +99,13 @@ class Google_api extends Controller {
         $google_email = $returned_items['email'];
         $google_name = $returned_items['name'];
         $google_img = $returned_items['picture'];
-        $arr = array(
+        $response = Http::post(getenv("API_ENDPOINT")."api-ins", [
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'auth',
-            'data' => ['email' => $google_email]);
-        //dd($arr);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
-        //dd($response);
+            'data' => ['email' => $google_email]
+        ]);
         $data = json_decode($response->body(), true);
-        //dd($data);
         if ($data == null || $data == "") {
             $data["token"] = $access_token;
             session::put(['account' => $data]);

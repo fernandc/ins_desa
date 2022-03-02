@@ -19,6 +19,11 @@ use App\Http\Controllers\MailController;
 
 
 Route::get('/', [Google_api::class, 'login']);
+Route::get('/status', function () {
+    $ipAddress = $_SERVER['SERVER_ADDR'];
+    $port      = $_SERVER['SERVER_PORT'];
+    dd([$ipAddress,$port]);
+});
 Route::get('/g-response',[Google_api::class, 'user_data']);
 Route::get('/change_period', [App_Controller::class, 'change_period']);
 Route::get('/change_staff_status', [App_Controller::class, 'change_staff_status']);
