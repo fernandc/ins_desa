@@ -534,7 +534,7 @@ class View_System extends Controller {
                 "year" => $year
             ]
         );
-        $response = Http::withBody(json_encode($arr), 'application/json')->post("https://scc.cloupping.com/api-apoderado");
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-apoderado");
         $data = json_decode($response->body(), true);
         return view('includes/mdl_ficha')->with("data",$data)->with("year",$year);
     }

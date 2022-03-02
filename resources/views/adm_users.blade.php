@@ -297,7 +297,7 @@ Administrar Usuarios
                                                               -->
                                                               <main id="content" class="border" style="padding: 40px;">
                                                                 <div class="float-left" style="width: 80px; heigth:80px;">
-                                                                    <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://scc.cloupping.com/public/scc_logo.png')); ?>" alt="" class="img-fluid">
+                                                                    <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://statsup.online/public/scc_logo.png')); ?>" alt="" class="img-fluid">
                                                                   </div>
                                                                   <div class="">
                                                                       <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Funcionario {{Session::get('period')}} </p>
