@@ -266,7 +266,7 @@ class App_Controller extends Controller {
     public function get_info(Request $request){
         $gets = $request->input();
         $rut = $gets["rut"];
-        $response = Http::get('https://scc.cloupping.com/get_info/?rut='.$rut);
+        $response = Http::get(getenv("API_ENDPOINT").'get_info/?rut='.$rut);
         return $response->body();
     }
     public function modal_student(Request $request){

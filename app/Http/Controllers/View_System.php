@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class View_System extends Controller {
     public function main(request $request) {
@@ -518,6 +522,90 @@ class View_System extends Controller {
         }else{
             return redirect('/logout');
         }
+    }
+    public function generatePDF(request $request){
+        
+        $gets = $request->input();
+        $crypt = $gets["data"];
+        try{
+            $qEncoded=Crypt::decryptString($crypt);
+        }catch (DecryptException $e){
+            return "CODIGO INVALIDO";
+        }
+        $values = explode("-", $qEncoded);
+        $id_apo = $values[0];
+        $id_stu = $values[1];
+        $year = $values[2];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'getMatricula',
+            'data' => [
+                "id_zmail" => $id_apo,
+                "id_stu" => $id_stu,
+                "year" => $year
+            ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        $data = json_decode($response->body(), true);
+        //
+        $data[0]["codigo"] = strtoupper(bin2hex(random_bytes(8)));
+        $name = str_replace(' ', '_', $data[0]["nombre_stu"]);
+        $path = 'public/certificados/alumno_regular/'.$name.'_'.date("Y_m_d").'.pdf';
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'validateStuCertCrypt',
+            'data' => [
+                "id_zmail" => $id_apo,
+                "id_stu" => $id_stu,
+                "year" => $year,
+                "crypt" => $crypt,
+                "code" => $data[0]["codigo"],
+                "path" => $path
+            ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        $validate = json_decode($response->body(), true);
+        $data[0]["endpoint"] = urlencode("https://saintcharlescollege.cl/ins/validar?codigo=".$data[0]["codigo"]);
+        //
+        $flag = false;
+        if($validate != null){
+            $data[0]["codigo"] = $validate[0]["code"];
+            $data[0]["endpoint"] = urlencode("https://saintcharlescollege.cl/ins/validar?codigo=".$data[0]["codigo"]);
+        }else{
+            $flag = true;
+        }
+        $pdf = PDF::loadView('pdf/certificado_alumno_regular', $data[0]);
+        if($flag){
+            $content = $pdf->download()->getOriginalContent();
+            Storage::put($path,$content);
+        }
+        return $pdf->stream('Certificado Alumno Regular.pdf');
+    }
+    public function validar(request $request){
+        $gets = $request->input();
+        $codigo = $gets["codigo"];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'validateStuCertCode',
+            'data' => [
+                "code" => $codigo
+            ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        $validate = json_decode($response->body(), true);
+        if($validate == null){
+            return "EL CODIGO NO EXISTE";
+        }
+        Storage::url($validate[0]["path"]);
+        $data = Storage::get($validate[0]["path"]);
+        return response()->make($data, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="Certificado Alumno Regular.pdf"'
+        ]);
+        
     }
     public function modal_ficha(request $request){
         $gets = $request->input();
