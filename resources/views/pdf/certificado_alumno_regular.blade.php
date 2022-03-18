@@ -15,7 +15,7 @@
                 <br>
                 <span style="font-size: 13px;color: navy">Validar Documento</span>
                 <br>
-                Codigo:
+                Código:
                 <br>
                 <span style="font-size: 13px;color: navy">{{$codigo}}</span>
               </td>
@@ -42,7 +42,7 @@
           <br>
           Santiago, @php setlocale(LC_ALL, "es_ES", 'Spanish_Spain', 'Spanish'); echo iconv('ISO-8859-2', 'UTF-8', strftime("%A, %d de %B de %Y", strtotime(date("Y-m-d")))); @endphp
         </div>
-        <div class="footer" style="position: fixed; bottom: 220px; left: 0px; right: 0px;height: 50px;line-height: 35px;">
+        <div class="footer" style="position: fixed; bottom: 260px; left: 0px; right: 0px;height: 50px;line-height: 35px;">
           <div style="text-align: right;" >
             <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://statsup.online/public/scc_firma.png')); ?>" style="height: 150px;">
             <br>
@@ -51,6 +51,9 @@
               <br>
               Directora
             </h3>
+          </div>
+          <div style="line-height: 100%;">
+            Saint Charles College esta reconocido oficialmente por el Ministerio de Educación de la Republica de chile según Res. Rec. Oficial/Doc. Traspaso Nº 1813 del año  2002, rol Base de Datos 25382-0 .
           </div>
           <hr>
           <table style="width: 100%; font-size:0.9rem">
