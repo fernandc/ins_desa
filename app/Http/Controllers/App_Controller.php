@@ -1526,7 +1526,7 @@ class App_Controller extends Controller {
             );
             $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
             $data = json_decode($response->body(), true);        
-            return redirect('adm_users?documents=true');
+            return redirect('adm_users?tab=3');
         }else{
             return redirect('/');
         }        
@@ -1550,7 +1550,7 @@ class App_Controller extends Controller {
         if($response->body() == 'DELETED'){
             Storage::delete($path);
         }                
-        return redirect('adm_users?documents=true');
+        return redirect('adm_users?tab=3');
     }
     public function staff_add_cargo(Request $request){
         if($this->isAdmin()){
