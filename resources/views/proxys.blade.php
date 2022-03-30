@@ -136,6 +136,40 @@ const Toast = Swal.mixin({
     <script>
         $(document).ready( function () {
             $('#list_students').DataTable({
+                dom: 'Blfrtip',
+                lengthMenu: [
+                    [ 10, 25, 50, -1 ],
+                    [ '10', '25', '50', 'Todos' ]
+                ],
+                buttons: {
+                    buttons: [
+                        { extend: 'csv', className: 'btn-info mb-2', text: "Descargar CSV" },
+                        { extend: 'excel', className: 'bg-primary mb-2', text: "Descargar Excel (xlsx)" }
+                    ]
+                },
+                order: [2, "desc" ],
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Filas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Filas",
+                    "infoFiltered": "(Filtrado de MAX total Filas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Filas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                        }
+                },
+            });
+            $('#alist_students').DataTable({
                     "ordering": true,
                     "order": [],
                     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
