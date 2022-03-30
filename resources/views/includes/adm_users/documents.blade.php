@@ -77,7 +77,7 @@
                             </td>
                             <td>
                                 @if ($row['isapre'] != '' && $row['numero_cuenta'] != '')
-                                    <button id="btnficha" data="{{json_encode($row)}}" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ficha">
+                                    <button id="btnficha{{$row['id_staff']}}" data="{{json_encode($row)}}" type="button" class="btn btn-primary btn-sm btn-modal-ficha" data-toggle="modal" data-target="#ficha">
                                         Ver Ficha
                                     </button>
                                 @else

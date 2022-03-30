@@ -170,13 +170,13 @@
     </div>
 </div>
 <script>
-    $("#btnficha").click(function(){
+    $(".btn-modal-ficha").click(function(){
         var json = $(this).attr("data");
         var object = JSON.parse(json);
         console.log(object);
         var dni = object.rut;
         //SETDATA
-        $("#fichaNombreCompleto").html(object.nombre + " " + object.apellido_paterno + " " + object.apellido_materno);
+        $("#fichaNombreCompleto").html(object.nombres + " " + object.apellido_paterno + " " + object.apellido_materno);
         var cargo = object.cargo == null ? "Sin Cargo" : object.cargo;
         $("#fichaCargo").val(cargo);
         $("#fichaRut").val(object.rut);

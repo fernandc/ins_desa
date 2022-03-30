@@ -70,7 +70,7 @@ Administrar Usuarios
             </li>
         </ul>
         <div class="tab-content mt-2" id="myTabContent">
-            @if (isset($_GET["tab"]) && $_GET["tab"] == "1")
+            @if ((!isset($_GET["tab"])) || (isset($_GET["tab"]) && $_GET["tab"] == "1"))
                 <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
                     <table class="table display responsive nowrap"style="width: 100%;" id="lista_staff_detail">
                         <thead class="thead-light">
