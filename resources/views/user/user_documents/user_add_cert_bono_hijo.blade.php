@@ -75,7 +75,7 @@
                                                         title: 'Cargando',
                                                         showConfirmButton: false,
                                                     });
-                                                    window.location.href = '/user_del_cert?id={{$fileId[$i]}}&path={{$filePath[$i]}}';                                                        
+                                                    window.location.href = 'user_del_cert?id={{$fileId[$i]}}&path={{$filePath[$i]}}';
                                                 }
                                             })
                                         })
