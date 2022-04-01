@@ -41,8 +41,17 @@ My Info
                             <a class="nav-link"  data="4" id="nav-docente-tab"  href="my_info?section=3&cert=4" >CERTIFICADO DE EVALUACIÓN DOCENTE @if($data[0]['certificado_evaluacion_docente'] != '') <span class="text-success">[Completado]</span>@else <span class="text-secondary">[Opcional]</span>@endif</a>
                             <hr>
                             <span>Administrativos:</span>
-                            <a class="nav-link" id="nav-contrato-tab" href="my_info?section=3&cert=9" data="9">CONTRATO @if($data[0]['contrato'] != '') <span class="text-success">[Disponible]</span> @else <span class="text-secondary">[No Disponible]</span>@endif</a>
-                            <a class="nav-link" id="nav-contrato-tab" href="my_info?section=3&cert=10" data="10">ANEXO RELOJ @if($data[0]['anexo_reloj'] != '') <span class="text-success">[Disponible]</span> @else <span class="text-secondary">[No Disponible]</span>@endif</a>
+                            @if($data[0]['contrato'] == '')
+                                <a class="nav-link" role="link" aria-disabled="true">CONTRATO<span class="text-secondary">[No Cargado]</span></a>
+                            @else
+                                <a class="nav-link" id="nav-contrato-tab" href="my_info?section=3&cert=9" data="9">CONTRATO <span class="text-success">[Disponible]</span></a>
+                            @endif
+                            
+                            @if($data[0]['anexo_reloj'] == '')
+                                <a class="nav-link" role="link" aria-disabled="true">ANEXO RELOJ<span class="text-secondary">[No Cargado]</span></a>
+                            @else
+                                <a class="nav-link" id="nav-anexo-tab" href="my_info?section=3&cert=10" data="10">ANEXO RELOJ<span class="text-success">[Disponible]</span></a>
+                            @endif
                         </div>
                     </div>
                     
