@@ -19,7 +19,7 @@
     <div class="card-body">                            
         <div class="text-center">
             @if ($filePath != '')
-                <embed src="get_file/{{$filePath}}" id="output" width="100%" height="500px" type="application/pdf">
+                <embed src="get_file/{{$filePath}}" id="output" width="100%" height="700px" type="application/pdf">
             @else
                 <div style="font-size: xxx-large">
                     <i class="fas fa-file-pdf fx-9" style="background:" id="i_output"></i>
