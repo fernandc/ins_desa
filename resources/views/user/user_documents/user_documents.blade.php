@@ -38,6 +38,12 @@
             $cert_name = 'idoneidad docente';
             $cert_id = 'idoneidad_docente';
             $link = 'https://inhabilidades.srcei.cl/ConsInhab/consultaInhabilidad.do';
+        }elseif ($active == 9){
+            $cert_name = "Contrato";
+            $cert_id = "contrato";
+        }elseif ($active == 10){
+            $cert_name = "Anexo reloj";
+            $cert_id = "anexo_reloj";
         }
     @endphp
 @endif

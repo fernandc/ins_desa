@@ -39,6 +39,10 @@ My Info
                             <span>Docentes:</span>
                             <a class="nav-link"  data="8" id="nav-docente-tab"  href="my_info?section=3&cert=8" >CERTIFICADO DE IDONEIDAD DOCENTE @if($data[0]['certificado_idoneidad_docente'] != '') <span class="text-success">[Completado]</span>@else <span class="text-danger">[No completado]</span>@endif</a>
                             <a class="nav-link"  data="4" id="nav-docente-tab"  href="my_info?section=3&cert=4" >CERTIFICADO DE EVALUACIÓN DOCENTE @if($data[0]['certificado_evaluacion_docente'] != '') <span class="text-success">[Completado]</span>@else <span class="text-secondary">[Opcional]</span>@endif</a>
+                            <hr>
+                            <span>Administrativos:</span>
+                            <a class="nav-link" id="nav-contrato-tab" href="my_info?section=3&cert=9" data="9">CONTRATO @if($data[0]['contrato'] != '') <span class="text-success">[Disponible]</span> @else <span class="text-secondary">[No Disponible]</span>@endif</a>
+                            <a class="nav-link" id="nav-contrato-tab" href="my_info?section=3&cert=10" data="10">ANEXO RELOJ @if($data[0]['anexo_reloj'] != '') <span class="text-success">[Disponible]</span> @else <span class="text-secondary">[No Disponible]</span>@endif</a>
                         </div>
                     </div>
                     
