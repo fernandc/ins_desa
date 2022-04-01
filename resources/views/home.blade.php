@@ -12,8 +12,6 @@ Inicio
 
 @section("context")
 
-<!DOCTYPE html>
-
 @php
     $privileges = array();
     $array_privs = Session::get("privileges");
