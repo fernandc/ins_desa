@@ -52,6 +52,18 @@ My Info
                             @else
                                 <a class="nav-link" id="nav-anexo-tab" href="my_info?section=3&cert=10" data="10">ANEXO RELOJ<span class="text-success">[Disponible]</span></a>
                             @endif
+
+                            @if($data[0]['horario'] == '')
+                                <a class="nav-link" role="link" aria-disabled="true">HORARIO<span class="text-secondary">[No Cargado]</span></a>
+                            @else
+                                <a class="nav-link" id="nav-horario-tab" href="my_info?section=3&cert=11" data="11">HORARIO<span class="text-success">[Disponible]</span></a>
+                            @endif
+
+                            @if($data[0]['liquidacion_marzo'] == '')
+                                <a class="nav-link" role="link" aria-disabled="true">LIQUIDACIÓN MARZO<span class="text-secondary">[No Cargado]</span></a>
+                            @else
+                                <a class="nav-link" id="nav-liquidacion-tab" href="my_info?section=3&cert=12" data="12">LIQUIDACIÓN MARZO<span class="text-success">[Disponible]</span></a>
+                            @endif
                         </div>
                     </div>
                     

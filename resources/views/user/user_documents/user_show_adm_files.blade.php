@@ -14,7 +14,7 @@
 @endphp
 <div class="card">
     <div class="card-header" style="font-weight: bold">                    
-        {{$cert_name}}                            
+        {{$cert_name}}
     </div>
     <div class="card-body">                            
         <div class="text-center">

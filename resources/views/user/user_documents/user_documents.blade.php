@@ -42,8 +42,14 @@
             $cert_name = "Contrato";
             $cert_id = "contrato";
         }elseif ($active == 10){
-            $cert_name = "Anexo reloj";
+            $cert_name = "Anexo Reloj";
             $cert_id = "anexo_reloj";
+        }elseif ($active == 11){
+            $cert_name = "Horario";
+            $cert_id = "horario";
+        }elseif ($active == 12){
+            $cert_name = "Liquidación Marzo";
+            $cert_id = "liquidacion_marzo";
         }
     @endphp
 @endif

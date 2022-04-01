@@ -14,7 +14,7 @@
 @endphp
 @if ($active == 5 || $active == 6 )
     @include('user.user_documents.user_add_cert_bono_hijo')
-@elseif($active == 9 || $active == 10)
+@elseif($active == 9 || $active == 10 || $active == 11 || $active == 12)
     @include('user.user_documents.user_show_adm_files')
 @else
     <form action="user_add_cert" method="post" class="was-validated" enctype="multipart/form-data">
