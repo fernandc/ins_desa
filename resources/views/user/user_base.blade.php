@@ -42,27 +42,27 @@ My Info
                             <hr>
                             <span>Administrativos:</span>
                             @if($data[0]['contrato'] == '')
-                                <a class="nav-link" role="link" aria-disabled="true">CONTRATO<span class="text-secondary">[No Cargado]</span></a>
+                                <a class="nav-link" role="link" aria-disabled="true">CONTRATO <span class="text-secondary">[No Cargado]</span></a>
                             @else
                                 <a class="nav-link" id="nav-contrato-tab" href="my_info?section=3&cert=9" data="9">CONTRATO <span class="text-success">[Disponible]</span></a>
                             @endif
                             
                             @if($data[0]['anexo_reloj'] == '')
-                                <a class="nav-link" role="link" aria-disabled="true">ANEXO RELOJ<span class="text-secondary">[No Cargado]</span></a>
+                                <a class="nav-link" role="link" aria-disabled="true">ANEXO RELOJ <span class="text-secondary">[No Cargado]</span></a>
                             @else
-                                <a class="nav-link" id="nav-anexo-tab" href="my_info?section=3&cert=10" data="10">ANEXO RELOJ<span class="text-success">[Disponible]</span></a>
+                                <a class="nav-link" id="nav-anexo-tab" href="my_info?section=3&cert=10" data="10">ANEXO RELOJ <span class="text-success">[Disponible]</span></a>
                             @endif
 
                             @if($data[0]['horario'] == '')
-                                <a class="nav-link" role="link" aria-disabled="true">HORARIO<span class="text-secondary">[No Cargado]</span></a>
+                                <a class="nav-link" role="link" aria-disabled="true">HORARIO <span class="text-secondary">[No Cargado]</span></a>
                             @else
-                                <a class="nav-link" id="nav-horario-tab" href="my_info?section=3&cert=11" data="11">HORARIO<span class="text-success">[Disponible]</span></a>
+                                <a class="nav-link" id="nav-horario-tab" href="my_info?section=3&cert=11" data="11">HORARIO <span class="text-success">[Disponible]</span></a>
                             @endif
 
                             @if($data[0]['liquidacion_marzo'] == '')
-                                <a class="nav-link" role="link" aria-disabled="true">LIQUIDACIÓN MARZO<span class="text-secondary">[No Cargado]</span></a>
+                                <a class="nav-link" role="link" aria-disabled="true">LIQUIDACIÓN MARZO <span class="text-secondary">[No Cargado]</span></a>
                             @else
-                                <a class="nav-link" id="nav-liquidacion-tab" href="my_info?section=3&cert=12" data="12">LIQUIDACIÓN MARZO<span class="text-success">[Disponible]</span></a>
+                                <a class="nav-link" id="nav-liquidacion-tab" href="my_info?section=3&cert=12" data="12">LIQUIDACIÓN MARZO <span class="text-success">[Disponible]</span></a>
                             @endif
                         </div>
                     </div>
