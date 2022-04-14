@@ -397,6 +397,5 @@
             });
             @endif
         });
-        
     </script>
 @endsection

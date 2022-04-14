@@ -60,7 +60,7 @@ if(Session::has('period')){
             }
         @endphp
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">{{ getenv("APP_NAME") }} {{Session::get('period')}} </a>
+            <a class="navbar-brand" href="home">{{ getenv("APP_NAME") }} {{Session::get('period')}} </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -138,8 +138,8 @@ if(Session::has('period')){
                             <a class="nav-link" href="#">PIE</a>
                         </li>
                     @endif
-                    <li class="nav-item active">
-                        <a class="nav-link" href="tickets">Solicitudes y Justificaciones</a>
+                    <li class="nav-item disabled">
+                        <a class="nav-link disabled" href="tickets">Solicitudes y Justificaciones</a>
                     </li>
                     @if(Session::get('account')["is_admin"]=="YES")
                     <li class="nav-item active dropdown">

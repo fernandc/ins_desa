@@ -109,7 +109,7 @@
         }else{
             valRemuner = 0;
         }
-        if((valBody+valDatetov+valRemuner) == 3){;
+        if((valBody+valDatetov+valRemuner) == 3){
             $("#btnSubmit").removeClass("btn-secondary").addClass("btn-success");
             $("#btnSubmit").removeAttr("disabled");
             flag = true;
