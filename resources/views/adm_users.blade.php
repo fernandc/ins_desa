@@ -60,7 +60,7 @@ Administrar Usuarios
         @endphp
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link @if(isset($_GET["tab"]) && $_GET["tab"] == "1") active @endif" id="details-tab" href="?tab=1" role="tab" aria-controls="details" aria-selected="false">Informacion detallada de Personal</a>
+                <a class="nav-link @if((!isset($_GET["tab"])) || (isset($_GET["tab"]) && $_GET["tab"] == "1")) active @endif" id="details-tab" href="?tab=1" role="tab" aria-controls="details" aria-selected="false">Informacion detallada de Personal</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @if(isset($_GET["tab"]) && $_GET["tab"] == "2") active @endif" id="privileges-tab" href="?tab=2" role="tab" aria-controls="privileges" aria-selected="true">Administrar Privilegios</a>
