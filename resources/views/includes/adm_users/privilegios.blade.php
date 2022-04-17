@@ -29,6 +29,7 @@
                                 <a href="change_staff_status?dni={{$row["rut"]}}" class="btn btn-primary btn-sm">Activado</a>    
                             @else
                                 <a href="change_staff_status?dni={{$row["rut"]}}" class="btn btn-secondary btn-sm">Desactivado</a>
+                                <button class="fas fa-trash-alt btn btn-light bdelete" style="border: white; background-color:transparent; color:red"></button>  
                             @endif
                         </td>
                         <td><button class="btn btn-outline-primary btn-sm data-priv" data="{{$row["rut"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Administrar</button></td>
@@ -59,6 +60,27 @@
                         })
                     }
                 });
+            });
+
+            $(".bdelete").on("click", function() {
+                Swal.fire({
+                    title: 'Estás seguro?',
+                    text: "",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Continuar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                            'Eliminado',
+                            '',
+                            'success'
+                            )
+                        }
+                  })
             });
         </script>
         <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
