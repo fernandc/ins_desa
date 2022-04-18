@@ -29,7 +29,7 @@
                                 <a href="change_staff_status?dni={{$row["rut"]}}" class="btn btn-primary btn-sm">Activado</a>    
                             @else
                                 <a href="change_staff_status?dni={{$row["rut"]}}" class="btn btn-secondary btn-sm">Desactivado</a>
-                                <button class="fas fa-trash-alt btn btn-light bdelete" style="border: white; background-color:transparent; color:red"></button>  
+                                <button class="fas fa-trash-alt btn btn-light bdelete" data="{{$row["rut"]}}" style="border: white; background-color:transparent; color:red"></button>  
                             @endif
                         </td>
                         <td><button class="btn btn-outline-primary btn-sm data-priv" data="{{$row["rut"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Administrar</button></td>
@@ -38,6 +38,23 @@
             </tbody>
         </table>
         <script>
+            // ajax method delete user post
+            $(".bdelete").click(function(){
+                var rut = $(this).attr("data");
+                $.ajax({
+                    url: "delete_user",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        rut: rut
+                    },
+                    success: function(data){
+                        if(data == "success"){
+                            location.reload();
+                        }
+                    }
+                });
+            });
             $(".data-priv").click(function(){
                 var dni = $(this).attr('data');
                 Swal.fire({
@@ -61,7 +78,6 @@
                     }
                 });
             });
-
             $(".bdelete").on("click", function() {
                 Swal.fire({
                     title: 'Estás seguro?',

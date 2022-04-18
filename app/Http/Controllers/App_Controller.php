@@ -156,7 +156,6 @@ class App_Controller extends Controller {
                 $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
                 $status = $response->body();
                 //dd($status);
-                Log::debug(json_decode($status,true));
                 return json_decode($status,true)[0]["id"];
                 
                 //return $data;
@@ -882,7 +881,6 @@ class App_Controller extends Controller {
         $subject = $gets["subject"];
         $message = $gets["message"];
         $dateto = $gets["dateto"];
-        $optional1 = $gets["optional1"];
         $filepath1 = null;
         $filepath2 = null;
         $filepath3 = null;
@@ -919,7 +917,6 @@ class App_Controller extends Controller {
                             'file_path_1' => $filepath1,
                             'file_path_2' => $filepath2,
                             'file_path_3' => $filepath3,
-                            'optional_1' => $optional1,
                             'date_to' => $dateto
                           ]
             );
@@ -945,6 +942,20 @@ class App_Controller extends Controller {
         }else{
             return "C";
         }
+    }
+    public function get_ticket_messages(Request $request){
+        $gets = $request->input();
+        Log::info($gets);
+        $id = $gets["id"];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_tickets_messages',
+            'data' => ['id_ticket' => $id]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        $data = json_decode($response->body(), true);
+        return $data;
     }
     public function download(Request $request){
         $gets = $request->input();
