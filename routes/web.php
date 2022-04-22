@@ -95,4 +95,5 @@ Route::get('/staff_add_cargo', [App_Controller::class, 'staff_add_cargo']);
 Route::get('/get_user_formation', [App_Controller::class, 'get_user_formation']);
 Route::view('/ejemplos_livewire','ejemplos_livewire');
 Route::get('/{param}',[View_System::class, 'main']);
+Route::post('/delete_user', [App_Controller::class, 'delete_user']);
 

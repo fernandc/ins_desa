@@ -1596,4 +1596,17 @@ class App_Controller extends Controller {
         $data = json_decode($response->body(), true);  
         return $data;
     }
+    public function delete_user(Request $request){
+        $gets = $request->input();
+        $dni = $gets['dni'];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => "delete_staff",
+            'data' => [ "dni" =>  $dni  ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        $resp = json_decode($response->body(), true);
+        return 'success';
+    }
 }

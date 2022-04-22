@@ -38,24 +38,7 @@
             </tbody>
         </table>
         <script>
-            // ajax method delete user post
-            $(".bdelete").click(function(){
-                var rut = $(this).attr("data");
-                $.ajax({
-                    url: "delete_user",
-                    type: "POST",
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        rut: rut
-                    },
-                    success: function(data){
-                        if(data == "success"){
-                            location.reload();
-                        }
-                    }
-                });
-            });
-            $(".data-priv").click(function(){
+             $(".data-priv").click(function(){
                 var dni = $(this).attr('data');
                 Swal.fire({
                     icon: 'info',
@@ -80,7 +63,7 @@
             });
             $(".bdelete").on("click", function() {
                 Swal.fire({
-                    title: 'Estás seguro?',
+                    title: '¿Estás seguro?',
                     text: "",
                     icon: 'warning',
                     showCancelButton: true,
@@ -90,12 +73,22 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire(
-                            'Eliminado',
-                            '',
-                            'success'
-                            )
-                        }
+                        var dni = $(this).attr("data");
+                        $.ajax({
+                         url: "delete_user",
+                         type: "POST",
+                         data:{
+                            "_token": "{{ csrf_token() }}",
+                            dni
+                         },
+                         success:function(data){
+                            location.reload();
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Completado'
+                            })}
+                        });
+                    }
                   })
             });
         </script>
