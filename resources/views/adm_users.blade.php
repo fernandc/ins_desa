@@ -97,7 +97,7 @@ Administrar Usuarios
                         </thead>
                         <tbody>
                             @foreach($staff as $row)
-                                @if ($row["estado"] == 1)
+                                @if ($row["estado"] == 1 && $row["eliminado"] != "YES")
                                     <tr>
                                         <td>{{$row["rut"]}}</td>
                                         <td>{{$row["nombres"]}}</td>

@@ -64,6 +64,7 @@ Route::get('/student_is_repeater',[App_Controller::class, 'student_is_repeater']
 Route::get('/student_is_new',[App_Controller::class, 'student_is_new']);
 Route::post('/send_ticket',[App_Controller::class, 'send_ticket']);
 Route::get('/response_ticket',[App_Controller::class, 'response_ticket']);
+Route::get('/get_ticket_messages',[App_Controller::class, 'get_ticket_messages']);
 Route::get('/download',[App_Controller::class, 'download']);
 Route::get('/modal_asignatura', [View_System::class, 'modal_asignatura']);
 Route::get('/modal_privileges', [View_System::class, 'modal_privileges']);

@@ -15,7 +15,7 @@
             </thead>
             <tbody>           
                 @foreach ($staff as $row)
-                    @if ($row["estado"] == 1)
+                    @if ($row["estado"] == 1 && $row["eliminado"] != "YES")
                         <tr>
                             <td>
                                 @if ($row["nombres"] != '')

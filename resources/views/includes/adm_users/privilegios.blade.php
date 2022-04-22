@@ -13,27 +13,29 @@
             </thead>
             <tbody>
                 @foreach($staff as $row)
-                    <tr>
-                        <td>{{$row["rut"]}}</td>
-                        <td>{{$row["nombres"]}} {{$row["apellido_paterno"]}} {{$row["apellido_materno"]}}</td>
-                        <td>{{$row["email_institucional"]}}</td>
-                        <td>
-                            @if($row["administrador"]=="YES")
-                                <a href="change_staff_admin?dni={{$row["rut"]}}" class="btn btn-primary btn-sm text-white" style="width: 45px">Si</a>
-                            @else   
-                                <a href="change_staff_admin?dni={{$row["rut"]}}" class="btn btn-secondary btn-sm text-white" style="width: 45px">No</a>
-                            @endif
-                        </td>
-                        <td>
-                            @if($row["estado"] == 1)
-                                <a href="change_staff_status?dni={{$row["rut"]}}" class="btn btn-primary btn-sm">Activado</a>    
-                            @else
-                                <a href="change_staff_status?dni={{$row["rut"]}}" class="btn btn-secondary btn-sm">Desactivado</a>
-                                <button class="fas fa-trash-alt btn btn-light bdelete" data="{{$row["rut"]}}" style="border: white; background-color:transparent; color:red"></button>  
-                            @endif
-                        </td>
-                        <td><button class="btn btn-outline-primary btn-sm data-priv" data="{{$row["rut"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Administrar</button></td>
-                    </tr>                
+                    @if ($row["eliminado"] != "YES")
+                        <tr>
+                            <td>{{$row["rut"]}}</td>
+                            <td>{{$row["nombres"]}} {{$row["apellido_paterno"]}} {{$row["apellido_materno"]}}</td>
+                            <td>{{$row["email_institucional"]}}</td>
+                            <td>
+                                @if($row["administrador"]=="YES")
+                                    <a href="change_staff_admin?dni={{$row["rut"]}}" class="btn btn-primary btn-sm text-white" style="width: 45px">Si</a>
+                                @else   
+                                    <a href="change_staff_admin?dni={{$row["rut"]}}" class="btn btn-secondary btn-sm text-white" style="width: 45px">No</a>
+                                @endif
+                            </td>
+                            <td>
+                                @if($row["estado"] == 1)
+                                    <a href="change_staff_status?dni={{$row["rut"]}}" class="btn btn-primary btn-sm">Activado</a>    
+                                @else
+                                    <a href="change_staff_status?dni={{$row["rut"]}}" class="btn btn-secondary btn-sm">Desactivado</a>
+                                    <button class="fas fa-trash-alt btn btn-danger bdelete" data="{{$row["rut"]}}" ></button>  
+                                @endif
+                            </td>
+                            <td><button class="btn btn-outline-primary btn-sm data-priv" data="{{$row["rut"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Administrar</button></td>
+                        </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>
@@ -62,18 +64,19 @@
                 });
             });
             $(".bdelete").on("click", function() {
+                var dni = $(this).attr("data");
                 Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: "",
+                    title: '¿Estás seguro de eliminar al usuario con rut: '+dni+'?',
+                    text: "Importante: este usuario no será eliminado dentro del sistema, ya que toda la informacion cargada o relacionada con este usuario conservará su registro. " +
+                        "El usuario será desactivado permanentemente y no será visible en el sistema.",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Continuar',
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#8c8c8c',
+                    confirmButtonText: 'Si, Eliminar',
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        var dni = $(this).attr("data");
                         $.ajax({
                          url: "delete_user",
                          type: "POST",
