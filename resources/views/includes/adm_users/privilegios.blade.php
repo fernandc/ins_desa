@@ -82,10 +82,11 @@
                             dni
                          },
                          success:function(data){
+                            //console.log("data: ",data);
                             location.reload();
                             Toast.fire({
                                 icon: 'success',
-                                title: 'Completado'
+                                title: 'Eliminando'
                             })}
                         });
                     }

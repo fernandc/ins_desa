@@ -1606,7 +1606,7 @@ class App_Controller extends Controller {
             'data' => [ "dni" =>  $dni  ]
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
-        $resp = json_decode($response->body(), true);
-        return 'success';
+        $data = json_decode($response->body(), true);
+        return $data;
     }
 }
