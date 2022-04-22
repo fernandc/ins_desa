@@ -86,7 +86,7 @@
                          },
                          success:function(data){
                             //console.log("data: ",data);
-                            location.reload();
+                            $("*[data=\"" + dni + "\"]").parent().parent().remove();
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Eliminando'

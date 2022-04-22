@@ -173,7 +173,6 @@
     $(".btn-modal-ficha").click(function(){
         var json = $(this).attr("data");
         var object = JSON.parse(json);
-        console.log(object);
         var dni = object.rut;
         //SETDATA
         $("#fichaNombreCompleto").html(object.nombres + " " + object.apellido_paterno + " " + object.apellido_materno);
@@ -210,7 +209,6 @@
             {
                 var htmldata = ``;
                 data.forEach(function (obj) {
-                    console.log(obj);
                     var degreearea = ``;
                     var degreespeciality = ``;
                     var mentions = ``;
@@ -252,7 +250,6 @@
                                     </div>
                                     <hr>`
                 });
-                console.log(htmldata);
                 $("#degrees").html(htmldata);
                 Toast.fire({
                     icon: 'success',
