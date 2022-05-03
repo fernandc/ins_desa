@@ -852,19 +852,22 @@ class App_Controller extends Controller {
         $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
     }
-    public function response_ticket(Request $request){
+    public function close_ticket(Request $request){
         $gets = $request->input();
-        $dni_staff = Session::get('account')['dni'];
-        $idrequest = $gets["idrequest"];
-        $status = $gets["respuesta"];
-        $response_message = $gets["message"];
-        $arr = array(
-            'institution' => getenv("APP_NAME"),
-            'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => 'response_ticket',
-            'data' => ['id_request' => $idrequest, 'dni' => $dni_staff, 'status' => $status, 'response_message' => $response_message]);
-        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
-        return $response->status();
+        if(Session::get('account')['is_admin']=='YES'){
+            $id_ticket = $gets["id_ticket"];
+            $status = $gets["estado"];
+            $optional1 = $gets["optional1"];
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'close_ticket',
+                'data' => ['id_ticket' => $id_ticket, 'status' => $status, 'optional_1' => $optional1]);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+            return $response->status();
+        }else{
+            return "ERROR";
+        }
     }
     public function send_ticket(Request $request){
         $gets = $request->input();
@@ -880,7 +883,8 @@ class App_Controller extends Controller {
         }
         $subject = $gets["subject"];
         $message = $gets["message"];
-        $dateto = $gets["dateto"];
+        $dateFrom = $gets["dateFrom"];
+        $dateto = $gets["dateTo"];
         $filepath1 = null;
         $filepath2 = null;
         $filepath3 = null;
@@ -888,41 +892,29 @@ class App_Controller extends Controller {
         $today = date('Y-m-d');
         if(($type == "Solicitud" && $dateto >= $today) || $type=="Justificación"){
             $id_account_receiver = 17;
-            if(isset($files)){
-                foreach ($files as $file) {
-                    $cont++;
-                    $extension = $file->extension();
-                    $name = "documento_$cont.$extension";
-                    $date = date('Ymd_His');
-                    $path = $file->storeAs("tickets/$dni/$fileref/$date"."_to_".str_replace("-","",$dateto), $name);
-                    if($cont == 1){
-                        $filepath1 = $path;
-                    }elseif($cont == 2){
-                        $filepath2 = $path;
-                    }elseif($cont == 3){
-                        $filepath3 = $path;
-                    }
-                }
-            }
+            //GENERATE TICKET
             $arr = array(
                 'institution' => getenv("APP_NAME"),
                 'public_key' => getenv("APP_PUBLIC_KEY"),
-                'method' => 'send_ticket',
+                'method' => 'generate_ticket',
                 'data' => [
-                            'dni' => $dni_staff,
-                            'id_account_receiver' => $id_account_receiver, 
-                            'type' => $type,  
-                            'subject' => $subject,  
-                            'message' => $message,  
-                            'file_path_1' => $filepath1,
-                            'file_path_2' => $filepath2,
-                            'file_path_3' => $filepath3,
-                            'date_to' => $dateto
-                          ]
+                    'dni' => $dni_staff, 
+                    'id_account_receiver' => $id_account_receiver, 
+                    'type' => $type, 
+                    'subject' => $subject, 
+                    'date_from' => $dateFrom, 
+                    'date_to' => $dateto]
             );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+            $data = json_decode($response->body(), true);
+            $id_ticket = $data[0]["id"];
+            
+            $this->send_ticket_message($dni_staff, $id_ticket, $message, null);
+            if(isset($files)){
+                $this->send_ticket_message($dni_staff, $id_ticket, null, $files);
+            }
             if(getenv("APP_DEBUG") == false){
                 $fname = Session::get('account')["full_name"];
-                $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
                 $arr= array(
                     'institution' => getenv("APP_NAME"),
                     'public_key' => getenv("APP_PUBLIC_KEY"),
@@ -943,9 +935,85 @@ class App_Controller extends Controller {
             return "C";
         }
     }
+    public function response_ticket_message(Request $request){
+        $gets = $request->input();
+        $file = $request->file();
+        $dni = Session::get('account')['dni'];
+        if(isset($gets["id_ticket"])){
+            $id_ticket = $gets["id_ticket"];
+            if(isset($gets["message"]) || isset($file)){
+                if(isset($gets["message"])){
+                    $message = $gets["message"];
+                    $this->send_ticket_message($dni, $id_ticket, $message, null);
+                }else{
+                    return $this->send_ticket_message($dni, $id_ticket, null, $file);
+                }
+                if(getenv("APP_DEBUG") == false){
+                    $fname = Session::get('account')["full_name"];
+                    $arr= array(
+                        'institution' => getenv("APP_NAME"),
+                        'public_key' => getenv("APP_PUBLIC_KEY"),
+                        'method' => 'simple_send_mail',
+                        'data' => ["subject" => "$type de $fname",
+                                "body" => "<b>$subject</b><br>$message<br>Para el día: $dateto <hr> Para más detalles e ingresar una respuesta ingrese a <a href=\"https://saintcharlescollege.cl/ins/tickets\" target=\"_blank\">Charly Notas - sección: Solicitudes y Justificaciones </a> en la pestaña <b>Responder y Respuestas</b>", 
+                                "addressees" => [
+                                    [
+                                        "email" => "directora.scc@saintcharlescollege.cl"
+                                    ]
+                                ]
+                        ]
+                    );
+                    $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+                }
+            }else{
+                return "Error";
+            }
+        }else{
+            return "Error";
+        }
+    }
+    private function send_ticket_message($dni_emisor, $id_ticket, $message, $files){
+        $path = null;
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'response_ticket',
+            'data' => [
+                'dni' => $dni_emisor,
+                'id_ticket' => $id_ticket,
+                'message' => $message,
+                'file_path' => $path
+            ]
+        );
+        if($files != null){
+            foreach ($files as $file) {
+                $extension = $file->extension();
+                $name = "documento_".rand(1,99).".$extension";
+                $date = date('Ymd_His');
+                $path = $file->storeAs("tickets/$id_ticket/$date", $name);
+                $arr = array(
+                    'institution' => getenv("APP_NAME"),
+                    'public_key' => getenv("APP_PUBLIC_KEY"),
+                    'method' => 'response_ticket',
+                    'data' => [
+                        'dni' => $dni_emisor,
+                        'id_ticket' => $id_ticket,
+                        'message' => $message,
+                        'file_path' => $path
+                    ]
+                );
+                $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+                return $path;
+            }
+        }else{
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        }
+        
+        
+    }
+
     public function get_ticket_messages(Request $request){
         $gets = $request->input();
-        Log::info($gets);
         $id = $gets["id"];
         $arr = array(
             'institution' => getenv("APP_NAME"),
