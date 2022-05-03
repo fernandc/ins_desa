@@ -75,11 +75,19 @@
                     // foreach data
                     $.each(data, function(index, value) {
                         // if is sender
-                        if (value.id_staff != "17") {
-                            sendedChatBox(value.message, value.date_in);
-                        } else {
-                            responseChatBox(value.message, value.date_in);
-                        }
+                        @if (session::get("account")["dni"] == "14.656.819-K")
+                            if (value.id_staff == "17") {
+                                sendedChatBox(value.full_name, value.message, value.date_in, value.file_path);
+                            } else {
+                                responseChatBox(value.full_name, value.message, value.date_in , value.file_path);
+                            }
+                        @else
+                            if (value.id_staff != "17") {
+                                sendedChatBox(value.full_name, value.message, value.date_in, value.file_path);
+                            } else {
+                                responseChatBox(value.full_name, value.message, value.date_in , value.file_path);
+                            }
+                        @endif
                     });
                     $("#chatbox").animate({
                         scrollTop: $("#chatbox").prop("scrollHeight")
