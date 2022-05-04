@@ -920,7 +920,7 @@ class App_Controller extends Controller {
                     'public_key' => getenv("APP_PUBLIC_KEY"),
                     'method' => 'simple_send_mail',
                     'data' => ["subject" => "$type de $fname",
-                            "body" => "<b>$subject</b><br>$message<br>Para el día: $dateto <hr> Para más detalles e ingresar una respuesta ingrese a <a href=\"https://saintcharlescollege.cl/ins/tickets\" target=\"_blank\">Charly Notas - sección: Solicitudes y Justificaciones </a> en la pestaña <b>Responder y Respuestas</b>", 
+                            "body" => "<b>$subject</b><br>$message<hr> Para más detalles e ingresar una respuesta ingrese a <a href=\"https://saintcharlescollege.cl/ins/tickets\" target=\"_blank\">Charly Notas - sección: Solicitudes y Justificaciones </a>", 
                             "addressees" => [
                                 [
                                     "email" => "directora.scc@saintcharlescollege.cl"
@@ -948,22 +948,61 @@ class App_Controller extends Controller {
                 }else{
                     return $this->send_ticket_message($dni, $id_ticket, null, $file);
                 }
+                //get ticket
+                $arr = array(
+                    'institution' => getenv("APP_NAME"),
+                    'public_key' => getenv("APP_PUBLIC_KEY"),
+                    'method' => 'get_ticket',
+                    'data' => ['id_ticket' => $id_ticket]
+                );
+                $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+                $data = json_decode($response->body(), true);
+                $dni_solicitante = $data[0]["dni_solicitante"];
+                $dni_receptor = $data[0]["dni_receptor"];
+                $type = $data[0]["tipo"];
                 if(getenv("APP_DEBUG") == false){
                     $fname = Session::get('account')["full_name"];
-                    $arr= array(
-                        'institution' => getenv("APP_NAME"),
-                        'public_key' => getenv("APP_PUBLIC_KEY"),
-                        'method' => 'simple_send_mail',
-                        'data' => ["subject" => "$type de $fname",
-                                "body" => "<b>$subject</b><br>$message<br>Para el día: $dateto <hr> Para más detalles e ingresar una respuesta ingrese a <a href=\"https://saintcharlescollege.cl/ins/tickets\" target=\"_blank\">Charly Notas - sección: Solicitudes y Justificaciones </a> en la pestaña <b>Responder y Respuestas</b>", 
-                                "addressees" => [
-                                    [
-                                        "email" => "directora.scc@saintcharlescollege.cl"
+                    if($dni_solicitante == $dni){
+                        $message_to = $this->get_staff($dni_receptor);
+                        $email_to = $message_to["email_institucional"];
+                        if($email_to != null && $email_to != ""){
+                            $arr= array(
+                                'institution' => getenv("APP_NAME"),
+                                'public_key' => getenv("APP_PUBLIC_KEY"),
+                                'method' => 'simple_send_mail',
+                                'data' => [
+                                    "subject" => "$fname ha respondido una $type [COD: $id_ticket]",
+                                    "body" => "Para más detalles e ingresar una respuesta ingrese a <a href=\"https://saintcharlescollege.cl/ins/tickets\" target=\"_blank\">Charly Notas - sección: Solicitudes y Justificaciones </a>", 
+                                    "addressees" => [
+                                        [
+                                            "email" => "$email_to"
+                                        ]
                                     ]
                                 ]
-                        ]
-                    );
-                    $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+                            );
+                            Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+                        }
+                    }elseif($dni_receptor == $dni){
+                        $message_to = $this->get_staff($dni_solicitante);
+                        $email_to = $message_to["email_institucional"];
+                        if($email_to != null && $email_to != ""){
+                            $arr= array(
+                                'institution' => getenv("APP_NAME"),
+                                'public_key' => getenv("APP_PUBLIC_KEY"),
+                                'method' => 'simple_send_mail',
+                                'data' => [
+                                    "subject" => "$fname ha respondido su $type [COD: $id_ticket]",
+                                    "body" => "Para más detalles e ingresar una respuesta ingrese a <a href=\"https://saintcharlescollege.cl/ins/tickets\" target=\"_blank\">Charly Notas - sección: Solicitudes y Justificaciones </a>", 
+                                    "addressees" => [
+                                        [
+                                            "email" => "$email_to"
+                                        ]
+                                    ]
+                                ]
+                            );
+                            Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+                        }
+                    }
                 }
             }else{
                 return "Error";
@@ -971,6 +1010,19 @@ class App_Controller extends Controller {
         }else{
             return "Error";
         }
+    }
+    private function get_staff($dni){
+        $arr= array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'get_user_data',
+            'data' => [
+                "dni" => "$dni"
+            ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        $data = json_decode($response->body(), true);
+        return $data[0];
     }
     private function send_ticket_message($dni_emisor, $id_ticket, $message, $files){
         $path = null;

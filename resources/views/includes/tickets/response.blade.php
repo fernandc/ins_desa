@@ -4,6 +4,7 @@
         <table id="closed" class="table table-hover ">
             <thead>
                 <tr>
+                    <th scope="col">Código</th>
                     <th scope="col">Emisor</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">Asunto</th>
@@ -19,6 +20,7 @@
                     @if($row["dni_solicitante"] == Session::get('account')['dni'] || $row["dni_receptor"] == Session::get('account')['dni'])
                         @if ($row["estado"] != "Pendiente")
                             <tr>
+                                <td><b>{{$row["id"]}}</b></td>
                                 <td><b class="text-secondary">{{$row["nombre_solicitante"]}}</b></td>
                                 <td>
                                     @if ($row["tipo"] == "Solicitud")

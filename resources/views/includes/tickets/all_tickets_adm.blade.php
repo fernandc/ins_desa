@@ -2,6 +2,7 @@
 <table id="alltickets" class="table table-hover ">
     <thead>
         <tr>
+            <th scope="col">Código</th>
             <th scope="col">Tipo</th>
             <th scope="col">De</th>
             <th scope="col">Asunto</th>
@@ -15,6 +16,7 @@
     <tbody>
         @foreach ($all_tickets as $row)
         <tr>
+            <td><b>{{$row["id"]}}</b></td>
             <td>
                 @if ($row["tipo"] == "Solicitud")
                 <span class="badge badge-primary">Solicitud</span>
