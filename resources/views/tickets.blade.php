@@ -344,7 +344,7 @@
             });
             $('#requesttable').DataTable({
                 "ordering": true,
-                "order": [[4 , "desc"]],
+                "order": [[5 , "desc"]],
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
                 language: {
                     "decimal": "",
@@ -370,7 +370,7 @@
             $('#closed').DataTable({
                 "ordering": true,
                 "pageLength" : 10,
-                "order": [[5 , "desc"]],
+                "order": [[6 , "desc"]],
                 "lengthMenu": [[5,10, 25, 50, -1], [5,10, 25, 50, "Todos"]],
                 language: {
                     "decimal": "",
@@ -396,7 +396,7 @@
             @if ($all_tickets != null)
             $('#alltickets').DataTable({
                 "ordering": true,
-                "order": [[5 , "asc"]],
+                "order": [[7 , "asc"]],
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
                 language: {
                     "decimal": "",
