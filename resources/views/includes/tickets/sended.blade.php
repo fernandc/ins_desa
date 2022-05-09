@@ -71,7 +71,7 @@
                     '<div class="chat-box-body" style="margin-left: 15%">' +
                     '<div class="chat-box-message border" style="padding: 0.5rem">' +
                     '<div class="chat-sended border-bottom">' +
-                    '<span class="text-primary"> {{session::get("account")["full_name"]}} </span> - <span>' + dateTime + '</span>' +
+                    '<span class="text-primary"> {{Session::get("account")["full_name"]}} </span> - <span>' + dateTime + '</span>' +
                     '</div>' +
                     '<div class="chat-box-message-content">' +
                     message +
@@ -154,7 +154,7 @@
                     }else{
                         //current datetime
                         var dateTime = getDateTime();
-                        sendedChatBox('{{session::get("account")["full_name"]}}',null, dateTime, data);
+                        sendedChatBox('{{Session::get("account")["full_name"]}}',null, dateTime, data);
                         $("#chatbox").animate({
                             scrollTop: $("#chatbox").prop("scrollHeight")
                         }, 0);
@@ -176,7 +176,7 @@
                     Swal.showLoading()
                 }
             });
-            if(data.dni_receptor == '{{session::get("account")["dni"]}}'){
+            if(data.dni_receptor == '{{Session::get("account")["dni"]}}'){
                 console.log("show");
                 $("#responseAdmin").show();
             }else{
@@ -192,7 +192,7 @@
                 },
                 success: function(data) {
                     $.each(data, function(index, value) {
-                        @if (session::get("account")["dni"] == "14.656.819-K")
+                        @if (Session::get("account")["dni"] == "14.656.819-K")
                             if (value.id_staff == "17") {
                                 sendedChatBox(value.full_name, value.message, value.date_in, value.file_path);
                             } else {

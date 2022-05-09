@@ -77,7 +77,7 @@
                     // foreach data
                     $.each(data, function(index, value) {
                         // if is sender
-                        @if (session::get("account")["dni"] == "14.656.819-K")
+                        @if (Session::get("account")["dni"] == "14.656.819-K")
                             if (value.id_staff == "17") {
                                 sendedChatBox(value.full_name, value.message, value.date_in, value.file_path);
                             } else {
