@@ -143,6 +143,9 @@ const Toast = Swal.mixin({
                             @if ($row["fecha_retiro"] != null)
                                 <span class="badge badge-warning"  data-toggle="tooltip" data-placement="top" title="Retirado: {{$row["fecha_retiro"]}}">R</span>
                             @endif
+                            @if($row["es_reincorporado"] == "si")
+                                <span class="badge badge-success"  data-toggle="tooltip" data-placement="top" title="Reincorporado">R</span>
+                            @endif
                         </td>
                         <td>{{$row["cellphone_stu"]}} </td>
                         <td><button class="btn btn-outline-secondary btn-sm data-apo" data="{{$row["dni_stu"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Apoderado</button></td>

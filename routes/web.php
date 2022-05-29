@@ -62,6 +62,7 @@ Route::get('/non_assistance',[App_Controller::class, 'non_assistance']);
 Route::get('/save_assistance',[App_Controller::class, 'save_assistance']);
 Route::get('/student_is_repeater',[App_Controller::class, 'student_is_repeater']);
 Route::get('/student_is_new',[App_Controller::class, 'student_is_new']);
+Route::get('/student_is_reincorporated',[App_Controller::class, 'student_is_reincorporated']);
 Route::post('/send_ticket',[App_Controller::class, 'send_ticket']);
 Route::get('/close_ticket',[App_Controller::class, 'close_ticket']);
 Route::post('/response_ticket_message',[App_Controller::class, 'response_ticket_message']);

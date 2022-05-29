@@ -53,6 +53,29 @@ Admin Cursos
         background-color: #28a745 !important;
         border-color: #28a745 !important;
     }
+    .sw-warning:focus~.custom-control-label::before {
+        border-color: #ffc107 !important;
+        box-shadow: 0 0 0 0.2rem rgba(255, 47, 69, 0.25) !important;
+    }
+
+    .sw-warning:checked~.custom-control-label::before {
+        border-color: #ffc107 !important;
+        background-color: #ffc107 !important;
+    }
+
+    .sw-warning:active~.custom-control-label::before {
+        background-color: #ffc107 !important;
+        border-color: #ffc107 !important;
+    }
+
+    .sw-warning:focus:not(:checked)~.custom-control-label::before {
+        border-color: #ffc107 !important;
+    }
+
+    .sw-warning:not(:disabled):active~.custom-control-label::before {
+        background-color: #ffc107 !important;
+        border-color: #ffc107 !important;
+    }
 </style>
 <script>
     function isValidDate(dateString) {
@@ -73,12 +96,21 @@ Admin Cursos
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
-    })
+    });
+
 </script>
 @endsection
 
 @section("context")
-
+<script>
+        Swal.fire({
+        title: 'Cargando',
+        text: 'Espere un momento',
+        onBeforeOpen: () => {
+            Swal.showLoading()
+        }
+    })
+</script>
 <div class="mx-2">
     <h2 style="text-align: center;" id="temp1">Administrar Estudiantes 
             @if(Session::has('period'))
@@ -164,13 +196,12 @@ Admin Cursos
                     <th scope="col">Curso</th>
                     <th scope="col">Sección</th>
                     <th scope="col"># Matrícula</th>
-                    <th scope="col"><i class="far fa-id-badge"></i></th>
                     <th scope="col">Centro de Padres</th>
                     <th scope="col">Matriculado</th>
                     <th scope="col">Repitiente</th>
                     <th scope="col">Nuevo</th>
+                    <th scope="col">Reincorporado</th>
                     <th scope="col">Fecha de Retiro</th>
-                    <th scope="col">Ficha</th>
                 </tr>
             </thead>
             <tbody>
@@ -289,14 +320,6 @@ Admin Cursos
                             </script>
                         </td>
                         <td>
-                            @if ($row["numero_matricula"]==0)
-                                <i class="fas fa-times text-danger">-</i>
-                            @else
-                                <i class="fas fa-check text-success">+</i>
-                            @endif
-                        </td>
-                        <td>
-                            
                             @if($row["matricula"] == "si")
                                 <input class="form-control" type="number" min="1" max="999999" value="{{$row["centro_padres"]}}" id="inputCP{{$row["id_stu"]}}" required="">
                             @else
@@ -487,6 +510,41 @@ Admin Cursos
                             </script>
                         </td>
                         <td>
+                            <div class="custom-control custom-switch">
+                                @if($row["es_reincorporado"] == "si")
+                                    <input type="checkbox" class="custom-control-input sw-success" id="rein{{$row["id_stu"]}}" checked="">
+                                    <label class="custom-control-label text-success" for="rein{{$row["id_stu"]}}" ></label>
+                                @else
+                                    <input type="checkbox" class="custom-control-input sw-success" id="rein{{$row["id_stu"]}}" >
+                                    <label class="custom-control-label text-danger" for="rein{{$row["id_stu"]}}" ></label>
+                                @endif
+                            </div>
+                            <script>
+                                $("#rein{{$row["id_stu"]}}").click(function (){
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Cargando',
+                                        showConfirmButton: false,
+                                    })
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "student_is_reincorporated",
+                                        data:{
+                                            id_stu: '{{$row["id_stu"]}}',
+                                            id_matricula: '{{$row["id_matricula"]}}'  
+                                        },
+                                        success: function (data)
+                                        {
+                                            Toast.fire({
+                                                icon: 'success', 
+                                                title: 'Completado'
+                                            })
+                                        }
+                                    });
+                                });
+                            </script>
+                        </td>
+                        <td>
                             <input class="form-control @if($row["fecha_retiro"] != null) border-warning @endif" type="date" value="{{$row["fecha_retiro"]}}" id="inputFR{{$row["id_stu"]}}">
                             <script>
                                 $("#inputFR{{$row["id_stu"]}}").focus(function(){
@@ -534,49 +592,18 @@ Admin Cursos
                                 })
                             </script>
                         </td>
-                        <td>
-                            <button class="btn btn-outline-primary btn-sm data-ficha" data="{{$row["id_stu"]}}" data2="{{$row["id_zmail"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Ficha</button>
-                        </td>
                     </tr>             
                 @endforeach                      
             </tbody>
         </table>
-        <script>
-            $(".data-ficha").click(function(){
-                var id_stu = $(this).attr('data');
-                var id_apo = $(this).attr('data2');
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Cargando',
-                    showConfirmButton: false,
-                })
-                $.ajax({
-                    type: "GET",
-                    url: "modal_ficha",
-                    data:{
-                        id_stu,id_apo
-                    },
-                    success: function (data)
-                    {
-                        $("#modalContent").html(data);
-                        Toast.fire({
-                            icon: 'success',
-                            title: 'Completado'
-                        })
-                    }
-                });
-            });
-        </script>
-        <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl" >
-                <div class="modal-content" id="modalContent">
-                </div>
-            </div>
-        </div>
     </div>
     <script>
         $(document).ready( function () {
-            
+            Swal.close();
+            Toast.fire({
+                icon: 'success', 
+                title: 'Carga exitosa'
+            })
             $('#list_students').DataTable({
                     order: [],
                     language: {

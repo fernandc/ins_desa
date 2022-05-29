@@ -435,6 +435,26 @@ class App_Controller extends Controller {
             return ('/');
         }
     }
+    public function student_is_reincorporated(Request $request){
+        if($this->isAdmin()){
+            $gets = $request->input();
+            //dd($gets);
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'student_is_reincorporated',
+                'data' => ['id' => $gets["id_stu"], 'id_matricula' => $gets["id_matricula"] ]
+            );
+            //dd($arr);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+            $data = json_decode($response->body(), true); 
+            //dd($data);
+            return back();
+        }
+        else{
+            return ('/');
+        }
+    }
     public function set_jefatura(Request $request){
         if($this->isAdmin()){
             $gets = $request->input();
@@ -913,7 +933,7 @@ class App_Controller extends Controller {
             if(isset($files)){
                 $this->send_ticket_message($dni_staff, $id_ticket, null, $files);
             }
-            if(getenv("APP_DEBUG") == false){
+            if(getenv("APP_DEBUG") == 'false'){
                 $fname = Session::get('account')["full_name"];
                 $arr= array(
                     'institution' => getenv("APP_NAME"),
@@ -960,7 +980,7 @@ class App_Controller extends Controller {
                 $dni_solicitante = $data[0]["dni_solicitante"];
                 $dni_receptor = $data[0]["dni_receptor"];
                 $type = $data[0]["tipo"];
-                if(getenv("APP_DEBUG") == false){
+                if(getenv("APP_DEBUG") == 'false'){
                     $fname = Session::get('account')["full_name"];
                     if($dni_solicitante == $dni){
                         $message_to = $this->get_staff($dni_receptor);
