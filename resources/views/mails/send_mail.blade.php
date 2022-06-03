@@ -279,6 +279,7 @@ Enviar correo
                     <option value="3">Buenas Noticias</option>
                     <option value="4">Malas Noticias</option>
                     <option value="5" style="color: #0040ff;background-color: yellow;">[P] INFORMATIVO SEMANAL</option>
+                    <option value="6" style="color: #0040ff;background-color: yellow;">[P] INFORMATIVO MENSUAL</option>
                 </select>
               </div>
             </div>
@@ -295,24 +296,34 @@ Enviar correo
                             <input id="p5semin" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: Lunes 3">
                         </div>
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Fecha Fin</label>
+                            <label>Fecha Fin</label>
                             <input id="p5semout" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: Viernes 7">
                         </div>
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Mes referenciado</label>
+                            <label>Mes referenciado</label>
                             <input id="p5mes" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: Mayo">
                         </div>
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Horas de Inasistencias</label>
+                            <label>Horas de Inasistencias</label>
                             <input id="p5faltas" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: 3">
                         </div>
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Atrasos</label>
+                            <label>Atrasos</label>
                             <input id="p5atrasos" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: 4">
                         </div>
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Retiros</label>
+                            <label>Retiros</label>
                             <input id="p5retiros" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: 1">
+                        </div>
+                    </div>
+                    <div id="context3">
+                        <div class="form-group">
+                            <label>Mes referenciado</label>
+                            <input id="p6mes" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: Mayo">
+                        </div>
+                        <div class="form-group">
+                            <label>Atrasos</label>
+                            <input id="p6atrasos" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: 4">
                         </div>
                     </div>
                 </p>
@@ -422,30 +433,44 @@ Enviar correo
         var p5faltas = '<span class="text-danger">Pendiente</span>';
         var p5atrasos = '<span class="text-danger">Pendiente</span>';
         var p5retiros = '<span class="text-danger">Pendiente</span>';
+        //P6
+        var p6alumno = '<span class="text-danger">Pendiente</span>';
+        var p6curso = '<span class="text-danger">Pendiente</span>';
+        var p6mes = '<span class="text-danger">Pendiente</span>';
+        var p6atrasos = '<span class="text-danger">Pendiente</span>';
+
         $("#p5semin").on("keyup change", function(e) {
             p5semanain = $(this).val();
-            bodyP5();
+            updateBodyMessage();
         })
         $("#p5semout").on("keyup change", function(e) {
             p5semanaout = $(this).val();
-            bodyP5();
+            updateBodyMessage();
         })
         $("#p5mes").on("keyup change", function(e) {
             p5mes = $(this).val();
-            bodyP5();
+            updateBodyMessage();
         })
         $("#p5faltas").on("keyup change", function(e) {
             p5faltas = $(this).val();
-            bodyP5();
+            updateBodyMessage();
         })
         $("#p5atrasos").on("keyup change", function(e) {
             p5atrasos = $(this).val();
-            bodyP5();
+            updateBodyMessage();
         })
         $("#p5retiros").on("keyup change", function(e) {
             p5retiros = $(this).val();
-            bodyP5();
+            updateBodyMessage();
         })
+        $("#p6mes").on("keyup change", function(e) {
+            p6mes = $(this).val();
+            updateBodyMessage();
+        });
+        $("#p6atrasos").on("keyup change", function(e) {
+            p6atrasos = $(this).val();
+            updateBodyMessage();
+        });
         $("#emailtype").change(function(){
             $("#bgmail").removeClass('bg-primary');
             $("#bgmail").removeClass('bg-info');
@@ -459,10 +484,18 @@ Enviar correo
             if(type == 5){
                 $("#bgmail").addClass('bg-danger');
                 $("#context").hide();
+                $("#contex3").hide();
                 $("#context2").show();
                 selAlumP5();
+            }else if(type == 6){
+                $("#bgmail").addClass('bg-danger');
+                $("#context").hide();
+                $("#contex2").hide();
+                $("#context3").show();
+                selAlumP6();
             }else{
                 $("#context2").hide();
+                $("#context3").hide();
                 $("#context").show();
                 $("#viewContent").html('');
             }
@@ -485,9 +518,33 @@ Enviar correo
                 p5alumno = '<span class="text-danger">Pendiente</span>';
                 p5curso = '<span class="text-danger">Pendiente</span>';
             }
-            bodyP5();
+            updateBodyMessage();
         }
-        function bodyP5(){
+        function selAlumP6(){
+            console.log("A")
+            if(lista_to.length == 1){
+                console.log("B")
+                if(lista_to[0][0][1]=="ALUMNO"){
+                    console.log("C")
+                    p6alumno = lista_to[0][0][2];
+                    p6curso = obtenerCursoPorId(lista_to[0][0][0]);
+                    if(type == 6){
+                        console.log("D")
+                        $("#title").val("Informativo de atrasos - "+lista_to[0][0][2]);
+                        $("#bgmail").html("Informativo de atrasos - "+lista_to[0][0][2]);
+                    }
+                }else{
+                    p6alumno = '<span class="text-danger">Debe seleccionar 1 Alumno</span>';
+                }
+            }else if(lista_to.length > 1){
+                p6alumno = '<span class="text-danger">Debe seleccionar 1 Alumno</span>';
+            }else if(lista_to.length < 1){
+                p6alumno = '<span class="text-danger">Pendiente</span>';
+                p6curso = '<span class="text-danger">Pendiente</span>';
+            }
+            updateBodyMessage();
+        }
+        function updateBodyMessage(){
             if(type == 5){
                 $("#viewContent").html(`Sr. Apoderado de: <strong>`+p5alumno+`</strong>
                     Curso: <strong>`+p5curso+`</strong>
@@ -502,6 +559,19 @@ Enviar correo
 
                     Recordamos a usted que los justificativos deben ser enviados por el apoderado al correo: justificacioninasistencia@saintcharlescollege.cl, indicando nombre y curso del estudiante, explicando las razones de las inasistencias y/o adjuntando certificados médicos en el caso de tenerlos.
                     Cualquier duda en relación a la información entregada, debe dirigirse al Profesor Jefe, quien le puede entregar con mayor exactitud las fechas y horarios de inasistencia.
+                `);
+            }else if(type == 6){
+                $("#viewContent").html(`Sr. Apoderado de: <strong>`+p6alumno+`</strong>
+                    Curso: <strong>`+p6curso+`</strong>
+                    Me dirijo a usted para entregar informe de atrasos de su pupilo en el mes de <strong>`+p6mes+`</strong>:
+
+                    <strong>`+p6atrasos+`</strong> Atrasos.
+
+                    <strong>Le recordamos que es obligación del apoderado justificar a su pupilo  por comunicación o llamado telefónico.</strong>
+
+                    Sin otro particular.
+
+                    -Inspectoría.
                 `);
             }else{
                 $("#viewContent").html(mensaje);
@@ -556,7 +626,12 @@ Enviar correo
                 $("#check"+tipo_item+id_item).prop('checked', true);
                 $('#autocomplete').val('');
                 $("#destinatarios").append('<span id="'+tipo_item+id_item+'" class="badge badge-'+badge+' px-2 mr-2 destinatario" datatype="'+tipo_item+'" dataid="'+id_item+'" onclick="eliminarDes('+id_item+',\''+tipo_item+'\',\''+nombre_item+'\')" style="border-radius: 0px 40px 35px 35px;">'+nombre_item+' - '+tipo_item+'</span>');
-                selAlumP5();
+                if(type == 5){
+                    selAlumP5();
+                }
+                if(type == 6){
+                    selAlumP6();
+                }
             }
         }
         //
@@ -664,8 +739,64 @@ Enviar correo
                         Retiros: <strong>`+p5re+`</strong>`
                     })
                 }
-                
-                
+            }else if(type == 6){
+                var p6mr = $("#p6mes").val().trim();
+                var p6at = $("#p6atrasos").val().trim();
+                if(p6mr.length > 0 && p6at.length > 0){
+                    if(lista_to.length == 1 && lista_to[0][0][1]){
+                        $("#SendMailBtn").attr('disabled',true);
+                        var files = $("#inputGroupFile04")[0].files;
+                        var formData = new FormData();
+                        for(var i = 0; i < files.length; i++) {
+                            formData.append('files[]', files[i]);
+                        }
+                        formData.append('lista_destinatarios',lista_to);
+                        formData.append('send_when',selected);
+                        formData.append('meet',meet);
+                        formData.append('title',$("#bgmail").html());
+                        formData.append('body',$("#viewContent").html());
+                        formData.append('type',type);
+                        $.ajax({
+                            type: "POST",
+                            url: "send_mail_info",
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function (data){
+                                $('#SendMailBtn').attr('disabled',false);
+                                $("#reset").click();
+                                $("#bgmail").html("Asunto del correo");
+                                $("#viewContent").html("Cuerpo");
+                                $(".file-names").html("");
+                                $("#destinatarios").html("");
+                                $("#meeting-time").hide();
+                                $("#bgmail").removeClass('bg-primary');
+                                $("#bgmail").removeClass('bg-info');
+                                $("#bgmail").removeClass('bg-success');
+                                $("#bgmail").removeClass('bg-danger');
+                                $("#bgmail").addClass('bg-primary');
+                                selected = 1;
+                                type = 1;
+                                meet = '';
+                                mensajeT = '';
+                                mensaje = '';
+                                temp = '';
+                                lista_to = [];
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Enviado'
+                                })
+                            }
+                        })
+                    }
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Los campos no están completos',
+                        footer: `Mes referenciado: <strong>`+p6mr+`</strong> <br>
+                        Atrasos: <strong>`+p6at+`</strong>`
+                    });
+                }
             }else{
                 if(lista_to.length < 1){
                     Swal.fire({
@@ -742,16 +873,14 @@ Enviar correo
                                     Toast.fire({
                                         icon: 'warning',
                                         title: 'ha ocurrido un error'
-                                    })
+                                    });
                                 }
                             }
-                        })
+                        });
                     }
                 }
             }
-            
-            
-        })
+        });
     </script>
 </div>
 @endsection
