@@ -121,8 +121,16 @@
             });
         }
         $("#file1").on('change',function(e){
-            var fileName = e.target.files[0].name;
-            $(this).next('.custom-file-label').html(fileName);
+            var fileName1 = e.target.files[0].name;
+            $(this).next('.custom-file-label').html(fileName1);
+        })
+        $("#file2").on('change',function(e){
+            var fileName2 = e.target.files[0].name;
+            $(this).next('.custom-file-label').html(fileName2);
+        })
+        $("#file3").on('change',function(e){
+            var fileName3 = e.target.files[0].name;
+            $(this).next('.custom-file-label').html(fileName3);
         })
     });
     $("#dateBeet").change(function(){

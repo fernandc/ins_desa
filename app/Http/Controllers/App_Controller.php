@@ -1075,7 +1075,9 @@ class App_Controller extends Controller {
                     ]
                 );
                 $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
-                return $path;
+                if(count($files) == 1){
+                    return $path;
+                }
             }
         }else{
             $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
