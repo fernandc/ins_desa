@@ -116,6 +116,11 @@ const Toast = Swal.mixin({
                     <th scope="col">Curso</th>
                     <th scope="col">Etiquetas</th>
                     <th scope="col">Celular</th>
+                    @if($gen_cert)
+                        <th scope="col">
+                            Cert. Alumno regular
+                        </th>
+                    @endif
                     <th scope="col">Apoderado</th>
                     <th scope="col">Ficha del Alumno</th>
                 </tr>
@@ -148,6 +153,11 @@ const Toast = Swal.mixin({
                             @endif
                         </td>
                         <td>{{$row["cellphone_stu"]}} </td>
+                        @if($gen_cert)
+                            <td>
+                                <a class="btn btn-outline-success btn-sm" href="https://saintcharlescollege.cl/ins/generatePDF?data={{$row["hash"]}}" target="_blank">Generar Certificado</a>
+                            </td>
+                        @endif
                         <td><button class="btn btn-outline-secondary btn-sm data-apo" data="{{$row["dni_stu"]}}" data-toggle="modal" data-target=".bd-example-modal-xl">Ver Apoderado</button></td>
                         <td><button class="btn btn-outline-primary btn-sm data-ficha" data="{{$row["id_stu"]}}" data2="{{$row["id_zmail"]}}" data-toggle="modal" data-target="#ficha">Ver Ficha de Alumno</button></td>
                     </tr>             

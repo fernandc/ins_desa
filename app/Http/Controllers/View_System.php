@@ -252,9 +252,13 @@ class View_System extends Controller {
                     return view('inscriptions')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv);
                 case "students":
                         $has_priv = false;
+                        $gen_cert = false;
                         foreach ($privileges as $priv) {
                             if ($priv["id_privilege"] == 1) {
                                 $has_priv = true;
+                            }
+                            if ($priv["id_privilege"] == 15) {
+                                $gen_cert = true;
                             }
                         }
                         $curso = null;
@@ -276,7 +280,12 @@ class View_System extends Controller {
                             return back();
                         }
                         $students = $this->matriculas($curso);
-                        return view('info_students')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv);
+                        $contador = 0;
+                        foreach($students as $row){
+                            $students[$contador]["hash"] = Crypt::encryptString($row["id_zmail"]."-".$row["id_stu"]."-".$row["para_periodo"]);
+                            $contador++;
+                        }
+                        return view('info_students')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv)->with("gen_cert",$gen_cert);
                 case "proxys":
                     $has_priv = false;
                     foreach ($privileges as $priv) {
@@ -605,8 +614,8 @@ class View_System extends Controller {
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="Certificado Alumno Regular.pdf"'
         ]);
-        
     }
+    
     public function modal_ficha(request $request){
         $gets = $request->input();
         $id_stu = $gets["id_stu"];

@@ -304,10 +304,6 @@ Enviar correo
                             <input id="p5mes" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: Mayo">
                         </div>
                         <div class="form-group">
-                            <label>Horas de Inasistencias</label>
-                            <input id="p5faltas" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: 3">
-                        </div>
-                        <div class="form-group">
                             <label>Atrasos</label>
                             <input id="p5atrasos" type="text" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: 4">
                         </div>
@@ -430,7 +426,6 @@ Enviar correo
         var p5semanain = '<span class="text-danger">Pendiente</span>';
         var p5semanaout = '<span class="text-danger">Pendiente</span>';
         var p5mes = '<span class="text-danger">Pendiente</span>';
-        var p5faltas = '<span class="text-danger">Pendiente</span>';
         var p5atrasos = '<span class="text-danger">Pendiente</span>';
         var p5retiros = '<span class="text-danger">Pendiente</span>';
         //P6
@@ -449,10 +444,6 @@ Enviar correo
         })
         $("#p5mes").on("keyup change", function(e) {
             p5mes = $(this).val();
-            updateBodyMessage();
-        })
-        $("#p5faltas").on("keyup change", function(e) {
-            p5faltas = $(this).val();
             updateBodyMessage();
         })
         $("#p5atrasos").on("keyup change", function(e) {
@@ -484,13 +475,13 @@ Enviar correo
             if(type == 5){
                 $("#bgmail").addClass('bg-danger');
                 $("#context").hide();
-                $("#contex3").hide();
+                $("#context3").hide();
                 $("#context2").show();
                 selAlumP5();
             }else if(type == 6){
                 $("#bgmail").addClass('bg-danger');
                 $("#context").hide();
-                $("#contex2").hide();
+                $("#context2").hide();
                 $("#context3").show();
                 selAlumP6();
             }else{
@@ -551,7 +542,6 @@ Enviar correo
                     Semana de <strong>`+p5semanain+`</strong> al <strong>`+p5semanaout+`</strong> del mes de <strong>`+p5mes+`</strong>
                     Me dirijo a usted para entregar informe semanal de los datos que se detallan a continuación:
 
-                    <strong>`+p5faltas+`</strong> Horas de inasistencias 
                     <strong>`+p5atrasos+`</strong> Atrasos
                     <strong>`+p5retiros+`</strong> Retiro de Clases
 
@@ -676,10 +666,9 @@ Enviar correo
                 var p5si = $("#p5semin").val().trim();
                 var p5so = $("#p5semout").val().trim();
                 var p5mr = $("#p5mes").val().trim();
-                var p5hi = $("#p5faltas").val().trim();
                 var p5at = $("#p5atrasos").val().trim();
                 var p5re = $("#p5retiros").val().trim();
-                if(p5si.length > 0 && p5so.length > 0 && p5mr.length > 0 && p5hi.length > 0 && p5at.length > 0 && p5re.length > 0){
+                if(p5si.length > 0 && p5so.length > 0 && p5mr.length > 0 && p5at.length > 0 && p5re.length > 0){
                     //if(true){
                     if(lista_to.length == 1 && lista_to[0][0][1]=="ALUMNO"){
                         $("#SendMailBtn").attr('disabled',true);
@@ -734,7 +723,6 @@ Enviar correo
                         footer: `Fecha inicio: <strong>`+p5si+`</strong> <br>
                         Fecha Fin: <strong>`+p5so+`</strong> <br>
                         Mes referenciado: <strong>`+p5mr+`</strong> <br>
-                        Horas de Inasistencias: <strong>`+p5hi+`</strong> <br>
                         Atrasos: <strong>`+p5at+`</strong> <br>
                         Retiros: <strong>`+p5re+`</strong>`
                     })
