@@ -27,7 +27,7 @@
         </div>
         <div style="font-size: 20px;">
           <p>
-            <b>Saint Charles Collegue</b>, emite el presente certificado a:
+            <b>Saint Charles College</b>, emite el presente certificado a:
             <br>
             <span style="color: navy">{{$nombre_stu}}</span>
             RUT: <span style="color: navy">{{$dni_stu}}</span>

@@ -264,6 +264,7 @@ Admin Cursos
                             </script>
                         </td>
                         <td>
+                            <span style="display: none;">{{$row["numero_matricula"]}}</span>
                             <input class="form-control" type="number" min="0" max="999" value="{{$row["numero_matricula"]}}" id="inputNM{{$row["id_stu"]}}" required="">
                             <script>
                                 // $(document).ready(function(){
