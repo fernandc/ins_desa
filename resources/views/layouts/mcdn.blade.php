@@ -153,7 +153,9 @@ if(Session::has('period')){
                             <a class="dropdown-item {{$periodenable}}" href="adm_subject"><i class="fas fa-chalkboard" style="min-width: 28px"></i> Asignaturas</a>
                             <a class="dropdown-item {{$periodenable}}" href="adm_teachers"><i class="fas fa-chalkboard-teacher" style="min-width: 28px"></i> Profesores</a>
                             <a class="dropdown-item {{$periodenable}}" href="adm_horario"><i class="fas fa-th" style="min-width: 28px"></i> Horario de clases</a>
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="adm_students"><i class="fas fa-user-graduate" style="min-width: 28px"></i> Estudiantes</a>
+                            <a class="dropdown-item" href="adm_students_norms"><i class="fas fa-user-graduate" style="min-width: 28px"></i> Normas no cumplidas</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="https://saintcharlescollege.cl/apoderados/admin" target="_blank"><i class="far fa-address-book" style="min-width: 28px"></i> Sistema Matriculas</a>
                         </div>

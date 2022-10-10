@@ -3,7 +3,7 @@
 
 @extends("layouts.mcdn")
 @section("title")
-Admin Cursos
+Administrar Estudiantes
 @endsection
 
 @section("headex")

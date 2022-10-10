@@ -60,8 +60,6 @@
                     <th>{{$data["student"]["names"]}}</th>
                   </tr>
                   <tr>
-
-
                     <th>Apellido Paterno</th>
                     <th>Apellido Materno</th>
                     <th>Nombres</th>
@@ -114,6 +112,25 @@
                     <th colspan="2">Dirección: {{$data["student_background"]["address"]}} </th>
                   </tr>
                 </table>
+              </div>
+              <div class="my-3">
+                <p class="pt-3 my-3" style="font-size: 18px; font-weight:bold">Normativas no cumplidas</p>
+                <div class="row border p-36 m-1">
+                    @if (count($data["normativas_no_cumplidas"]) == 0)
+                        <div class="col-md-12 text-center">
+                            <div class="my-1" style="display: inline-block;border-style: groove;border-color: rgb(78, 225, 65);border-width: 6px;border-radius: 15px;padding: 0px !important;width: 160px;">
+                                Sin observaciones
+                            </div>
+                        </div>
+                    @else
+                    <div class="col-md-12">
+                        @foreach ($data["normativas_no_cumplidas"] as $item)
+                            - <b class="px-3 text-danger">No {{$item["normativa"]}}</b>
+                            <br>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
               </div>
           </div>
           

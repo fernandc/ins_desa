@@ -66,6 +66,18 @@ class View_System extends Controller {
                     }else{
                         return redirect('');
                     }
+                case "adm_students_norms":
+                    if($this->isAdmin()){
+                        $curso = 0;
+                        if(isset($gets['curso'])){
+                            $curso = $gets['curso'];
+                        }
+                        $students = $this->students($curso);
+						$grades = $this->grades();
+                        return view('adm_students_norms')->with("students",$students)->with("grades",$grades)->with("message",$message);
+                    }else{
+                        return redirect('');
+                    }
                 case "adm_teachers":
                     if($this->isAdmin()){
                         $staff = $this->staff();

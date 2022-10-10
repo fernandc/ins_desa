@@ -63,6 +63,7 @@ Route::get('/save_assistance',[App_Controller::class, 'save_assistance']);
 Route::get('/student_is_repeater',[App_Controller::class, 'student_is_repeater']);
 Route::get('/student_is_new',[App_Controller::class, 'student_is_new']);
 Route::get('/student_is_reincorporated',[App_Controller::class, 'student_is_reincorporated']);
+Route::get('/student_irregulation',[App_Controller::class, 'student_irregulation']);
 Route::post('/send_ticket',[App_Controller::class, 'send_ticket']);
 Route::get('/close_ticket',[App_Controller::class, 'close_ticket']);
 Route::post('/response_ticket_message',[App_Controller::class, 'response_ticket_message']);
@@ -97,6 +98,6 @@ Route::get('/btn_del_document_adm', [App_Controller::class, 'btn_del_document_ad
 Route::get('/staff_add_cargo', [App_Controller::class, 'staff_add_cargo']);
 Route::get('/get_user_formation', [App_Controller::class, 'get_user_formation']);
 Route::view('/ejemplos_livewire','ejemplos_livewire');
-Route::get('/{param}',[View_System::class, 'main']);
 Route::post('/delete_user', [App_Controller::class, 'delete_user']);
+Route::get('/{param}',[View_System::class, 'main']);
 

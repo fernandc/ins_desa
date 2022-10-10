@@ -435,6 +435,26 @@ class App_Controller extends Controller {
             return ('/');
         }
     }
+    public function student_irregulation(Request $request){
+        if($this->isAdmin()){
+            $gets = $request->input();
+            //dd($gets);
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => 'upd_irregularitiy',
+                'data' => ['id_inscription' => $gets["id_inscription"], 'id_regulations' => $gets["id_regulations"] ]
+            );
+            //dd($arr);
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+            $data = json_decode($response->body(), true); 
+            //dd($data);
+            return back();
+        }
+        else{
+            return ('/');
+        }
+    }
     public function student_is_reincorporated(Request $request){
         if($this->isAdmin()){
             $gets = $request->input();
