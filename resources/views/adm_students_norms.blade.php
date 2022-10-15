@@ -218,10 +218,10 @@
                         <td>
                             <div class="custom-control custom-switch">
                                 @if($row["no_cumple_uniforme"] == 1)
-                                    <input type="checkbox" class="custom-control-input sw-danger toggle-1" data="{{$row["id_matricula"]}}" id="norm1s{{$row["id_stu"]}}" checked="">
+                                    <input type="checkbox" class="custom-control-input sw-danger" onchange="toggle1({{$row["id_matricula"]}})" data="" id="norm1s{{$row["id_stu"]}}" checked="">
                                     <label class="custom-control-label text-danger" for="norm1s{{$row["id_stu"]}}" ></label>
                                 @else
-                                    <input type="checkbox" class="custom-control-input sw-danger toggle-1" data="{{$row["id_matricula"]}}" id="norm1s{{$row["id_stu"]}}" >
+                                    <input type="checkbox" class="custom-control-input sw-danger" onchange="toggle1({{$row["id_matricula"]}})" data="" id="norm1s{{$row["id_stu"]}}" >
                                     <label class="custom-control-label text-danger" for="norm1s{{$row["id_stu"]}}" ></label>
                                 @endif
                             </div>
@@ -261,8 +261,9 @@
                         }
                 },
             });
-            $(".toggle-1").change(function(){
-                var matricula = $(this).attr("data");
+            
+        } );
+        function toggle1(matricula){
                 $.ajax({
                     type: "GET",
                     url: "student_irregulation",
@@ -278,8 +279,7 @@
                         })
                     }
                 });
-            })
-        } );
+            }
     </script>
 </div>
 
