@@ -21,28 +21,32 @@
         <div class="d-flex">
             <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;FICHA DE MATRÍCULA {{$year}} </p>
         </div>
-        <div>
+        <div class="float-right" style="width: 120px;border-style: groove;text-align: center;height: 138px;margin-top: -54px;border-color: #b5b5b5;">
+            <b style="display: block;margin-top: 40px;">
+                FOTO ALUMNO
+            </b>
+        </div>
         <div class="my-3">
             <p class="pt-3 my-3" style="font-size: 24px; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Antecedentes del Estudiante</p>
             </div>
             <div class="text-right" style="width: 300px;float: right;">
-            @if($data["inscription"]["es_repitente"] == "si" || $data["inscription"]["es_nuevo"] == "si")
-                @php
-                    $color = "";
-                    $display = "";
-                    if($data["inscription"]["es_nuevo"] == "si"){
-                    $color = "royalblue";
-                    $display = "ALUMNO NUEVO";
-                    }
-                    if($data["inscription"]["es_repitente"] == "si"){
-                    $color = "#dc3545";
-                    $display = "ALUMNO REPITIENTE";
-                    }
-                @endphp
-                <h4 class="pt-3 my-3 text-center" style="border-style: groove;border-color: {{$color}};border-width: 10px;padding: 0px !important;">
-                {{$display}}
-                </h4>
-            @endif
+                @if($data["inscription"]["es_repitente"] == "si" || $data["inscription"]["es_nuevo"] == "si")
+                    @php
+                        $color = "";
+                        $display = "";
+                        if($data["inscription"]["es_nuevo"] == "si"){
+                        $color = "royalblue";
+                        $display = "ALUMNO NUEVO";
+                        }
+                        if($data["inscription"]["es_repitente"] == "si"){
+                        $color = "#dc3545";
+                        $display = "ALUMNO REPITIENTE";
+                        }
+                    @endphp
+                    <h4 class="pt-3 my-3 text-center" style="border-style: groove;border-color: {{$color}};border-width: 10px;padding: 0px !important;">
+                    {{$display}}
+                    </h4>
+                @endif
             </div>
             <div class="my-3">
             <p class="font-weight-bold" style="font-size: 10pt;">N° de matrícula: &nbsp;&nbsp;<span style="text-decoration: underline;white-space: break-spaces;"><?php echo str_pad($data["inscription"]["numero_matricula"], 20, " ", STR_PAD_BOTH); ?></span></p>
