@@ -74,7 +74,14 @@ class View_System extends Controller {
                         }
                         $students = $this->students($curso);
 						$grades = $this->grades();
-                        return view('adm_students_norms')->with("students",$students)->with("grades",$grades)->with("message",$message);
+                        $arr = array(
+                            'institution' => getenv("APP_NAME"),
+                            'public_key' => getenv("APP_PUBLIC_KEY"),
+                            'method' => 'get_regulations'
+                        );
+                        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+                        $regulations = json_decode($response->body(), true);
+                        return view('adm_students_norms')->with("students",$students)->with("grades",$grades)->with("message",$message)->with("regulations",$regulations);
                     }else{
                         return redirect('');
                     }

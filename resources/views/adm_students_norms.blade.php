@@ -78,14 +78,6 @@
     }
 </style>
 <script>
-    function isValidDate(dateString) {
-        var regEx = /^\d{4}-\d{2}-\d{2}$/;
-        if(!dateString.match(regEx)) return false;  // Invalid format
-        var d = new Date(dateString);
-        var dNum = d.getTime();
-        if(!dNum && dNum !== 0) return false; // NaN value, Invalid date
-        return d.toISOString().slice(0,10) === dateString;
-    }
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -194,7 +186,9 @@
                     <th scope="col">Nombre</th>
                     <th scope="col">Rut</th>
                     <th scope="col">Curso</th>
-                    <th scope="col">No cumple con uniforme</th>
+                    @foreach ($regulations as $regulation)
+                        <th scope="col">No {{$regulation["name"]}}</th>
+                    @endforeach
                 </tr>
             </thead>
             <tbody>
@@ -223,6 +217,17 @@
                                 @else
                                     <input type="checkbox" class="custom-control-input sw-danger" onchange="toggle1({{$row["id_matricula"]}})" data="" id="norm1s{{$row["id_stu"]}}" >
                                     <label class="custom-control-label text-danger" for="norm1s{{$row["id_stu"]}}" ></label>
+                                @endif
+                            </div>
+                        </td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                @if($row["no_vive_con_apoderado"] == 2)
+                                    <input type="checkbox" class="custom-control-input sw-danger" onchange="toggle2({{$row["id_matricula"]}})" data="" id="norm2s{{$row["id_stu"]}}" checked="">
+                                    <label class="custom-control-label text-danger" for="norm2s{{$row["id_stu"]}}" ></label>
+                                @else
+                                    <input type="checkbox" class="custom-control-input sw-danger" onchange="toggle2({{$row["id_matricula"]}})" data="" id="norm2s{{$row["id_stu"]}}" >
+                                    <label class="custom-control-label text-danger" for="norm2s{{$row["id_stu"]}}" ></label>
                                 @endif
                             </div>
                         </td>
@@ -262,14 +267,15 @@
                 },
             });
             
-        } );
-        function toggle1(matricula){
+        });
+        @foreach($regulations as $regulation)
+            function toggle{{$regulation["id"]}}(matricula){
                 $.ajax({
                     type: "GET",
                     url: "student_irregulation",
                     data:{
                         id_inscription: matricula,
-                        id_regulations: 1
+                        id_regulations: {{$regulation["id"]}}
                     },
                     success: function (data)
                     {
@@ -280,6 +286,7 @@
                     }
                 });
             }
+        @endforeach
     </script>
 </div>
 
