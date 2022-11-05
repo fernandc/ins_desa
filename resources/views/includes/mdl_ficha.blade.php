@@ -278,7 +278,32 @@
                     <th colspan="2">Forma de traslado al colegio (vuelta): {{$data["misc"]["meth_back"]}}</th>
                 </tr>
                 <tr>
-                    <th colspan="2">Persona autorizada a retirarlo: {{$data["misc"]["auth_quit"]}}</th>
+                    <th colspan="2">Personas autorizadas a retirarlo: </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        @php
+                            $auth_quit = json_decode($data["misc"]["auth_quit"], true);
+                        @endphp
+                        <table class="table table-bordered bg-white">
+                            <thead>
+                                <tr class="bg-light">
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Rut</th>
+                                    <th scope="col">Parentezco</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    @for ($i = 0; $i < 4; $i++)
+                                    <tr class="bg-white" style="height: 31px;">
+                                        <td>{{isset($auth_quit[$i]["name"]) ? $auth_quit[$i]["name"] : "-"}}</td>
+                                        <td>{{isset($auth_quit[$i]["dni"]) ? $auth_quit[$i]["dni"] : "-"}}</td>
+                                        <td>{{isset($auth_quit[$i]["parent"]) ? $auth_quit[$i]["parent"] : "-"}}</td>
+                                    </tr>
+                                @endfor
+                            </tbody>
+                        </table>
+                    </th>
                 </tr>
             </table>
         </div>
