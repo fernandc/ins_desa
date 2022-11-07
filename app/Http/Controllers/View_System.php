@@ -272,12 +272,16 @@ class View_System extends Controller {
                 case "students":
                         $has_priv = false;
                         $gen_cert = false;
+                        $gen_contrato = false;
                         foreach ($privileges as $priv) {
                             if ($priv["id_privilege"] == 1) {
                                 $has_priv = true;
                             }
                             if ($priv["id_privilege"] == 15) {
                                 $gen_cert = true;
+                            }
+                            if ($priv["id_privilege"] == 16) {
+                                $gen_contrato = true;
                             }
                         }
                         $curso = null;
@@ -304,7 +308,7 @@ class View_System extends Controller {
                             $students[$contador]["hash"] = Crypt::encryptString($row["id_zmail"]."-".$row["id_stu"]."-".$row["para_periodo"]);
                             $contador++;
                         }
-                        return view('info_students')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv)->with("gen_cert",$gen_cert);
+                        return view('info_students')->with("students",$students)->with("message",$message)->with("has_priv",$has_priv)->with("gen_cert",$gen_cert)->with("gen_contrato",$gen_contrato);
                 case "proxys":
                     $has_priv = false;
                     foreach ($privileges as $priv) {
@@ -653,6 +657,25 @@ class View_System extends Controller {
         $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-apoderado");
         $data = json_decode($response->body(), true);
         return view('includes/mdl_ficha')->with("data",$data)->with("year",$year);
+    }
+    public function modal_contrato(request $request){
+        $gets = $request->input();
+        $id_stu = $gets["id_stu"];
+        $id_apo = $gets["id_apo"];
+        $year = $gets["year"];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'downloadPdf',
+            'data' => [
+                "id" => $id_stu,
+                "id_apo" => $id_apo,
+                "year" => $year
+            ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-apoderado");
+        $data = json_decode($response->body(), true);
+        return view('includes/mdl_contrato')->with("data",$data)->with("year",$year);
     }
     public function iframe_news(){
         //header('Access-Control-Allow-Origin: https://saintcharlescollege.cl/wp/comunicaciones-2021/'); 

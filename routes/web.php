@@ -73,6 +73,7 @@ Route::get('/modal_asignatura', [View_System::class, 'modal_asignatura']);
 Route::get('/modal_privileges', [View_System::class, 'modal_privileges']);
 Route::get('/modal_apoderados', [View_System::class, 'modal_apoderados']);
 Route::get('/modal_ficha', [View_System::class, 'modal_ficha']);
+Route::get('/modal_contrato', [View_System::class, 'modal_contrato']);
 Route::get('/modal_bloqueHorario', [View_System::class, 'modal_bloqueHorario']);
 Route::get('/destinatarios_sent_mails', [View_System::class, 'destinatarios_sent_mails']);
 Route::get('/modal_edit_group', [View_System::class, 'modal_edit_group']);
