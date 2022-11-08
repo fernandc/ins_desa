@@ -16,20 +16,20 @@
             <img src="" alt="Alumno">
         </div>
       -->
-    <main id="content" class="border" style="padding: 40px;">
+    <main id="content" class="border" style="padding: 20px;">
         <div class="float-left" style="width: 80px; heigth:80px;">
             <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://statsup.online/public/scc_logo.png')); ?>" alt="" class="img-fluid">
         </div>
         <div class="d-flex">
-            <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;FICHA DE MATRÍCULA {{$year}} </p>
+            <p class="text-secondary" style="font-size:30px; font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FICHA DE MATRÍCULA {{$year}} </p>
         </div>
         <div class="float-right" style="width: 120px;border-style: groove;text-align: center;height: 138px;margin-top: -54px;border-color: #b5b5b5;">
             <b style="display: block;margin-top: 40px;">
                 FOTO ALUMNO
             </b>
         </div>
-        <div class="my-3">
-            <p class="pt-3 my-3" style="font-size: 24px; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Antecedentes del Estudiante</p>
+        <div class="">
+            <p class="" style="font-size: 24px; font-weight:bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Antecedentes del Estudiante</p>
         </div>
         <div class="text-right" style="width: 300px;float: right;">
             @if($data["inscription"]["es_repitente"] == "si" || $data["inscription"]["es_nuevo"] == "si")
