@@ -571,7 +571,7 @@ class View_System extends Controller {
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
-            'method' => 'getMatricula',
+            'method' => 'getAlumnoRegular',
             'data' => [
                 "id_zmail" => $id_apo,
                 "id_stu" => $id_stu,
@@ -580,6 +580,9 @@ class View_System extends Controller {
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
+        if($data == null){
+            return "Alumno no encontrado en el sistema del año $year";
+        }
         //
         $data[0]["codigo"] = strtoupper(bin2hex(random_bytes(8)));
         $name = str_replace(' ', '_', $data[0]["nombre_stu"]);
