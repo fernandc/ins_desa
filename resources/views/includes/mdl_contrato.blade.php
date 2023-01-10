@@ -12,7 +12,7 @@
         <div id="content" style="font-size:0.9rem;">
             <div class="border p-5">
                 <div class="text-center">
-                    <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://statsup.online/public/scc_logo.png')); ?>" alt="Logo" style="max-height: 120px;">
+                    <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents(getenv("API_ENDPOINT").'public/scc_logo.png')); ?>" alt="Logo" style="max-height: 120px;">
                 </div>
                 <div class="row" style="line-height: 1.2;">
                     <div class="col-md-12">

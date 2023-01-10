@@ -7,7 +7,7 @@
           <table>
             <tr>
               <td style="width: 234px"></td>
-              <td style="width: 234px"><img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://statsup.online/public/scc_logo.png')); ?>" style="height: 250px;"></td>
+              <td style="width: 234px"><img src="data:image/png;base64, <?php echo base64_encode(file_get_contents(getenv("API_ENDPOINT").'public/scc_logo.png')); ?>" style="height: 250px;"></td>
               <td style="width: 234px; text-align:right;">
                 @php setlocale(LC_ALL, "es_ES", 'Spanish_Spain', 'Spanish'); echo ucfirst(iconv('ISO-8859-2', 'UTF-8', strftime("%A, %d de %B de %Y", strtotime(date("Y-m-d"))))); @endphp
                 <hr>
@@ -44,7 +44,7 @@
         </div>
         <div class="footer" style="position: fixed; bottom: 260px; left: 0px; right: 0px;height: 50px;line-height: 35px;">
           <div style="text-align: right; margin-bottom: 4rem;" >
-            <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents('https://statsup.online/public/scc_firma2.png')); ?>" style="height: 150px;">
+            <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents(getenv("API_ENDPOINT").'public/scc_firma2.png')); ?>" style="height: 150px;">
           </div>
           <div style="line-height: 100%;">
             Saint Charles College esta reconocido oficialmente por el Ministerio de Educación de la Republica de chile según Res. Rec. Oficial/Doc. Traspaso Nº 1813 del año  2002, rol Base de Datos 25382-0 .
