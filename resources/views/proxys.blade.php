@@ -113,7 +113,7 @@ const Toast = Swal.mixin({
                     <th scope="col">Telefono</th>
                     <th scope="col">Celular</th>
                     <th scope="col">Alumno</th>
-                    <th scope="col">Parentezco</th>
+                    <th scope="col">Parentesco</th>
                     <th scope="col">Curso</th>
                 </tr>
             </thead>

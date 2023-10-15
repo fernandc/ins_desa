@@ -85,6 +85,12 @@ class View_System extends Controller {
                     }else{
                         return redirect('');
                     }
+                case "adm_students_proxy":
+                    if($this->isAdmin()){
+                        return view('adm_students_proxy');
+                    }else{
+                        return redirect('');
+                    }
                 case "adm_teachers":
                     if($this->isAdmin()){
                         $staff = $this->staff();

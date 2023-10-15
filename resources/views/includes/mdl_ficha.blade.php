@@ -290,7 +290,7 @@
                                 <tr class="bg-light">
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Rut</th>
-                                    <th scope="col">Parentezco</th>
+                                    <th scope="col">Parentesco</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -314,7 +314,7 @@
             <table class="table table-sm table-striped table-condensed">
                 <tr>
                     <th>Nombre</th>
-                    <th>Parentezco</th>
+                    <th>Parentesco</th>
                     <th>¿Mismo Colegio?</th>
                     <th>Edad</th>
                     <th>Ocupación</th>

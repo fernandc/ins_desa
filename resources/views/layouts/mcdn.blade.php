@@ -26,8 +26,6 @@ if(Session::has('period')){
         <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-        <!--ACE-->
-        <script src="https://pagecdn.io/lib/ace/1.4.6/ace.js" integrity="sha256-CVkji/u32aj2TeC+D13f7scFSIfphw2pmu4LaKWMSY8=" crossorigin="anonymous"></script>
         <!-- animista js -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css" integrity="sha256-a2tobsqlbgLsWs7ZVUGgP5IvWZsx8bTNQpzsqCSm5mk=" crossorigin="anonymous" />
         <!-- sweet alert -->
@@ -158,6 +156,12 @@ if(Session::has('period')){
                             <a class="dropdown-item" href="adm_students_norms"><i class="fas fa-user-graduate" style="min-width: 28px"></i> Normas no cumplidas</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="https://saintcharlescollege.cl/apoderados/admin" target="_blank"><i class="far fa-address-book" style="min-width: 28px"></i> Sistema Matriculas</a>
+                            @if(in_array(17,$privileges))
+                                <a class="dropdown-item" href="adm_students_proxy">
+                                    <i class="fas fa-exchange-alt text-info"></i>
+                                    Cambio de apoderado
+                                </a>
+                            @endif
                         </div>
                     </li>
                     @endif

@@ -100,5 +100,8 @@ Route::get('/staff_add_cargo', [App_Controller::class, 'staff_add_cargo']);
 Route::get('/get_user_formation', [App_Controller::class, 'get_user_formation']);
 Route::view('/ejemplos_livewire','ejemplos_livewire');
 Route::post('/delete_user', [App_Controller::class, 'delete_user']);
+Route::post('/get_proxys', [App_Controller::class, 'get_proxys']);
+Route::post('/get_students_by_proxy', [App_Controller::class, 'get_students_by_proxy']);
+Route::post('/change_proxy', [App_Controller::class, 'change_proxy']);
 Route::get('/{param}',[View_System::class, 'main']);
 

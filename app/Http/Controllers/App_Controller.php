@@ -1771,4 +1771,59 @@ class App_Controller extends Controller {
         $data = json_decode($response->body(), true);
         return $data;
     }
+    public function get_proxys(Request $request){
+        $gets = $request->input();
+        $year = $gets['year'];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => "get_apoderados"
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        $data = json_decode($response->body(),true);
+        return $data;
+    }
+    public function get_students_by_proxy(Request $request){
+        $gets = $request->input();
+        $year = $gets['year'];
+        $proxy = $gets['proxy'];
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => "get_apoderados",
+            'data' => [
+                "year" =>  $year,
+                "id_zmail" => $proxy
+            ]
+        );
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        $data = json_decode($response->body(),true);
+        return $data;
+    }
+
+    public function change_proxy(Request $request){
+        $gets = $request->input();
+        $year = $gets['year'];
+        $students = $gets['students'];
+        foreach ($students as $student) {
+            $id_zmail = $student['id_zmail'];
+            $id_new_zmail = $student['id_new_zmail'];
+            $id_stu = $student['id_stu'];
+            $parent = $student['parent'];
+            $parent = ucwords(strtolower($parent));
+            $arr = array(
+                'institution' => getenv("APP_NAME"),
+                'public_key' => getenv("APP_PUBLIC_KEY"),
+                'method' => "mod_apoderado",
+                'data' => [
+                    "year" =>  $year,
+                    "id_zmail" => $id_zmail,
+                    "id_new_zmail" => $id_new_zmail,
+                    "id_stu" => $id_stu,
+                    "parent" => $parent
+                ]
+            );
+            $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        }
+    }
 }
