@@ -999,7 +999,10 @@ class View_System extends Controller {
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'proxy_info',
-            'data' => ['dni' => $dni]
+            'data' => [
+                'dni' => $dni,
+                'year' => Session::get('period')
+            ]
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
         $data = json_decode($response->body(), true);
