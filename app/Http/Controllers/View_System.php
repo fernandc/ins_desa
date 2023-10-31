@@ -949,7 +949,8 @@ class View_System extends Controller {
     public function modal_apoderados(Request $request){
         $gets = $request->input();
         $dni = $gets["dni"];
-        $apoderado = $this->get_apoderado_by_dni_stu($dni);
+        $year = $gets["year"];
+        $apoderado = $this->get_apoderado_by_dni_stu($dni,$year);
         if($apoderado == null){
             return null;
         }
@@ -994,14 +995,14 @@ class View_System extends Controller {
         //dd($data);
         return $data;
     }
-    public function get_apoderado_by_dni_stu($dni){
+    public function get_apoderado_by_dni_stu($dni,$year){
         $arr = array(
             'institution' => getenv("APP_NAME"),
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'proxy_info',
             'data' => [
                 'dni' => $dni,
-                'year' => Session::get('period')
+                'year' => $year
             ]
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");

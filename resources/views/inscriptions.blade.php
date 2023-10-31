@@ -202,6 +202,7 @@ const Toast = Swal.mixin({
         <script>
             $(".data-apo").click(function(){
                 var dni = $(this).attr('data');
+                var year = "@if(Session::has('period')){{Session::get('period')+1}}@endif";
                 Swal.fire({
                     icon: 'info',
                     title: 'Cargando',
@@ -211,7 +212,8 @@ const Toast = Swal.mixin({
                     type: "GET",
                     url: "modal_apoderados",
                     data:{
-                        dni
+                        dni,
+                        year
                     },
                     success: function (data)
                     {
