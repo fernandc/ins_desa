@@ -168,7 +168,7 @@ const Toast = Swal.mixin({
                             @endif
                         </td>
                         <td>
-                            @if ($row["misc"] == 1)
+                            @if ($row["misc"] == 1 && $row["auth_quit"] == 1)
                                 <span class="badge badge-success" style="min-width: 96px;">Completado</span>
                             @else
                                 <span class="badge badge-danger" style="min-width: 96px;">No Completado</span>
