@@ -115,6 +115,20 @@
                             estudio y reglamentos que actualmente rigen, para adaptarlos a las necesidades y requerimientos de
                             la enseñanza que imparte.
                         </div>
+                        <div class="mt-3">
+                            <b>
+                                Actividades de carácter obligatorio, dentro del margen académico que se realizarán los
+                                días sábados
+                            </b>
+                        </div>
+                        <div class="mt-3">
+                            <ul>
+                                <li>Compromiso Apoderado</li>
+                                <li>Extracto Manual de Convivencia</li>
+                                <li>Extracto Reglamento de Evaluación</li>
+                                <li>Contrato de Prestación de Servicios Educacionales</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
