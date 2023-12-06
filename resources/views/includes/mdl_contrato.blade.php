@@ -10,7 +10,7 @@
 <div class="modal-body">
     <div class="container">
         <div id="content" style="font-size:0.9rem;">
-            <div class="border p-5">
+            <div class="border px-5 py-2">
                 <div class="text-center">
                     <img src="data:image/png;base64, <?php echo base64_encode(file_get_contents(getenv("API_ENDPOINT").'public/scc_logo.png')); ?>" alt="Logo" style="max-height: 120px;">
                 </div>
@@ -115,18 +115,20 @@
                             estudio y reglamentos que actualmente rigen, para adaptarlos a las necesidades y requerimientos de
                             la enseñanza que imparte.
                         </div>
-                        <div class="mt-3">
-                            <b>
+                        <div class="mt-2">
+                            <b style="background-color: yellow;">
                                 Actividades de carácter obligatorio, dentro del margen académico que se realizarán los
                                 días sábados
                             </b>
                         </div>
-                        <div class="mt-3">
-                            <ul>
-                                <li>Compromiso Apoderado</li>
-                                <li>Extracto Manual de Convivencia</li>
-                                <li>Extracto Reglamento de Evaluación</li>
-                                <li>Contrato de Prestación de Servicios Educacionales</li>
+                        <div class="mt-2">
+                            <ul style="color: darkblue;">
+                                <li>
+                                    <b>Evento "Fiesta de la Chilenidad" (18 de Septiembre)</b>
+                                </li>
+                                <li>
+                                    <b>Evento "Día de la Raza"</b>
+                                </li>
                             </ul>
                         </div>
                     </div>
