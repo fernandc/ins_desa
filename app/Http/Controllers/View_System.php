@@ -671,6 +671,7 @@ class View_System extends Controller {
         $gets = $request->input();
         $id_stu = $gets["id_stu"];
         $id_apo = $gets["id_apo"];
+        $only_first = isset($gets["only_first"]) ? $gets["only_first"] : false;
         $year = $gets["year"];
         $arr = array(
             'institution' => getenv("APP_NAME"),
@@ -684,7 +685,10 @@ class View_System extends Controller {
         );
         $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-apoderado");
         $data = json_decode($response->body(), true);
-        return view('includes/mdl_contrato')->with("data",$data)->with("year",$year);
+        if($only_first){
+            return $data;
+        }
+        return view('includes/mdl_contrato')->with("data",$data)->with("year",$year)->with("only_first",$only_first);
     }
     public function iframe_news(){
         //header('Access-Control-Allow-Origin: https://saintcharlescollege.cl/wp/comunicaciones-2021/'); 
