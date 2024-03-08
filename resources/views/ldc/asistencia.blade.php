@@ -37,7 +37,16 @@ Asistencias
             background-color:red;
             border-color: red;
         }
-    
+        .refdate-all{
+            width: 30px;
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: inline; 
+            color: rgb(0, 221, 0);
+            padding-left: 6px;
+            padding-right: 4px;
+        }
         /** focus shadow pinkish **/
         .custom-checkbox-red .custom-control-input:focus~.custom-control-label::before{
             box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(255, 0, 0, 0.555); 
@@ -213,22 +222,11 @@ Asistencias
                                             <b class="text-primary">Para marcar estados de asistencias</b> se debe hacer click en la casilla del respectivo alumno y dicho día de asistencia.
                                             Los estados de asistencia son los siguientes:
                                             <br>
-                                            <b style="color: red">1</b> = Ausente
-                                            <br>
-                                            <b style="color: darkorange">R</b> = Retirado de clases
-                                            <br>
-                                            <b style="color: #0058ff">A</b> = Atrasado
-                                            <br>
-                                            <b style="color: #ea00ea">J</b> = Justificación de inasistencia
-                                            <br>
-                                            <b style="color: #0058ff">S</b> = Sin Cámara
-                                            <br>
-                                            <b>E</b> = Eximido
-                                            <br>
-                                            Estas serán guardadas automaticamente.
-                                            <hr>
-                                            <b class="text-primary">Para justificar </b> Se debe ingresar en la casilla la letra <b style="color: #ea00ea">J</b>, <b style="color: darkorange">R</b> o <b style="color: #0058ff">A</b> ,
-                                            una vez colocada se mostrará un cuadro a la izquierda de la casilla seleccionada para justificar la inasistencia (Se Autoguardará).
+                                            @foreach ($marks as $mark)
+                                                <b style="color: {{$mark["color"]}}">{{$mark["mark"]}}</b> = {{$mark["name"]}}
+                                                <br>
+                                            @endforeach
+                                            Estas serán guardadas automaticamente.*
                                             <hr>
                                             <b class="text-primary">Para registrar la asistencia de otro día</b> se debe presionar la tecla <b>ESC</b> (escape) 
                                             para que se habiliten las casillas de los días disponibles.
@@ -300,11 +298,11 @@ Asistencias
                                                         <input type="checkbox" class="custom-control-input full-asistance" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="ac{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" {{$inputenabled}} {{$inputcheckedA}}>
                                                         <label class="custom-control-label" for="ac{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" data-toggle="tooltip" data-placement="top" title="Asistencia Completa">A/C</label>
                                                     </div>
-                                                        <hr style="margin: 0px 0px 3px 0px;">
-                                                        <div class="custom-control custom-checkbox custom-checkbox-red">
-                                                            <input type="checkbox" class="custom-control-input non-assistance" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" @if($anr) {{$inputenabled}} @else disabled="" @endif {{$inputcheckedB}}>
-                                                            <label class="custom-control-label" for="anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" data-toggle="tooltip" data-placement="top" title="Asistencia No Realizada">N/R</label>
-                                                        </div>
+                                                    <hr style="margin: 0px 0px 3px 0px;">
+                                                    <div class="custom-control custom-checkbox custom-checkbox-red">
+                                                        <input type="checkbox" class="custom-control-input non-assistance" data="{{$id_clase}}" date="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" id="anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" @if($anr) {{$inputenabled}} @else disabled="" @endif {{$inputcheckedB}}>
+                                                        <label class="custom-control-label" for="anr{{$_GET["curso"]}}mat{{$_GET["materia"]}}bloq{{$horario["id"]}}date{{$year}}-{{$month}}-{{$day}}" data-toggle="tooltip" data-placement="top" title="Asistencia No Realizada">N/R</label>
+                                                    </div>
                                                 </th>
                                             @endif
                                         @endforeach
@@ -355,12 +353,12 @@ Asistencias
                                                         @endphp
                                                         <th class="{{$dayoutret}}" style="text-align: center;">
                                                             @if($dayoutret == "")
-                                                                <input id="input-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" class="form-control form-control-sm refdate-all refdate-bloq{{$horario["id"]}}-{{$year}}-{{$month}}-{{$day}}" stu="{{$alumno["id_stu"]}}" data="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" type="text" style="width: 30px;font-size: 0.8rem;text-transform:uppercase;font-weight: bold;display: inline;" maxlength="1" {{$inputenabled}}  placeholder="">
+                                                                <input id="input-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" class="form-control form-control-sm refdate-all refdate-bloq{{$horario["id"]}}-{{$year}}-{{$month}}-{{$day}}" stu="{{$alumno["id_stu"]}}" data="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" type="text" style="width: 30px;font-size: 0.8rem;text-transform:uppercase;font-weight: bold;display: inline;" maxlength="2" {{$inputenabled}}  placeholder="">
                                                                 <div id="just-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="opacity: 1;position: sticky;margin-left: -356px;margin-top: -44px;" hidden="">
                                                                     <div class="toast-body" style="padding: 0.5rem;">
                                                                         <div class="input-group mb-2" style="margin-bottom: 0px !important;">
                                                                             <div class="input-group-prepend">
-                                                                                <div style="background-color:     #e81515;color: white;font-weight: bold;" class="input-group-text">Justificación:</div>
+                                                                                <div style="background-color:     #15e886;color: white;font-weight: bold;" class="input-group-text">Comentario:</div>
                                                                             </div>
                                                                             <input id="descj-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" type="text" class="form-control justificacion" stu="{{$alumno["id_stu"]}}" data="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" >
                                                                         </div>
@@ -383,19 +381,11 @@ Asistencias
                         $(document).ready(function(){
                             //LIST CURRENT ASSISTANCES
                             @foreach ($assistance_data as $row)
-                                @if($row["type_a"] == "J")
-                                    $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","#ea00ea");
-                                @elseif($row["type_a"] == "A" || $row["type_a"] == "S")
-                                    $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","#0058ff");
-                                @elseif($row["type_a"] == "1")
-                                    $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","red");
-                                @elseif($row["type_a"] == "R")
-                                    $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","darkorange");
-                                @elseif($row["type_a"] == "E")
-                                    $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","black");
-                                @endif
-                                //justify
-                                //id_staff
+                                @foreach($marks as $mark)
+                                    @if($row["type_a"] == $mark["mark"])
+                                        $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").css("color","{{$mark["color"]}}");
+                                    @endif
+                                @endforeach
                                 $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").val("{{$row["type_a"]}}");
                                 $("#descj-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").val("{{$row["justify"]}}");
                             @endforeach
@@ -520,28 +510,27 @@ Asistencias
                                 var id_stu = $(this).attr("stu");
                                 var bloq = $(this).attr("bloq");
                                 var value = $(this).val().toUpperCase();
-                                if(value == "J" || value == "A" || value == "R"){
-                                    //alert("a");
+                                let arrayMarks = [];
+                                @foreach($marks as $mark)
+                                    arrayMarks.push("{{$mark["mark"]}}");
+                                @endforeach
+                                if(arrayMarks.includes(value)){
                                     $("#just-stu"+id_stu+"-class{{$id_clase}}-bloq"+bloq+"-date"+data).attr("hidden",false);
-                                    if(value == "J"){
-                                        $("#descj-stu"+id_stu+"-class{{$id_clase}}-bloq"+bloq+"-date"+data).attr("placeholder","Ej: Hora al médico");
-                                    }else if(value == "A"){
-                                        $("#descj-stu"+id_stu+"-class{{$id_clase}}-bloq"+bloq+"-date"+data).attr("placeholder","Ej: Hora de atraso HH:MM");
-                                    }else if(value == "R"){
-                                        $("#descj-stu"+id_stu+"-class{{$id_clase}}-bloq"+bloq+"-date"+data).attr("placeholder","Ej: Hora de retiro HH:MM");
-                                    }
-                                }else{
-                                    $("#just-stu"+id_stu+"-class{{$id_clase}}-bloq"+bloq+"-date"+data).attr("hidden",true);
+                                    $("#descj-stu"+id_stu+"-class{{$id_clase}}-bloq"+bloq+"-date"+data).attr("placeholder","");
                                 }
                             });
-                            //SAVE 1 R A
+                            //SAVE all
                             $(".refdate-all").on("keyup change", function(){
                                 var value = $(this).val().toUpperCase();
                                 var data = $(this).attr("data");
                                 var id_stu = $(this).attr("stu");
                                 var bloq = $(this).attr("bloq");
-                                var justify = $("#descj-stu"+id_stu+"-class{{$id_clase}}-bloq"+bloq+"-date"+data).val();
-                                if(value == "1" || value == "R" || value == "A" || value == "J" || value == "S" || value == "E" || value == ""){
+                                var justify = $(this).val();
+                                let arrayMarks = [];
+                                @foreach($marks as $mark)
+                                    arrayMarks.push("{{$mark["mark"]}}");
+                                @endforeach
+                                if(arrayMarks.includes(value) || value == ""){
                                     $(this).css("color","gray");
                                     $.ajax({
                                         type: "GET",
@@ -552,7 +541,7 @@ Asistencias
                                             type_a:value,
                                             assistance:data,
                                             bloq,
-                                            justify
+                                            justify:""
                                         },
                                         success: function (data)
                                         {
@@ -561,25 +550,20 @@ Asistencias
                                             }
                                         }
                                     });
-                                    if(value == "1"){
-                                        $(this).css("color","red");
-                                    }
-                                    if(value == "S"){
-                                        $(this).css("color","#0058ff");
-                                    }
-                                    if(value == "R"){
-                                        $(this).css("color","darkorange");
-                                    }
-                                    if(value == "A"){
-                                        $(this).css("color","#0058ff");
-                                    }
-                                    if(value == "J"){
-                                        $(this).css("color","#ea00ea");
-                                    }
-                                    if(value == "E"){
-                                        $(this).css("color","black");
-                                    }
-                                }else{
+                                    @foreach($marks as $mark)
+                                        if(value == "{{$mark["mark"]}}"){
+                                            $(this).css("color","{{$mark["color"]}}");
+                                        }
+                                    @endforeach
+                                }
+                            });
+                            $(".refdate-all").change(function(){
+                                var value = $(this).val().toUpperCase();
+                                let arrayMarks = [];
+                                @foreach($marks as $mark)
+                                    arrayMarks.push("{{$mark["mark"]}}");
+                                @endforeach
+                                if(!arrayMarks.includes(value)){
                                     $(this).val("");
                                 }
                             });

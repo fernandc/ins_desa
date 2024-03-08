@@ -116,7 +116,7 @@ if(Session::has('period')){
                             @endif
                             <div class="dropdown-divider"></div>
                             @if (in_array(1,$privileges))
-                            <a class="dropdown-item" href="inscriptions">Matriculados y Pendientes {{date("Y")+1}}</a>
+                            <a class="dropdown-item" href="inscriptions">Matriculados y Pendientes {{Session::get('period')+1}}</a>
                             @endif
                             @if (in_array(4,$privileges))
                             <a class="dropdown-item" href="info_request_1">Descarga Listado de Alumnos</a>

@@ -207,6 +207,7 @@ class View_System extends Controller {
                         $assistance_data = [];
                         $horarios = [];
                         if(isset($_GET['curso'])){
+                            $marks = $this->assistance_checks();
                             $curso = $_GET['curso'];
                             $alumnos = $this->matriculas($curso);
                             $year = Session::get('period');
@@ -235,7 +236,7 @@ class View_System extends Controller {
                                 array_push($assistance_data,$item);
                             }
                         }
-                        return view('info_asistencia2')->with("clases",$class)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("horarios",$horarios)->with("assistance",$assistance_data);
+                        return view('info_asistencia2')->with("clases",$class)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("horarios",$horarios)->with("assistance",$assistance_data)->with("marks",$marks);
                     }else{
                         return back();
                     }
@@ -424,6 +425,7 @@ class View_System extends Controller {
                         $horarios = [];
                         $teacher = null;
                         $id_clase = null;
+                        $marks = $this->assistance_checks();
                         if(isset($_GET['curso'])){
                             $curso = $_GET['curso'];
                             if(isset($_GET['materia'])){
@@ -447,7 +449,7 @@ class View_System extends Controller {
                                 }
                             }
                         }
-                        return view('ldc/asistencia')->with("clases",$class)->with("id_clase",$id_clase)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("assistance_data",$assistance_data)->with("horarios",$horarios)->with("anr",$can_anr);
+                        return view('ldc/asistencia')->with("clases",$class)->with("id_clase",$id_clase)->with("alumnos",$alumnos)->with("dias_activos",$enabled_days)->with("assistance_data",$assistance_data)->with("horarios",$horarios)->with("anr",$can_anr)->with("marks",$marks);
                     }
                     return redirect('/home');
                     
@@ -1145,6 +1147,18 @@ class View_System extends Controller {
             'public_key' => getenv("APP_PUBLIC_KEY"),
             'method' => 'assistance_date',
             'data' => [ "id_class" => $id_class , "id_grade" => $id_grade , "year" => $year ]
+        );
+        //dd($arr);
+        $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
+        $data = json_decode($response->body(), true);
+        //dd($data);
+        return $data;
+    }
+    private function assistance_checks(){
+        $arr = array(
+            'institution' => getenv("APP_NAME"),
+            'public_key' => getenv("APP_PUBLIC_KEY"),
+            'method' => 'assistance_marks',
         );
         //dd($arr);
         $response = Http::withBody(json_encode($arr), 'application/json')->post(getenv("API_ENDPOINT")."api-ins");
