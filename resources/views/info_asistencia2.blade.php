@@ -200,16 +200,17 @@ Asistencias
                 <div class="card-body table-responsive" style="padding: 0px;">
                     <table id="listtable" class="table table-hover table-bordered table-sm" style="font-size: 0.9rem;">
                         <thead>
-                          <tr>
+                          <tr style="position: sticky;top: 0;background-color: white;">
                             <th scope="col" style="text-align: center;">#</th>
                             <th scope="col" style="min-width: 260px">Alumnos</th>
                             <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Presente">Total<br>[ <span class="text-success">P</span> ]</th>
-                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Atrasado">Total<br><span style="color: #0058ff;">A</span></th>
-                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Retirado">Total<br><span style="color: darkorange;">R</span></th>
-                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Sin Camara">Total<br><span style="color: #0058ff;">S</span></th>
-                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Eximido">Total<br>E</th>
-                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Ausente">Total<br><span style="color: red;">1</span></th>
-                            <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="Justificado">Total<br><span style="color: #ea00ea;">J</span></th>
+                            @foreach ($marks as $mark)
+                                <th scope="col" style="text-align: center;" data-toggle="tooltip" data-placement="top" title="{{$mark["name"]}}">
+                                    Total
+                                    <br>
+                                    <span style="color: {{$mark["color"]}};">{{$mark["mark"]}}</span>
+                                </th>
+                            @endforeach
                             <th scope="col" style="text-align: center;min-width: 120px">Total<br>Asistencia</th>
                             <th scope="col" style="text-align: center;">Total<br>Inasistencia</th>
                             <th scope="col" style="text-align: center;">% Asistido</th>
@@ -264,32 +265,19 @@ Asistencias
                                     <th style="text-align: center;">
                                         <span id="typeP{{$alumno["id_stu"]}}" class="badge badge-info">{{$pre}}</span>
                                     </th>
+                                    @foreach ($marks as $mark)
+                                        <th style="text-align: center;">
+                                            <span id="type{{$mark["mark"]}}{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
+                                        </th>
+                                    @endforeach
                                     <th style="text-align: center;">
-                                        <span id="typeA{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
-                                    </th>
-                                    <th style="text-align: center;">
-                                        <span id="typeR{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
-                                    </th>
-                                    <th style="text-align: center;">
-                                        <span id="typeS{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
-                                    </th>
-                                    <th style="text-align: center;">
-                                        <span id="typeE{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
-                                    </th>
-                                    <th style="text-align: center;">
-                                        <span id="typeX{{$alumno["id_stu"]}}" class="badge badge-light ">0</span>
-                                    </th>
-                                    <th style="text-align: center;">
-                                        <span id="typeJ{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
-                                    </th>
-                                    <th style="text-align: center;">
-                                        <span id="typeIN{{$alumno["id_stu"]}}" class="badge badge-success">0</span> de <span class="badge badge-light">{{$pre}}</span>
+                                        <span id="typeIN{{$alumno["id_stu"]}}" class="badge badge-success">{{$pre}}</span> de <span class="badge badge-light">{{$pre}}</span>
                                     </th>
                                     <th style="text-align: center;">
                                         <span id="typeINA{{$alumno["id_stu"]}}" class="badge badge-light">0</span>
                                     </th>
                                     <th style="text-align: center;" >
-                                        <span id="typePER{{$alumno["id_stu"]}}" >0%</span>
+                                        <span id="typePER{{$alumno["id_stu"]}}" class=" badge badge-primary">100%</span>
                                     </th>
                                     @foreach ($dias_activos as $horario)
                                         <th class="todis" style="text-align: center;">
@@ -301,6 +289,9 @@ Asistencias
                                 </tr>
                                 <script>
                                     $("#alloaded").html({{$nrolista}}-1);
+                                    if({{$nrolista}} == total_alumnos){
+                                        Swal.close();
+                                    }
                                 </script>
                             @endforeach
                         </tbody>
@@ -313,100 +304,46 @@ Asistencias
                         //LIST CURRENT ASSISTANCES
                         var item = "";
                         function throwData(item){
-                            console.log(item);
+                            //console.log(item);
                             var currentNum = 0;
-                            if(item.type_a == "J"){
-                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","#ea00ea");
-                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
-                                    currentNum = $("#typeJ"+item.id_student).html();
-                                    currentNum++;
-                                    $("#typeJ"+item.id_student).removeClass("badge-light");
-                                    $("#typeJ"+item.id_student).addClass("badge-warning");
-                                    $("#typeJ"+item.id_student).html(currentNum);
+                            @foreach($marks as $mark)
+                                if(item.type_a == '{{$mark["mark"]}}'){
+                                    $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","{{$mark['color']}}");
                                 }
-                            }
-                            else if(item.type_a == "S"){
-                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","#0058ff");
-                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
-                                    currentNum = $("#typeS"+item.id_student).html();
-                                    currentNum++;
-                                    $("#typeS"+item.id_student).removeClass("badge-light");
-                                    $("#typeS"+item.id_student).addClass("badge-info");
-                                    $("#typeS"+item.id_student).html(currentNum);
+                            @endforeach
+                            let totIna = 0;
+                            @foreach ($marks as $mark)
+                                if(item.type_a == "{{$mark["mark"]}}"){
+                                    $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","{{$mark['color']}}");
+                                    if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
+                                        currentNum = $("#type{{$mark['mark']}}"+item.id_student).html();
+                                        currentNum++;
+                                        $("#type{{$mark['mark']}}"+item.id_student).removeClass("badge-light");
+                                        $("#type{{$mark['mark']}}"+item.id_student).addClass("badge-{{$mark['color']}}");
+                                        $("#type{{$mark['mark']}}"+item.id_student).html(currentNum);
+                                    }
                                 }
-                            }
-                            else if(item.type_a == "A"){
-                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","#0058ff");
-                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
-                                    currentNum = $("#typeS"+item.id_student).html();
-                                    currentNum++;
-                                    $("#typeA"+item.id_student).removeClass("badge-light");
-                                    $("#typeA"+item.id_student).addClass("badge-info");
-                                    $("#typeA"+item.id_student).html(currentNum);
+                                if(item.justify != ""){
+                                    $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-toggle","tooltip");
+                                    $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-placement","top");
+                                    $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("title",item.justify);
                                 }
-                            }
-                            else if(item.type_a == "1"){
-                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","red");
-                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
-                                    currentNum = $("#typeX"+item.id_student).html();
-                                    currentNum++;
-                                    $("#typeX"+item.id_student).removeClass("badge-light");
-                                    $("#typeX"+item.id_student).addClass("badge-warning");
-                                    $("#typeX"+item.id_student).html(currentNum);
+                                let tot{{$mark["mark"]}} = parseInt($("#type{{$mark["mark"]}}"+item.id_student).html(),10);
+                                if({{$mark["assistance"]}} == 1){
+                                    totIna += tot{{$mark["mark"]}};
                                 }
-                            }
-                            else if(item.type_a == "R"){
-                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","darkorange");
-                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
-                                    currentNum = $("#typeR"+item.id_student).html();
-                                    currentNum++;
-                                    $("#typeR"+item.id_student).removeClass("badge-light");
-                                    $("#typeR"+item.id_student).addClass("badge-info");
-                                    $("#typeR"+item.id_student).html(currentNum);
-                                }
-                            }
-                            else if(item.type_a == "E"){
-                                $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","black");
-                                if($("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).length != 0) {
-                                    currentNum = $("#typeE"+item.id_student).html();
-                                    currentNum++;
-                                    $("#typeE"+item.id_student).removeClass("badge-light");
-                                    $("#typeE"+item.id_student).addClass("badge-info");
-                                    $("#typeE"+item.id_student).html(currentNum);
-                                }
-                            }
+                            @endforeach
                             $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).html(item.type_a);
-                            //
-                            if(item.type_a == "J" || item.type_a == "A" || item.type_a == "R"){
-                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-toggle","tooltip");
-                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-placement","top");
-                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("title",item.justify);
-                            }
-                            if(item.type_a == "S"){
-                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-toggle","tooltip");
-                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-placement","top");
-                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("title","Sin Cámara");
-                            }
-                            if(item.type_a == "E"){
-                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-toggle","tooltip");
-                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-placement","top");
-                                $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("title","Eximido");
-                            }
-                            var totTA = parseInt($("#typeA"+item.id_student).html(),10);
-                            var totTR = parseInt($("#typeR"+item.id_student).html(),10);
-                            var totTS = parseInt($("#typeS"+item.id_student).html(),10);
-                            var totTE = parseInt($("#typeE"+item.id_student).html(),10);
-                            var totTX = parseInt($("#typeX"+item.id_student).html(),10);
-                            var totTJ = parseInt($("#typeJ"+item.id_student).html(),10);
-                            $("#typeP"+item.id_student).html({{$pre}}-totTA-totTR-totTS-totTE-totTX-totTJ);
+                            $("#typeP"+item.id_student).html({{$pre}}-totIna);
                             var totTP = parseInt($("#typeP"+item.id_student).html(),10);
-                            $("#typeIN"+item.id_student).html(totTP+totTA+totTR+totTS+totTE);
-                            $("#typeINA"+item.id_student).html(totTX+totTJ);
+                            console.log("#typeIN"+item.id_student);
+                            $("#typeIN"+item.id_student).html({{$pre}}-totIna);
+                            $("#typeINA"+item.id_student).html(totIna);
                             if($("#typeINA"+item.id_student).html() != "0"){
                                 $("#typeINA"+item.id_student).removeClass("badge-light");
                                 $("#typeINA"+item.id_student).addClass("badge-danger");
                             }
-                            var percent = (((totTP+totTA+totTR+totTS+totTE))*100)/{{$pre}};
+                            var percent = ((({{$pre}}-totIna))*100)/{{$pre}};
                             $("#typePER"+item.id_student).html(percent.toFixed(2)+"%");
                             $("#typePER"+item.id_student).removeClass("badge");
                             $("#typePER"+item.id_student).removeClass("badge-primary");
@@ -417,6 +354,7 @@ Asistencias
                             if(totPER == 100){
                                 $("#typePER"+item.id_student).addClass("badge");
                                 $("#typePER"+item.id_student).addClass("badge-primary");
+                                $("#typePER"+item.id_student).html("100%")
                             }else if(totPER >=90){
                                 $("#typePER"+item.id_student).addClass("text-primary");
                             }else if(totPER >=85){
@@ -425,11 +363,7 @@ Asistencias
                                 $("#typePER"+item.id_student).addClass("text-danger");
                             }
                             if(cargados_alumnos == total_alumnos){
-                                $(function () {
-                                    $('[data-toggle="tooltip"]').tooltip()
-                                });
                                 Toast.fire({
-                    
                                     icon: 'success',
                                     title: 'Completado'
                                 });
@@ -447,6 +381,9 @@ Asistencias
                             cargados_alumnos++;
                             throwData(item);
                         @endforeach
+                    });
+                    $(function () {
+                        $('[data-toggle="tooltip"]').tooltip()
                     });
                 </script>
             </div>

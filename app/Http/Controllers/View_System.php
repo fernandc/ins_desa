@@ -206,8 +206,8 @@ class View_System extends Controller {
                         $enabled_days = [];
                         $assistance_data = [];
                         $horarios = [];
+                        $marks = $this->assistance_checks();
                         if(isset($_GET['curso'])){
-                            $marks = $this->assistance_checks();
                             $curso = $_GET['curso'];
                             $alumnos = $this->matriculas($curso);
                             $year = Session::get('period');
