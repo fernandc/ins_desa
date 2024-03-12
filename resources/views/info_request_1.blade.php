@@ -185,6 +185,7 @@ function addSheet(xlsx, table, title, name, sheetId) {
                 <tr>
                     <th scope="col">Nombre Alumno</th>
                     <th scope="col">Rut Alumno</th>
+                    <th scope="col">Fecha Nacimiento</th>
                     <th scope="col">Nombre Apoderado</th>
                     <th scope="col">Rut Apoderado</th>
                     <th scope="col">Dirección</th>
@@ -222,7 +223,7 @@ function addSheet(xlsx, table, title, name, sheetId) {
                             }
                         ],
                         "ordering": true,
-                        "order": [2, "asc" ],
+                        "order": [0, "asc" ],
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
                         language: {
                             "decimal": "",
@@ -253,6 +254,7 @@ function addSheet(xlsx, table, title, name, sheetId) {
                     <tr>
                         <th scope="col">Nombre Alumno</th>
                         <th scope="col">Rut Alumno</th>
+                        <th scope="col">Fecha Nacimiento</th>
                         <th scope="col">Nombre Apoderado</th>
                         <th scope="col">Rut Apoderado</th>
                         <th scope="col">Dirección</th>
@@ -264,6 +266,9 @@ function addSheet(xlsx, table, title, name, sheetId) {
                         <tr>
                             <td>{{$row["nombre_stu"]}} </td>
                             <td>{{$row["dni_stu"]}} </td>
+                            <td>
+                                @php echo date("d-m-Y", strtotime($row["fecha_nacimiento_stu"])); @endphp
+                            </td>
                             <td>{{$row["nombre_apo"]}} </td>
                             <td> @php echo substr($row["dni"],0,-1)."-".substr($row["dni"],-1); @endphp </td>
                             <td>{{$row["direccion"]}} </td> 
@@ -276,7 +281,7 @@ function addSheet(xlsx, table, title, name, sheetId) {
                 $(document).ready( function () {
                     $('#list_students_{{$i}}').DataTable({
                             "ordering": true,
-                            "order": [2, "asc" ],
+                            "order": [0, "asc" ],
                             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
                             language: {
                                 "decimal": "",

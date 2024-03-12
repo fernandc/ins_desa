@@ -321,7 +321,7 @@ Asistencias
                                         $retired = "bg-warning";
                                     }
                                     @endphp
-                                    <tr>
+                                    <tr class="{{$alumno["fecha_retiro"] != null ? 'd-none' : ''}}">
                                         <th scope="row" class="{{$retired}}" style="text-align: center;">{{$nrolista++}}</th>
                                         <th class="{{$retired}}">{{$alumno["nombre_stu"]}}</th>
                                         @for ($i = 1; $i <= $lastd; $i++)
