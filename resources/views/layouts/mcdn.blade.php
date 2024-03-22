@@ -118,6 +118,9 @@ if(Session::has('period')){
                             @if (in_array(1,$privileges))
                             <a class="dropdown-item" href="inscriptions">Matriculados y Pendientes {{Session::get('period')+1}}</a>
                             @endif
+                            @if (in_array(1,$privileges))
+                                <a class="dropdown-item" href="info_request_minedu">Descarga Listado de alumnos MINEDU</a>
+                            @endif
                             @if (in_array(4,$privileges))
                             <a class="dropdown-item" href="info_request_1">Descarga Listado de Alumnos</a>
                             @endif

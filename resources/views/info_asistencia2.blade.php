@@ -304,9 +304,8 @@ Asistencias
                         //LIST CURRENT ASSISTANCES
                         var item = "";
                         function throwData(item){
-                            //console.log(item);
                             var currentNum = 0;
-                            @foreach($marks as $mark)
+                            @foreach($marks as $mark);
                                 if(item.type_a == '{{$mark["mark"]}}'){
                                     $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("color","{{$mark['color']}}");
                                 }
@@ -324,6 +323,10 @@ Asistencias
                                     }
                                 }
                                 if(item.justify != ""){
+                                    $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("border-style","outset");
+                                    $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("border-width","2px");
+                                    $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("padding-left","2px");
+                                    $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).css("padding-right","2px");
                                     $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-toggle","tooltip");
                                     $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("data-placement","top");
                                     $("#tooltip"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).attr("title",item.justify);
@@ -336,7 +339,6 @@ Asistencias
                             $("#input-stu"+item.id_student+"-class"+item.id_class+"-bloq"+item.id_bloq+"-date"+item.assistance).html(item.type_a);
                             $("#typeP"+item.id_student).html({{$pre}}-totIna);
                             var totTP = parseInt($("#typeP"+item.id_student).html(),10);
-                            console.log("#typeIN"+item.id_student);
                             $("#typeIN"+item.id_student).html({{$pre}}-totIna);
                             $("#typeINA"+item.id_student).html(totIna);
                             if($("#typeINA"+item.id_student).html() != "0"){
@@ -375,6 +377,7 @@ Asistencias
                         });
                         @foreach($assistance as $rowA)
                             @php
+                            $rowA["justify"] = str_replace("\n", " ", $rowA["justify"]);
                             $json = json_encode($rowA);
                             @endphp
                             item = JSON.parse(`{!! $json !!}`);
@@ -383,7 +386,7 @@ Asistencias
                         @endforeach
                     });
                     $(function () {
-                        $('[data-toggle="tooltip"]').tooltip()
+                        $('[data-toggle="tooltip"]').tooltip();
                     });
                 </script>
             </div>

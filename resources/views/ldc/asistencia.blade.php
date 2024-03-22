@@ -360,7 +360,7 @@ Asistencias
                                                                             <div class="input-group-prepend">
                                                                                 <div style="background-color:     #15e886;color: white;font-weight: bold;" class="input-group-text">Comentario:</div>
                                                                             </div>
-                                                                            <input id="descj-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" type="text" class="form-control justificacion" stu="{{$alumno["id_stu"]}}" data="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" >
+                                                                            <textarea  id="descj-stu{{$alumno["id_stu"]}}-class{{$id_clase}}-bloq{{$horario["id"]}}-date{{$year}}-{{$month}}-{{$day}}" type="text" class="form-control justificacion" stu="{{$alumno["id_stu"]}}" data="{{$year}}-{{$month}}-{{$day}}" bloq="{{$horario["id"]}}" ></textarea>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -387,7 +387,7 @@ Asistencias
                                     @endif
                                 @endforeach
                                 $("#input-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").val("{{$row["type_a"]}}");
-                                $("#descj-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").val("{{$row["justify"]}}");
+                                $("#descj-stu{{$row["id_student"]}}-class{{$row["id_class"]}}-bloq{{$row["id_bloq"]}}-date{{$row["assistance"]}}").val(`{{$row["justify"]}}`);
                             @endforeach
                             $('input').keypress(function(e) {
                                 if (e.which == 13) {
